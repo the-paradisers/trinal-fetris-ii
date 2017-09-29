@@ -1,0 +1,12 @@
+{
+  "name": "trinal-fetris-ii",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Erik Shuttlesworth <erik.shuttlesworth@gmail.com> (https://github.com/emshuttles)",
+  "license": "ISC"
+}
