@@ -8,5 +8,8 @@
   },
   "keywords": [],
   "author": "Erik Shuttlesworth <erik.shuttlesworth@gmail.com> (https://github.com/emshuttles)",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "phaser-node-kit": "^2.2.0"
+  }
 }
