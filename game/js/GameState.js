@@ -7,6 +7,7 @@ class GameState {
   }
 
   create() {
+    this.currTime = this.time.now / 10
 
     const Blocks = new Tetri()
     const myB = Blocks.getBlock('L')
@@ -59,7 +60,14 @@ class GameState {
     })
   }
 
-  update() { }
+  update() {
+    this.currTime++
+    if (this.currTime >= 60) {
+      this.currTime = 0
+    }
+    console.log(this.currTime)
+  }
+
   render() { }
 }
 
