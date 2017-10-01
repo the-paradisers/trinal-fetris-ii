@@ -6,9 +6,9 @@ Phaser.Device.whenReady(() => {
   const menuState     = require('./MenuState')
   const gameState     = require('./GameState')
 
-  const game = new Phaser.Game(800, 600, Phaser.AUTO, 'game')
+  const game = new Phaser.Game(1280, 720, Phaser.AUTO, 'game')
 
-  game.stage.backgroundColor = 0x000000
+  game.stage.backgroundColor = 0x242432
 
   game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
   game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL
