@@ -1,0 +1,298 @@
+{
+  "shapes": [
+  {
+    "name": "I",
+    "id": 0,
+    "orientation":[
+      {
+        "startingLocation":{"x":5, "y":0},
+        "blockPosition":[
+          {"x":-2, "y":0},
+          {"x":-1, "y":0},
+          {"x":0, "y":0},
+          {"x":1, "y":0}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":2},
+        "blockPosition":[
+          {"x":0, "y":-2},
+          {"x":0, "y":-1},
+          {"x":0, "y":0},
+          {"x":0, "y":1}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":0},
+        "blockPosition":[
+          {"x":2, "y":0},
+          {"x":1, "y":0},
+          {"x":0, "y":0},
+          {"x":-1, "y":0}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":1},
+        "blockPosition":[
+          {"x":0, "y":2},
+          {"x":0, "y":1},
+          {"x":0, "y":0},
+          {"x":0, "y":-1}
+        ]
+      }
+    ]
+  },
+  {
+    "name": "J",
+    "id": 1,
+    "orientation":[
+      {
+        "startingLocation":{"x":5, "y":2},
+        "blockPosition":[
+          {"x":-1, "y":0},
+          {"x":0, "y":-2},
+          {"x":0, "y":-1},
+          {"x":0, "y":0}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":1},
+        "blockPosition":[
+          {"x":0, "y":-1},
+          {"x":2, "y":0},
+          {"x":1, "y":0},
+          {"x":0, "y":0}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":0},
+        "blockPosition":[
+          {"x":1, "y":0},
+          {"x":0, "y":2},
+          {"x":0, "y":1},
+          {"x":0, "y":0}
+        ]
+      },
+      {
+        "startingLocation":{"x":5, "y":0},
+        "blockPosition":[
+          {"x":0, "y":1},
+          {"x":-2, "y":0},
+          {"x":-1, "y":0},
+          {"x":0, "y":0}
+        ]
+      }
+    ]
+  },
+  {
+    "name": "L",
+    "id": 2,
+    "orientation":[
+      {
+        "startingLocation":{"x":4, "y":2},
+        "blockPosition":[
+          {"x":0, "y":-2},
+          {"x":0, "y":-1},
+          {"x":0, "y":0},
+          {"x":1, "y":0}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":0},
+        "blockPosition":[
+          {"x":2, "y":0},
+          {"x":1, "y":0},
+          {"x":0, "y":0},
+          {"x":0, "y":1}
+        ]
+      },
+      {
+        "startingLocation":{"x":5, "y":0},
+        "blockPosition":[
+          {"x":0, "y":2},
+          {"x":0, "y":1},
+          {"x":0, "y":0},
+          {"x":-1, "y":0}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":1},
+        "blockPosition":[
+          {"x":-2, "y":0},
+          {"x":-1, "y":0},
+          {"x":0, "y":0},
+          {"x":0, "y":-1}
+        ]
+      }
+    ]
+  },
+  {
+    "name": "O",
+    "id": 3,
+    "orientation":[
+      {
+        "startingLocation":{"x":4, "y":0},
+        "blockPosition":[
+          {"x":0, "y":0},
+          {"x":1, "y":0},
+          {"x":1, "y":1},
+          {"x":0, "y":1}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":0},
+        "blockPosition":[
+          {"x":1, "y":0},
+          {"x":1, "y":1},
+          {"x":0, "y":1},
+          {"x":0, "y":0}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":0},
+        "blockPosition":[
+          {"x":1, "y":1},
+          {"x":0, "y":1},
+          {"x":0, "y":0},
+          {"x":1, "y":0}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":0},
+        "blockPosition":[
+          {"x":0, "y":1},
+          {"x":0, "y":0},
+          {"x":1, "y":0},
+          {"x":1, "y":1}
+        ]
+      }
+    ]
+  },
+  {
+    "name": "S",
+    "id": 4,
+    "orientation":[
+      {
+        "startingLocation":{"x":5, "y":0},
+        "blockPosition":[
+          {"x":0, "y":0},
+          {"x":1, "y":0},
+          {"x":-1, "y":1},
+          {"x":0, "y":1}
+        ]
+      },
+      {
+        "startingLocation":{"x":5, "y":1},
+        "blockPosition":[
+          {"x":0, "y":0},
+          {"x":0, "y":1},
+          {"x":-1, "y":-1},
+          {"x":-1, "y":0}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":1},
+        "blockPosition":[
+          {"x":0, "y":0},
+          {"x":-1, "y":0},
+          {"x":1, "y":-1},
+          {"x":0, "y":-1}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":1},
+        "blockPosition":[
+          {"x":0, "y":0},
+          {"x":0, "y":-1},
+          {"x":1, "y":1},
+          {"x":1, "y":0}
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Z",
+    "id": 5,
+    "orientation":[
+      {
+        "startingLocation":{"x":5, "y":0},
+        "blockPosition":[
+          {"x":-1, "y":0},
+          {"x":0, "y":0},
+          {"x":0, "y":1},
+          {"x":1, "y":1}
+        ]
+      },
+      {
+        "startingLocation":{"x":5, "y":1},
+        "blockPosition":[
+          {"x":0, "y":-1},
+          {"x":0, "y":0},
+          {"x":-1, "y":0},
+          {"x":-1, "y":1}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":1},
+        "blockPosition":[
+          {"x":1, "y":0},
+          {"x":0, "y":0},
+          {"x":0, "y":-1},
+          {"x":-1, "y":-1}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":1},
+        "blockPosition":[
+          {"x":0, "y":1},
+          {"x":0, "y":0},
+          {"x":1, "y":0},
+          {"x":1, "y":-1}
+        ]
+      }
+    ]
+  },
+  {
+    "name": "T",
+    "id": 6,
+    "orientation":[
+      {
+        "startingLocation":{"x":4, "y":0},
+        "blockPosition":[
+          {"x":-1, "y":0},
+          {"x":0, "y":0},
+          {"x":1, "y":0},
+          {"x":0, "y":1}
+        ]
+      },
+      {
+        "startingLocation":{"x":5, "y":1},
+        "blockPosition":[
+          {"x":0, "y":-1},
+          {"x":0, "y":0},
+          {"x":0, "y":1},
+          {"x":-1, "y":0}
+        ]
+      },
+      {
+        "startingLocation":{"x":5, "y":1},
+        "blockPosition":[
+          {"x":1, "y":0},
+          {"x":0, "y":0},
+          {"x":-1, "y":0},
+          {"x":0, "y":-1}
+        ]
+      },
+      {
+        "startingLocation":{"x":4, "y":1},
+        "blockPosition":[
+          {"x":0, "y":1},
+          {"x":0, "y":0},
+          {"x":0, "y":-1},
+          {"x":1, "y":0}
+        ]
+      }
+    ]
+  }
+ ]
+}
