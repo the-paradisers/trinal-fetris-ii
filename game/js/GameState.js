@@ -7,68 +7,113 @@ class GameState {
   }
 
   create() {
-    this.currTime = this.time.now / 10
+    this.currTime = 0
+    this.moveTime = 0
+    this.canMove = true
 
+    this.keys = {
+      upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
+      downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+      leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+      rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+    }
+
+    // board - CREATE
+    this.boardState = this.add.group()
+    const board = this.drawBoard([
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ])
+
+    // currentBlock - CREATE
     const Blocks = new Tetri()
-    const myB = Blocks.getBlock('L')
-
-    this.drawBoard(
-      [
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      ]
-    )
-
-    this.drawBlock(myB)
-
+    this.tetrisBlock = this.add.group()
+    this.drawBlock(Blocks.getBlock('L'))
   }
 
-  drawBlock(blackMatrix) {
-    blackMatrix.forEach((row, y) => {
+  // currentBlock - DRAWS BLOCK
+  drawBlock(block) {
+    block.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
-          this.add.sprite(32 * x + 480, 32 * y + 80, 'blocks', value)
+          this.tetrisBlock.create(32 * (x), 32 * (y), 'blocks', value)
         }
       })
     })
   }
 
+  // boardState - DRAWS BOARD
   drawBoard(blackMatrix) {
     blackMatrix.forEach((row, y) => {
       row.forEach((value, x) => {
-        // if (value !== 0) {
-          this.add.sprite(32 * x + 480, 32 * y + 80, 'blocks', value)
-        // }
+          this.boardState.create(32 * x, 32 * y, 'blocks', value)
       })
     })
   }
 
-  update() {
-    this.currTime++
-    if (this.currTime >= 60) {
+  // clock - UPDATES AND DROPS PIECE BASED ON RATE
+  updateClock(rate = 1) {
+    this.currTime += this.time.elapsed * rate
+    if (this.currTime > 1000){
       this.currTime = 0
+      this.moveBlock(0, 1)
     }
-    console.log(this.currTime)
   }
 
-  render() { }
+  updateMove() {
+    this.moveTime += this.time.elapsed
+    if (this.moveTime > 250){
+      this.canMove = true
+      this.moveTime = 0
+    }
+  }
+
+  // currentBlock - DROPS IT
+  moveBlock(x, y) {
+      this.tetrisBlock.position.x += (x * 32)
+      this.tetrisBlock.position.y += (y * 32)
+  }
+
+  update() {
+    this.updateClock()
+    this.updateMove()
+
+    if (this.keys.leftKey.isDown) {
+      if (this.canMove) {
+        this.canMove = false
+        this.moveBlock(-1, 0)
+      }
+    }
+
+    if (this.keys.rightKey.isDown) {
+      if (this.canMove) {
+        this.canMove = false
+        this.moveBlock(1, 0)
+      }
+    }
+
+  }
+
+  render() {
+
+  }
 }
 
 module.exports = GameState
