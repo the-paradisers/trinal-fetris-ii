@@ -45,9 +45,14 @@ class GameState {
     ])
 
     // currentBlock - CREATE
+    const types = 'ILJOTSZ'
+    function pickType () {
+      return types[Math.floor(types.length * Math.random())]
+    }
+
     const Blocks = new Tetri()
     this.tetrisBlock = this.add.group()
-    this.drawBlock(Blocks.getBlock('L'))
+    this.drawBlock(Blocks.getBlock(pickType()))
   }
 
   // currentBlock - DRAWS BLOCK
@@ -88,8 +93,10 @@ class GameState {
 
   // currentBlock - allows us to move blocks
   moveBlock(x, y) {
-      this.tetrisBlock.position.x += (x * 32)
-      this.tetrisBlock.position.y += (y * 32)
+    // console.log(this.tetrisBlock.position)
+
+    this.tetrisBlock.position.x += (x * 32)
+    this.tetrisBlock.position.y += (y * 32)
   }
 
   update() {
