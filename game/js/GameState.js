@@ -106,15 +106,19 @@ class GameState {
   }
 
   // currentBlock - allows us to move blocks
-  moveBlock(x, y) {
-    this.player.pos.x += x
-    this.player.pos.y += y
+  dropBlock() {
+    this.player.pos.y++
     if (this.collide()) {
-      this.player.pos.x -= x
-      this.player.pos.y -= y
+      this.player.pos.y--
       this.merge()
-      this.player.pos.y = 1
-      this.player.pos.x = 3
+      this.player.pos = {x: 3, y: 0}
+    }
+  }
+
+  moveBlock(dir) {
+    this.player.pos.x += dir
+    if (this.collide()) {
+      this.player.pos.x -= dir
     }
   }
 
@@ -131,19 +135,19 @@ class GameState {
       if (this.canMove) {
         this.canMove = false
         this.moveTime = 0
-        this.moveBlock(-1, 0)
+        this.moveBlock(-1)
       }
     } else if (this.keys.rightKey.isDown) {
       if (this.canMove) {
         this.canMove = false
         this.moveTime = 0
-        this.moveBlock(1, 0)
+        this.moveBlock(1)
       }
     } else if (this.keys.downKey.isDown) {
       if (this.canMove) {
         this.canMove = false
         this.moveTime = 0
-        this.moveBlock(0, 1)
+        this.dropBlock()
       }
     }
 
@@ -155,7 +159,7 @@ class GameState {
     this.currTime += this.time.elapsed * rate
     if (this.currTime > 1000){
       this.currTime = 0
-      this.moveBlock(0, 1)
+      this.dropBlock()
     }
     // movement time
     this.moveTime += this.time.elapsed
