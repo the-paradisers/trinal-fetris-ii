@@ -7,7 +7,9 @@ class MenuState {
     let logo = this.add.text(
       this.world.centerX,
       this.world.centerY,
-      'Trinal Fetris II')
+      'Trinal Fetris II',
+      {fill: 'white'}
+    )
 
     logo.anchor.set(.5)
 
