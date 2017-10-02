@@ -1,5 +1,5 @@
 class Tetri {
-  constructor() {
+  constructor(type) {
     this.blocks = {
       T: [
         [0, 0, 0],
