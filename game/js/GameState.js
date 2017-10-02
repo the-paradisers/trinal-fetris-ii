@@ -4,6 +4,27 @@ class GameState {
 
   preload() {
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
+    this.BLOCK_SCALE = 32
+
+    this.blocks = new Tetri()
+    this.player = {
+      pos: {x: 3, y: 1},
+      matrix: this.blocks.getBlock('T')
+    }
+  }
+
+  collide() {
+    const [m, o] = [this.player.matrix, this.player.pos]
+    for (let y = 0; y < m.length; ++y) {
+      for (let x = 0; x < m[y].length; ++x) {
+        if (m[y][x] !== 0 &&
+          (this.arena[y + o.y] &&
+            this.arena[y + o.y][x + o.x]) !== 0) {
+            return true
+          }
+      }
+    }
+    return false
   }
 
   create() {
@@ -11,6 +32,17 @@ class GameState {
     this.currTime = 0
     this.moveTime = 0
     this.canMove = true
+
+    this.boardState = this.add.group()
+    this.arena = this.createMatrix(10, 22)
+
+    // currentBlock - CREATE
+    const types = 'ILJOTSZ'
+    function randomType () {
+      return types[Math.floor(types.length * Math.random())]
+    }
+    this.tetrisBlock = this.add.group()
+    const type = randomType()
 
     // keyboard listeners
     this.keys = {
@@ -21,106 +53,78 @@ class GameState {
       qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
       eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
     }
-    this.keys.qKey.onDown.add(() => this.rotate(-1))
-    this.keys.eKey.onDown.add(() => this.rotate(1))
 
-    // board - CREATE
-    this.boardState = this.add.group()
-    const board = this.drawBoard([
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    ])
-
-    // currentBlock - CREATE
-    const types = 'ILJOTSZ'
-    function randomType () {
-      return types[Math.floor(types.length * Math.random())]
-    }
-
-    const Blocks = new Tetri()
-    this.tetrisBlock = this.add.group()
-    const type = randomType()
-    this.drawBlock(Blocks.getBlock(type))
-    if (type === 'O') {
-      this.tetrisBlock.pivot.x = 32
-      this.tetrisBlock.pivot.y = 32
-    } else if (type === 'I') {
-      this.tetrisBlock.pivot.x = 64
-      this.tetrisBlock.pivot.y = 64
-    } else {
-      this.tetrisBlock.pivot.x = 48
-      this.tetrisBlock.pivot.y = 48
-    }
   }
 
+  createMatrix(w, h) {
+    this.newMatrix = []
+    while (h--) {
+      this.newMatrix.push(new Array(w).fill(0))
+    }
+    return this.newMatrix
+  }
+
+  draw() {
+    this.tetrisBlock.killAll()
+    this.boardState.killAll()
+    this.drawBlock(this.player.matrix, this.player.pos)
+    this.drawBoard(this.arena)
+  }
   // currentBlock - DRAWS BLOCK
-  drawBlock(block) {
+  drawBlock(block, offset = {x: 0, y: 0}) {
     block.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
-          this.tetrisBlock.create(32 * (x), 32 * (y), 'blocks', value)
+          this.tetrisBlock.create(
+            this.BLOCK_SCALE * (x + offset.x),
+            this.BLOCK_SCALE * (y + offset.y),
+            'blocks', value)
+        }
+      })
+    })
+  }
+  // boardState - DRAWS BOARD
+  drawBoard(blackMatrix) {
+    blackMatrix.forEach((row, y) => {
+      row.forEach((value, x) => {
+          this.boardState.create(
+            this.BLOCK_SCALE * x,
+            this.BLOCK_SCALE * y,
+            'blocks', value)
+      })
+    })
+  }
+
+  merge() {
+    this.player.matrix.forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value !== 0) {
+          this.arena[y + this.player.pos.y][x + this.player.pos.x] = value
         }
       })
     })
   }
 
-  // boardState - DRAWS BOARD
-  drawBoard(blackMatrix) {
-    blackMatrix.forEach((row, y) => {
-      row.forEach((value, x) => {
-          this.boardState.create(32 * x, 32 * y, 'blocks', value)
-      })
-    })
-  }
-
-  // clock - UPDATES AND MOVES PIECE BASED ON VARIOUS RATES
-  updateClock(rate = 1) {
-    // fall time
-    this.currTime += this.time.elapsed * rate
-    if (this.currTime > 1000){
-      this.currTime = 0
-      this.moveBlock(0, 1)
-    }
-    // movement time
-    this.moveTime += this.time.elapsed
-    if (this.moveTime > 250){
-      this.canMove = true
-      this.moveTime = 0
-    }
-  }
-
   // currentBlock - allows us to move blocks
   moveBlock(x, y) {
-    // console.log(this.tetrisBlock.position)
-
-    this.tetrisBlock.position.x += (x * 32)
-    this.tetrisBlock.position.y += (y * 32)
+    this.player.pos.x += x
+    this.player.pos.y += y
+    if (this.collide()) {
+      this.player.pos.x -= x
+      this.player.pos.y -= y
+      this.merge()
+      this.player.pos.y = 1
+      this.player.pos.x = 3
+    }
   }
 
-  rotate(dir) {
-    this.tetrisBlock.angle += 90 * dir
-  }
+  // rotate(dir) {
+  //   this.tetrisBlock.angle += 90 * dir
+  // }
 
   update() {
-    console.log(this.tetrisBlock)
     this.updateClock()
+    this.draw()
 
     // allows for left and right movement of current piece
     if (this.keys.leftKey.isDown) {
@@ -145,7 +149,23 @@ class GameState {
 
   }
 
-  render() { }
+  // clock - UPDATES AND MOVES PIECE BASED ON VARIOUS RATES
+  updateClock(rate = 1) {
+    // fall time
+    this.currTime += this.time.elapsed * rate
+    if (this.currTime > 1000){
+      this.currTime = 0
+      this.moveBlock(0, 1)
+    }
+    // movement time
+    this.moveTime += this.time.elapsed
+    if (this.moveTime > 250){
+      this.canMove = true
+      this.moveTime = 0
+    }
+  }
+
+  render() {}
 }
 
 module.exports = GameState
