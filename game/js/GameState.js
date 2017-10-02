@@ -122,9 +122,38 @@ class GameState {
     }
   }
 
-  // rotate(dir) {
-  //   this.tetrisBlock.angle += 90 * dir
-  // }
+  rotate(turn = true) {
+    const matrix = this.player.matrix
+    for (let y = 0; y < matrix.length; ++y) {
+      for ( let x = 0; x < y; ++x) {
+        [
+          matrix[x][y],
+          matrix[y][x],
+        ] = [
+          matrix[y][x],
+          matrix[x][y],
+        ]
+      }
+    }
+    if (turn) {
+      matrix.forEach(row => row.reverse())
+    } else {
+      matrix.reverse()
+    }
+  }
+
+  playerRotate() {
+    this.rotate()
+    let offset = 1
+    while (this.collide()) {
+      this.player.pos.x += offset
+      offset = -(offset + (offset > 0 ? 1 : -1))
+      if (offset > this.player.matrix[0].length) {
+        this.rotate(false)
+        return;
+      }
+    }
+  }
 
   update() {
     this.updateClock()
@@ -149,6 +178,12 @@ class GameState {
         this.moveTime = 0
         this.dropBlock()
       }
+    } else if (this.keys.upKey.isDown) {
+      if (this.canMove) {
+        this.canMove = false
+        this.moveTime = 0
+        this.playerRotate()
+      }
     }
 
   }
@@ -163,7 +198,7 @@ class GameState {
     }
     // movement time
     this.moveTime += this.time.elapsed
-    if (this.moveTime > 250){
+    if (this.moveTime > 100){
       this.canMove = true
       this.moveTime = 0
     }
