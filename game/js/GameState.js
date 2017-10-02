@@ -18,7 +18,11 @@ class GameState {
       downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
       leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
       rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+      qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
+      eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
     }
+    this.keys.qKey.onDown.add(() => this.rotate(-1))
+    this.keys.eKey.onDown.add(() => this.rotate(1))
 
     // board - CREATE
     this.boardState = this.add.group()
@@ -46,13 +50,24 @@ class GameState {
 
     // currentBlock - CREATE
     const types = 'ILJOTSZ'
-    function pickType () {
+    function randomType () {
       return types[Math.floor(types.length * Math.random())]
     }
 
     const Blocks = new Tetri()
     this.tetrisBlock = this.add.group()
-    this.drawBlock(Blocks.getBlock(pickType()))
+    const type = randomType()
+    this.drawBlock(Blocks.getBlock(type))
+    if (type === 'O') {
+      this.tetrisBlock.pivot.x = 32
+      this.tetrisBlock.pivot.y = 32
+    } else if (type === 'I') {
+      this.tetrisBlock.pivot.x = 64
+      this.tetrisBlock.pivot.y = 64
+    } else {
+      this.tetrisBlock.pivot.x = 48
+      this.tetrisBlock.pivot.y = 48
+    }
   }
 
   // currentBlock - DRAWS BLOCK
@@ -99,7 +114,12 @@ class GameState {
     this.tetrisBlock.position.y += (y * 32)
   }
 
+  rotate(dir) {
+    this.tetrisBlock.angle += 90 * dir
+  }
+
   update() {
+    console.log(this.tetrisBlock)
     this.updateClock()
 
     // allows for left and right movement of current piece
@@ -109,12 +129,17 @@ class GameState {
         this.moveTime = 0
         this.moveBlock(-1, 0)
       }
-    }
-    if (this.keys.rightKey.isDown) {
+    } else if (this.keys.rightKey.isDown) {
       if (this.canMove) {
         this.canMove = false
         this.moveTime = 0
         this.moveBlock(1, 0)
+      }
+    } else if (this.keys.downKey.isDown) {
+      if (this.canMove) {
+        this.canMove = false
+        this.moveTime = 0
+        this.moveBlock(0, 1)
       }
     }
 
