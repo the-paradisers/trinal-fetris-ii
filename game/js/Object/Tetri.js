@@ -39,7 +39,9 @@ class Tetri {
     }
   }
 
-  getBlock (type) {
+  getRandomBlock () {
+    const types = 'ILJOTSZ'
+    const type = types[Math.floor(types.length * Math.random())]
     return this.blocks[type]
   }
 
