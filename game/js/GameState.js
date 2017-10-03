@@ -1,3 +1,5 @@
+/* eslint-disable no-labels, complexity */
+
 var Tetri = require('./Tetri.js')
 
 class GameState {
@@ -5,11 +7,11 @@ class GameState {
   preload() {
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
     this.BLOCK_SCALE = 32
-
+    this.types = 'ILJOTSZ'
     this.blocks = new Tetri()
     this.player = {
-      pos: {x: 3, y: 1},
-      matrix: this.blocks.getBlock('T')
+      pos: {x: 3, y: 0},
+      matrix: this.blocks.getBlock(this.randomType())
     }
   }
 
@@ -32,17 +34,9 @@ class GameState {
     this.currTime = 0
     this.moveTime = 0
     this.canMove = true
-
     this.boardState = this.add.group()
     this.arena = this.createMatrix(10, 22)
-
-    // currentBlock - CREATE
-    const types = 'ILJOTSZ'
-    function randomType () {
-      return types[Math.floor(types.length * Math.random())]
-    }
     this.tetrisBlock = this.add.group()
-    const type = randomType()
 
     // keyboard listeners
     this.keys = {
@@ -54,6 +48,19 @@ class GameState {
       eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
     }
 
+  }
+
+  arenaSweep() {
+    outer: for (let y = this.arena.length - 1; y > 0; --y) {
+      for (let x = 0; x < this.arena[y].length; ++x) {
+        if (this.arena[y][x] === 0){
+          continue outer;
+        }
+      }
+      const row = this.arena.splice(y, 1)[0].fill(0)
+      this.arena.unshift(row)
+      ++y
+    }
   }
 
   createMatrix(w, h) {
@@ -111,7 +118,8 @@ class GameState {
     if (this.collide()) {
       this.player.pos.y--
       this.merge()
-      this.player.pos = {x: 3, y: 0}
+      this.playerReset()
+      this.arenaSweep()
     }
   }
 
@@ -120,6 +128,10 @@ class GameState {
     if (this.collide()) {
       this.player.pos.x -= dir
     }
+  }
+
+  randomType () {
+    return this.types[Math.floor(this.types.length * Math.random())]
   }
 
   rotate(turn = true) {
@@ -139,6 +151,26 @@ class GameState {
       matrix.forEach(row => row.reverse())
     } else {
       matrix.reverse()
+    }
+  }
+
+  playerReset() {
+    const type = this.randomType()
+    this.player.matrix = this.blocks.getBlock(type)
+    this.player.pos = {x: 3, y: 0}
+    if (this.collide()) {
+      let gameOver = this.add.text(
+        this.world.centerX,
+        this.world.centerY,
+        'Game Over',
+        {fill: 'red', fontSize: 72}
+      )
+      gameOver.anchor.set(0.5)
+
+      this.input.onTap.addOnce((pointer) => {
+        this.world.removeAll()
+        this.state.start('MainMenu')
+      })
     }
   }
 
@@ -198,7 +230,7 @@ class GameState {
     }
     // movement time
     this.moveTime += this.time.elapsed
-    if (this.moveTime > 100){
+    if (this.moveTime > 200){
       this.canMove = true
       this.moveTime = 0
     }
