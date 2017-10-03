@@ -1,6 +1,7 @@
 /* eslint-disable no-labels, complexity */
 
-var Tetri = require('./Tetri.js')
+var Tetri = require('./Object/Tetri.js')
+const Player = require('./Object/Player.js');
 
 class GameState {
 
@@ -9,10 +10,7 @@ class GameState {
     this.BLOCK_SCALE = 32
     this.types = 'ILJOTSZ'
     this.blocks = new Tetri()
-    this.player = {
-      pos: {x: 3, y: 0},
-      matrix: this.blocks.getBlock(this.randomType())
-    }
+    this.player = new Player(this.blocks.getBlock(this.randomType()));
   }
 
   collide() {
