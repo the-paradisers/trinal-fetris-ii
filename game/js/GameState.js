@@ -11,9 +11,11 @@ class GameState {
     this.types = 'ILJOTSZ'
     this.blocks = new Tetri()
     this.player = new Player(this.blocks.getBlock(this.randomType()));
+    console.log(this.player);
   }
 
   collide() {
+    console.log('in collide', this.player);
     const [m, o] = [this.player.matrix, this.player.pos]
     for (let y = 0; y < m.length; ++y) {
       for (let x = 0; x < m[y].length; ++x) {
@@ -110,6 +112,14 @@ class GameState {
     })
   }
 
+  move(dir) {
+    console.log('in move', this)
+    this.player.pos.x += dir
+    if (this.collide()) {
+      this.player.pos.x -= dir
+    }
+  }
+
   // currentBlock - allows us to move blocks
   dropBlock() {
     this.player.pos.y++
@@ -121,12 +131,12 @@ class GameState {
     }
   }
 
-  moveBlock(dir) {
-    this.player.pos.x += dir
-    if (this.collide()) {
-      this.player.pos.x -= dir
-    }
-  }
+  // moveBlock(dir) {
+  //   this.player.pos.x += dir
+  //   if (this.collide()) {
+  //     this.player.pos.x -= dir
+  //   }
+  // }
 
   randomType () {
     return this.types[Math.floor(this.types.length * Math.random())]
@@ -194,13 +204,13 @@ class GameState {
       if (this.canMove) {
         this.canMove = false
         this.moveTime = 0
-        this.moveBlock(-1)
+        this.move(-1)
       }
     } else if (this.keys.rightKey.isDown) {
       if (this.canMove) {
         this.canMove = false
         this.moveTime = 0
-        this.moveBlock(1)
+        this.move(1)
       }
     } else if (this.keys.downKey.isDown) {
       if (this.canMove) {
@@ -237,4 +247,4 @@ class GameState {
   render() {}
 }
 
-module.exports = GameState
+module.exports = GameState;
