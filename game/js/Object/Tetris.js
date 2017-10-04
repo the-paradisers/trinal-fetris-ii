@@ -3,22 +3,56 @@ const Tetri = require('./Tetri.js')
 const Phaser = require('phaser-ce')
 
 
-class Tetris {
+class Tetris extends Phaser.Group {
 
-
-  constructor (handleGameOver) {
+  constructor (game, parent, name, addToStage, enableBody, physicsBodyType) {
+    super(game, parent, name, addToStage, enableBody, physicsBodyType)
     this.gameTimer = 0
     this.actionTimer = 0
     this.canMove = true
 
+    this.BLOCK_SCALE = 32
     this.blocks = new Tetri()
     this.blockMatrix = this.blocks.getRandomBlock()
     this.blockPosition = {x: 3, y: 0};
 
     this.board = this.createBoard(10, 22)
 
-    this.handleGameOver = handleGameOver
+    this.boardState = game.add.group()
+    this.blockState = game.add.group()
   }
+
+  draw() {
+    this.blockState.killAll()
+    this.boardState.killAll()
+    this.drawBlock(this.blockMatrix, this.blockPosition)
+    this.drawBoard(this.board)
+  }
+
+    // currentBlock - DRAWS BLOCK
+    drawBlock(block, offset = {x: 0, y: 0}) {
+      block.forEach((row, y) => {
+        row.forEach((value, x) => {
+          if (value !== 0) {
+            this.blockState.create(
+              this.BLOCK_SCALE * (x + offset.x),
+              this.BLOCK_SCALE * (y + offset.y),
+              'blocks', value)
+          }
+        })
+      })
+    }
+    // tetrisBoard - DRAWS BOARD
+    drawBoard(board) {
+      board.forEach((row, y) => {
+        row.forEach((value, x) => {
+            this.boardState.create(
+              this.BLOCK_SCALE * x,
+              this.BLOCK_SCALE * y,
+              'blocks', value)
+        })
+      })
+    }
 
   boardSweep() {
     outer: for (let y = this.board.length - 1; y > 0; --y) {
@@ -120,9 +154,9 @@ class Tetris {
   newBlock() {
     this.blockMatrix = this.blocks.getRandomBlock()
     this.blockPosition = {x: 3, y: 0}
-    if (this.collide()) {
-      this.handleGameOver()
-    }
+    // if (this.collide()) {
+    //   this.handleGameOver()
+    // }
   }
 
   blockRotate() {
