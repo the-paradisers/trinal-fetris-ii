@@ -13,7 +13,7 @@ class GameState {
 
     this.tetris = new Tetris(this)
     this.player = new Player(this);
-    this.player.renderSkills();
+    this.player.initialize();
 
     // values needed to handle updates
     this.tetris.draw()
@@ -25,7 +25,9 @@ class GameState {
       leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
       rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
       qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
+      wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
       eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
+      rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
     }
 
   }
