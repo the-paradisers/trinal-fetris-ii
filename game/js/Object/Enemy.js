@@ -20,8 +20,12 @@ class Enemy extends Phaser.Group {
       font: '14pt Arial'
     }
 
+    // Draw sprite
     this.create(x, y, 'enemy-animals', this.frame)
-    this.game.add.text(x, y + enemyHeight, this.name, style)
+
+    // Draw name
+    const nameplate = new Phaser.Text(this.game, x, y + enemyHeight, this.name, style)
+    this.addChild(nameplate)
   }
 }
 

@@ -38,11 +38,8 @@ class GameState {
     }
     const enemyGroup = [enemyData1, enemyData2, enemyData3]
     this.battle = new Battle(this.game, enemyGroup)
-    // console.log('Initial battle instance', this.battle)
     this.battle.summonEnemies()
     this.battle.setListeners()
-    // console.log('Battle after summoning enemies', this.battle)
-    // console.log('First enemy', this.battle.children[0])
     this.battle.children.forEach(enemy => enemy.draw())
 
     this.keys = {

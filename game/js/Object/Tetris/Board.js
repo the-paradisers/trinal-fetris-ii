@@ -37,7 +37,7 @@ class Board extends Phaser.Group {
       this.matrix.unshift(row)
       ++y
 
-      // Dispatch signal to damage enemy
+      // Dispatch signal to damage target
       this.game.signals.rowClearSignal.dispatch()
     }
   }

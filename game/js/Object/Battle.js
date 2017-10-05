@@ -7,7 +7,7 @@ class Battle extends Phaser.Group {
     super(game)
 
     this.enemyGroup = enemyGroup
-    this.target = enemyGroup[0]
+    this.target = {}
     this.coords = [
       {x: 50, y: 90},
       {x: 201, y: 90},
@@ -20,9 +20,11 @@ class Battle extends Phaser.Group {
 
   summonEnemies() {
     this.enemyGroup.forEach((enemyData, order) => {
-      // console.log('this.game in summonEnemies', this.game)
       this.add(new Enemy(this.game, enemyData, this.coords[order]))
     }, this)
+
+    // Set target to 1st child by default
+    this.target = this.children[0]
   }
 
   setListeners() {
@@ -33,7 +35,15 @@ class Battle extends Phaser.Group {
 
   takeDamage() {
     this.target.HP -= this.playerAttack
-    console.log('You attacked', this.target.name, '! Its HP is', this.target.HP, '!')
+    console.log(`You attacked ${this.target.name}! Its HP is ${this.target.HP}!`)
+    if (this.target.HP <= 0) {
+      this.die(this.target)
+    }
+  }
+
+  die(target) {
+    this.remove(target, true)
+    console.log(`You killed a ${target.name}!`)
   }
 }
 
