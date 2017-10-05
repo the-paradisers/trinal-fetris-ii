@@ -8,6 +8,8 @@ class Battle extends Phaser.Group {
 
     this.enemyGroup = enemyGroup
     this.target = {}
+
+    // Enemy sprite offsets
     this.coords = [
       {x: 50, y: 90},
       {x: 201, y: 90},
@@ -19,6 +21,7 @@ class Battle extends Phaser.Group {
   }
 
   summonEnemies() {
+    // Add enemies in enemyGroup to Battle group
     this.enemyGroup.forEach((enemyData, order) => {
       this.add(new Enemy(this.game, enemyData, this.coords[order]))
     }, this)
@@ -44,6 +47,11 @@ class Battle extends Phaser.Group {
   die(target) {
     this.remove(target, true)
     console.log(`You killed a ${target.name}!`)
+    if (this.children.length) {
+      this.target = this.children[0]
+    } else {
+      console.log('You are victorious!')
+    }
   }
 }
 
