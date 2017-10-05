@@ -1,6 +1,8 @@
 /* eslint-disable no-labels, complexity */
-const Tetris = require('./Object/Tetris.js')
+
 const Battle = require('./Object/Battle')
+const Tetris = require('./Object/Tetris')
+const Phaser = require('phaser-ce')
 
 class GameState {
 
@@ -10,12 +12,6 @@ class GameState {
   }
 
   create() {
-    this.handleText = this.handleText.bind(this)
-
-    // Tetris
-    this.tetris = new Tetris(this)
-    this.tetris.draw()
-
     // Battle
     const enemyData1 = {
       frame: 0,
@@ -43,7 +39,9 @@ class GameState {
     console.log('First enemy', this.battle.children[0])
     this.battle.children.forEach(enemy => enemy.draw())
 
-    // keyboard listeners
+    this.tetris = new Tetris(this)
+    this.tetris.draw()
+
     this.keys = {
       upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
       downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
@@ -52,62 +50,23 @@ class GameState {
       qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
       eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
     }
-
   }
-
-
-
-  handleText(xCord, yCord, str, options, anchor) {
-    let text = this.add.text(xCord, yCord, str, options)
-    text.anchor.set(anchor)
-  }
-
-  // handleGameOver() {
-  //   this.handleText(
-  //     this.world.centerX,
-  //     this.world.centerY,
-  //     'Game Over',
-  //     {fill: 'red', fontSize: 72},
-  //     0.5
-  //   )
-
-  //   this.input.onTap.addOnce((pointer) => {
-  //     this.world.removeAll()
-  //     this.state.start('MainMenu')
-  //   })
-  // }
 
   update() {
     this.tetris.clock(this.time.elapsed, 1)
 
-    // allows for left and right movement of current piece
     if (this.keys.leftKey.isDown) {
-      if (this.tetris.canMove) {
-        this.tetris.startCooldown()
-        this.tetris.move(-1)
-      }
+      this.tetris.move('left')
     } else if (this.keys.rightKey.isDown) {
-      if (this.tetris.canMove) {
-        this.tetris.startCooldown()
-        this.tetris.move(1)
-      }
+      this.tetris.move('right')
     } else if (this.keys.downKey.isDown) {
-      if (this.tetris.canMove) {
-        this.tetris.startCooldown()
-        this.tetris.dropBlock()
-      }
+      this.tetris.move('drop')
     } else if (this.keys.upKey.isDown) {
-      if (this.tetris.canMove) {
-        this.tetris.startCooldown()
-        this.tetris.blockRotate()
-      }
+      this.tetris.move('rotate')
     }
-
-    this.tetris.draw()
-
   }
 
   render() {}
 }
 
-module.exports = GameState;
+module.exports = GameState
