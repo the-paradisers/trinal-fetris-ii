@@ -6,7 +6,7 @@ Phaser.Device.whenReady(() => {
   const menuState     = require('./MenuState')
   const GameState     = require('./GameState')
 
-  const game = new Phaser.Game(600, 720, Phaser.AUTO, 'game')
+  const game = new Phaser.Game(1280, 720, Phaser.AUTO, 'game')
 
   game.stage.backgroundColor = 0x242432
 
