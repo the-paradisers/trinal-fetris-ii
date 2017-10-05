@@ -16,10 +16,13 @@ class Tetris extends Phaser.Group {
     this.blockMatrix = this.blocks.getRandomBlock()
     this.blockPosition = {x: 3, y: 0};
 
-    this.board = this.createBoard(10, 22)
+    this.board = this.createBoard(10, 20)
 
     this.boardState = game.add.group()
     this.blockState = game.add.group()
+
+    // Tetris board offset
+    this.boardOffset = {x: 400, y: 64}
   }
 
   draw() {
@@ -35,8 +38,8 @@ class Tetris extends Phaser.Group {
         row.forEach((value, x) => {
           if (value !== 0) {
             this.blockState.create(
-              this.BLOCK_SCALE * (x + offset.x),
-              this.BLOCK_SCALE * (y + offset.y),
+              this.BLOCK_SCALE * (x + offset.x) + this.boardOffset.x,
+              this.BLOCK_SCALE * (y + offset.y) + this.boardOffset.y,
               'blocks', value)
           }
         })
@@ -47,8 +50,8 @@ class Tetris extends Phaser.Group {
       board.forEach((row, y) => {
         row.forEach((value, x) => {
             this.boardState.create(
-              this.BLOCK_SCALE * x,
-              this.BLOCK_SCALE * y,
+              this.BLOCK_SCALE * x + this.boardOffset.x,
+              this.BLOCK_SCALE * y + this.boardOffset.y,
               'blocks', value)
         })
       })
