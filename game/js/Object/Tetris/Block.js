@@ -6,10 +6,9 @@ class Block extends Phaser.Group {
   constructor(game, board) {
     super(game)
 
-    this.game = game
+    // this.game = game
 
     this.board = board
-    console.log(this.board.matrix)
 
     this.blocks = new Blocks()
 

@@ -36,8 +36,10 @@ class Board extends Phaser.Group {
       const row = this.matrix.splice(y, 1)[0].fill(0)
       this.matrix.unshift(row)
       ++y
+
+      // Dispatch signal to damage enemy
+      this.game.signals.rowClearSignal.dispatch()
     }
-    console.log('end of sweep')
   }
 }
 

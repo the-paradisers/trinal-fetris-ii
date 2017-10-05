@@ -12,6 +12,11 @@ class GameState {
   }
 
   create() {
+    this.game.signals = {}
+
+    this.tetris = new Tetris(this.game)
+    this.tetris.draw()
+
     // Battle
     const enemyData1 = {
       frame: 0,
@@ -33,14 +38,12 @@ class GameState {
     }
     const enemyGroup = [enemyData1, enemyData2, enemyData3]
     this.battle = new Battle(this.game, enemyGroup)
-    console.log('Initial battle instance', this.battle)
+    // console.log('Initial battle instance', this.battle)
     this.battle.summonEnemies()
-    console.log('Battle after summoning enemies', this.battle)
-    console.log('First enemy', this.battle.children[0])
+    this.battle.setListeners()
+    // console.log('Battle after summoning enemies', this.battle)
+    // console.log('First enemy', this.battle.children[0])
     this.battle.children.forEach(enemy => enemy.draw())
-
-    this.tetris = new Tetris(this)
-    this.tetris.draw()
 
     this.keys = {
       upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
