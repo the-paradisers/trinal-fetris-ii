@@ -10,11 +10,13 @@ class Player extends Phaser.Group{
   constructor (game) {
     super(game)
     this.currentMana = 150
+    this.currentExp = 150
     //this.manabar
   }
 
   initialize () {
     this.renderMana()
+    this.renderExp()
     this.initializeSignal()
     //Phaser.Signal
     //Phaser.Event.onDestory for experience bar
@@ -32,6 +34,18 @@ class Player extends Phaser.Group{
     manabar.endFill()
 
     this.manabar = manabar
+  }
+
+  renderExp () {
+    const gameWidth = this.game.world.width
+    const gameHeight = this.game.world.height
+
+    const expbar = this.game.add.graphics(0, 0)
+    expbar.beginFill(0xffff00, 1)
+    expbar.drawRoundedRect(gameWidth - gameWidth/3, gameHeight-75, this.currentExp, 20, 10)
+    expbar.endFill()
+
+    this.expbar = expbar
   }
 
   initializeSignal () {
