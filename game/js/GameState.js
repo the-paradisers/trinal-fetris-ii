@@ -6,6 +6,7 @@ class GameState {
 
   preload() {
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
+    this.load.spritesheet('player', 'img/player.png', 50, 52, 7)
   }
 
   create() {

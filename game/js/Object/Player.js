@@ -14,12 +14,15 @@ class Player extends Phaser.Group{
   }
 
   initialize () {
-    this.initializeMana()
+    this.renderMana()
     this.initializeSignal()
+    //Phaser.Signal
+    //Phaser.Event.onDestory for experience bar
+    this.initializePlayerSprite()
     this.initializeTimer()
   }
 
-  initializeMana () {
+  renderMana () {
     const gameWidth = this.game.world.width
     const gameHeight = this.game.world.height
 
@@ -37,6 +40,20 @@ class Player extends Phaser.Group{
     this.game.skillSignal = skillSignal
   }
 
+  initializePlayerSprite () {
+    const gameWidth = this.game.world.width
+    const gameHeight = this.game.world.height
+
+    this.character = this.game.add.sprite(gameWidth - gameWidth/3, gameHeight-150, 'player')
+
+    this.walk = this.character.animations.add('walk', [1, 0], 4, true)
+
+    this.attack = this.character.animations.add('attack', [1, 2, 3 ,1], 5)
+    this.attack.onComplete.add(() => this.walk.restart(), this)
+
+    this.character.animations.play('walk')
+  }
+
   initializeTimer () {
     const timer = this.game.time.events
     timer.loop(100, this.keyHandler.bind(this), this)
@@ -45,9 +62,11 @@ class Player extends Phaser.Group{
 
   updateMana (key) {
     console.log('skill', key)
+    this.character.play('attack')
+
     this.currentMana -= 10
     this.manabar.destroy()
-    this.initializeMana()
+    this.renderMana()
   }
 
   keyHandler () {
