@@ -9,7 +9,7 @@ class GameState {
   }
 
   create() {
-    this.tetris = new Tetris(this)
+    this.tetris = new Tetris(this.game)
     this.tetris.draw()
     this.keys = {
       upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),

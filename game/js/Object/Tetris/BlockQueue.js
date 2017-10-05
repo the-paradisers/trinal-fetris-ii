@@ -1,8 +1,9 @@
 /* eslint-disable id-length */
 
-class Blocks {
+class BlockQueue {
   constructor() {
-    this.blocks = {
+    this.queue = []
+    this.playerBlocks = {
       T: [
         [0, 0, 0],
         [1, 1, 1],
@@ -41,12 +42,31 @@ class Blocks {
     }
   }
 
-  getRandomBlock () {
-    const types = 'ILJOTSZ'
+  add() {
+    const types = 'ILJOTSZI'
     const type = types[Math.floor(types.length * Math.random())]
-    return this.blocks[type]
+    this.queue.push(this.playerBlocks[type])
+  }
+
+  initialize() {
+    this.add()
+    this.add()
+    this.add()
+  }
+
+  new() {
+    this.add()
+    return this.queue.shift()
+  }
+
+  next() {
+    if (this.queue.length > 0) {
+      return this.queue[0]
+    } else {
+      return []
+    }
   }
 
 }
 
-module.exports = Blocks
+module.exports = BlockQueue
