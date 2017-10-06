@@ -4,7 +4,7 @@ class Board extends Phaser.Group {
   constructor(game) {
     super(game)
 
-    this.createMatrix(10, 20)
+    this.createMatrix(10, 18)
     this.group = game.add.spriteBatch()
   }
 

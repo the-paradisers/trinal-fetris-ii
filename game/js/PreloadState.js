@@ -3,10 +3,10 @@ class PreloadState {
 
   preload() {
     this.preloadBar = this.game.add.sprite(
-      this.world.centerX, 
-      this.world.centerY, 
+      this.world.centerX,
+      this.world.centerY,
       'preload')
-    
+
     this.preloadBar.anchor.set(.5)
 
     this.load.setPreloadSprite(this.preloadBar)
@@ -16,7 +16,7 @@ class PreloadState {
   }
 
   create() {
-    this.state.start('MainMenu')
+    this.state.start('TitleScreen')
   }
 
   update() { }
