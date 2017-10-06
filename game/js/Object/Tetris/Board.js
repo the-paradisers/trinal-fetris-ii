@@ -40,7 +40,6 @@ class Board extends Phaser.Group {
       linesCleared++
     }
     this.game.playerSignal.lineClearSignal.dispatch(linesCleared)
-    console.log('end of sweep')
   }
 }
 

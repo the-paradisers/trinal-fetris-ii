@@ -11,5 +11,9 @@
   "license": "ISC",
   "devDependencies": {
     "phaser-node-kit": "^2.2.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.4",
+    "lodash-transpose": "^0.2.1"
   }
 }
