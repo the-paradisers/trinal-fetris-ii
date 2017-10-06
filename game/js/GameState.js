@@ -47,11 +47,14 @@ class GameState {
     const enemyGroup = [enemyData1, enemyData2, enemyData3]
     this.battle = new Battle(this.game, enemyGroup)
     // Populate battle with enemies in enemyGroup
+    this.battle.initialize()
     this.battle.summonEnemies()
     // Set listeners (only player clear row attack for now)
     this.battle.setListeners()
     // Draw all enemies in group
-    this.battle.children.forEach(enemy => enemy.draw())
+    this.battle.children.forEach(enemy => {
+      enemy.draw()
+    })
     //////////////////////////////////////////////////////
 
     this.keys = {
