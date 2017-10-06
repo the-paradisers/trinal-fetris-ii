@@ -67,6 +67,12 @@ class GameState {
       eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
       rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
     }
+
+    this.keys.qKey.onDown.add(() => this.game.signals.skillSignal.dispatch('q'))
+    this.keys.wKey.onDown.add(() => this.game.signals.skillSignal.dispatch('w'))
+    this.keys.eKey.onDown.add(() => this.game.signals.skillSignal.dispatch('e'))
+    this.keys.rKey.onDown.add(() => this.game.signals.skillSignal.dispatch('r'))
+
   }
 
   update() {
@@ -80,15 +86,16 @@ class GameState {
       this.tetris.move('drop')
     } else if (this.keys.upKey.isDown) {
       this.tetris.move('rotate')
-    } else if (this.keys.qKey.isDown) {
-      this.game.signals.skillSignal.dispatch(10)
-    } else if (this.keys.wKey.isDown) {
-      this.game.signals.skillSignal.dispatch(20)
-    } else if (this.keys.eKey.isDown) {
-      this.game.signals.skillSignal.dispatch(30)
-    } else if (this.keys.rKey.isDown) {
-      this.game.signals.skillSignal.dispatch(40)
     }
+    // if (this.keys.qKey.isDown) {
+    //   this.game.signals.skillSignal.dispatch(10)
+    // } else if (this.keys.wKey.isDown) {
+    //   this.game.signals.skillSignal.dispatch(20)
+    // } else if (this.keys.eKey.isDown) {
+    //   this.game.signals.skillSignal.dispatch(30)
+    // } else if (this.keys.rKey.isDown) {
+    //   this.game.signals.skillSignal.dispatch(40)
+    // }
   }
 
   render() {}

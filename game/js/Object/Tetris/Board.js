@@ -42,7 +42,8 @@ class Board extends Phaser.Group {
       this.game.signals.rowClearSignal.dispatch()
       linesCleared++
     }
-    this.game.signals.lineClearSignal.dispatch(linesCleared)
+    this.game.signals.increaseMana.dispatch(linesCleared)
+    this.game.signals.basicDMGtoMonster.dispatch()
   }
 }
 

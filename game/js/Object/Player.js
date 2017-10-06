@@ -79,8 +79,8 @@ class Player extends Phaser.Group{
     this.game.signals.skillSignal = new Phaser.Signal()
     this.game.signals.skillSignal.add(this.skillCasted, this)
 
-    this.game.signals.lineClearSignal = new Phaser.Signal()
-    this.game.signals.lineClearSignal.add(this.lineClearSignal, this)
+    this.game.signals.increaseMana = new Phaser.Signal()
+    this.game.signals.increaseMana.add(this.lineClearSignal, this)
 
     this.game.signals.expSignal = new Phaser.Signal()
     this.game.signals.expSignal.add(this.updateExp, this)
@@ -101,7 +101,7 @@ class Player extends Phaser.Group{
   }
 
   updateExp (exp) {
-    console.log('exp inc', exp)
+    this.game.signals.logSignal.dispatch(`${exp} exp gained`)
     this.currentExp += exp
     if (this.currentExp >= this.maxExp) {
       this.currentExp = 0
@@ -120,7 +120,7 @@ class Player extends Phaser.Group{
       this.currentMana += mana
       if (this.currentMana > this.maxMana) this.currentMana = this.maxMana
     } else {
-      console.log('out of mana')
+      this.game.signals.logSignal.dispatch('OUT OF MANA')
     }
     this.manabar.destroy()
     this.renderMana()
@@ -132,11 +132,29 @@ class Player extends Phaser.Group{
     }
 
     //testing exp
-    this.updateExp(10)
+    // this.updateExp(10)
   }
 
-  skillCasted (mana) {
+  skillCasted (key) {
     //Damage to an enemy
+    this.game.signals.logSignal.dispatch(`${key} casted`)
+    this.game.signals.basicDMGtoMonster.dispatch()
+
+    let mana
+    switch(key) {
+      case 'q':
+        mana = 10
+        break;
+      case 'w':
+        mana = 20
+        break;
+      case 'e':
+        mana = 30
+        break;
+      case 'r':
+        mana = 40
+        break;
+    }
 
     this.character.play('attack')
     this.updateMana(-1 * mana)

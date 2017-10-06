@@ -23,7 +23,7 @@ class Battle extends Phaser.Group {
 
   initialize() {
     this.write()
-    this.setLogSignal()
+    this.initializeSignals()
   }
 
   summonEnemies() {
@@ -54,11 +54,11 @@ class Battle extends Phaser.Group {
 
   die(target) {
     this.remove(target, true)
-    console.log(`You killed a ${target.name}!`)
+    this.game.signals.logSignal.dispatch(`You killed a ${target.name}!`)
     if (this.children.length) {
       this.target = this.children[0]
     } else {
-      console.log('You are victorious!')
+      this.game.signals.logSignal.dispatch('You are victorious!')
     }
   }
 
@@ -82,10 +82,13 @@ class Battle extends Phaser.Group {
     })
   }
 
-  setLogSignal() {
+  initializeSignals() {
     const logSignal = new Phaser.Signal()
     logSignal.add(this.write, this)
     this.game.signals.logSignal = logSignal
+
+    this.game.signals.basicDMGtoMonster = new Phaser.Signal()
+    this.game.signals.basicDMGtoMonster.add(this.takeDamage, this)
   }
 }
 
