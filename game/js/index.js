@@ -3,6 +3,7 @@
 Phaser.Device.whenReady(() => {
   const bootState     = require('./BootState')
   const preloadState  = require('./PreloadState')
+  const titleState     = require('./TitleState')
   const menuState     = require('./MenuState')
   const GameState     = require('./GameState')
 
@@ -18,10 +19,11 @@ Phaser.Device.whenReady(() => {
   game.scale.pageAlignVertically = true
   game.scale.pageAlignHorizontally = true
 
-  game.state.add('Boot',      bootState)
-  game.state.add('Preload',   preloadState)
-  game.state.add('MainMenu',  menuState)
-  game.state.add('Game',      GameState)
+  game.state.add('Boot',          bootState)
+  game.state.add('Preload',       preloadState)
+  game.state.add('TitleScreen',   titleState)
+  game.state.add('TitleMenu',     menuState)
+  game.state.add('Game',          GameState)
 
   game.state.start('Boot')
 })

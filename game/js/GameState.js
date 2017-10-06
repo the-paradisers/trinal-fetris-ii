@@ -1,4 +1,5 @@
 /* eslint-disable no-labels, complexity */
+const {debounce} = require('lodash')
 
 const Battle = require('./Object/Battle')
 const Player = require('./Object/Player');
@@ -24,6 +25,7 @@ class GameState {
       wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
       eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
       rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
+      spaceKey: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
     }
 
     // For adding signals to access across game
@@ -77,6 +79,8 @@ class GameState {
       this.tetris.move('drop')
     } else if (this.keys.upKey.isDown) {
       this.tetris.move('rotate')
+    } else if (this.keys.spaceKey.isDown){
+      this.tetris.move('fastDrop')
     }
   }
 

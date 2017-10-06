@@ -70,7 +70,7 @@ class Block extends Phaser.Group {
 
     this.game.input.onTap.addOnce(() => {
       this.game.world.removeAll()
-      this.game.state.start('MainMenu')
+      this.game.state.start('TitleMenu')
     })
   }
 
@@ -100,6 +100,16 @@ class Block extends Phaser.Group {
       this.new()
       this.board.sweep()
     }
+  }
+
+  fastDrop() {
+    while (!this.collide()) {
+      this.pos.y++
+    }
+    this.pos.y--
+    this.merge()
+    this.new()
+    this.board.sweep()
   }
 
   move(dir) {
