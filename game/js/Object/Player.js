@@ -10,10 +10,10 @@ class Player extends Phaser.Group{
   constructor (game) {
     super(game)
     this.playerlvl = 1
-    this.currentMana = 150
-    this.maxMana = 300
+    this.currentMana = 50
+    this.maxMana = 150
     this.currentExp = 50
-    this.maxExp = 300
+    this.maxExp = 150
     //this.manabar, expbar
 
     this.sectionStartWidth = this.game.world.width * 2 / 3
@@ -41,14 +41,14 @@ class Player extends Phaser.Group{
 
   renderLevelText () {
     this.lvlText = this.game.add.text(0, 0, `LVL ${this.playerlvl}`, {fill: 'white'})
-    this.lvlText.x = Math.floor(this.character.x + 75)
+    this.lvlText.x = Math.floor(this.sectionStartWidth + 200)
     this.lvlText.y = Math.floor(this.character.y)
   }
 
   renderBar (color, yoffset, measure) {
     const bar = this.game.add.graphics(0, 0)
     bar.beginFill(color, 1)
-    bar.drawRoundedRect(this.sectionStartWidth, this.sectionTotalHeight-yoffset, measure, 20, 10)
+    bar.drawRoundedRect(this.sectionStartWidth+200, this.sectionTotalHeight-yoffset, measure, 20, 10)
     bar.endFill()
 
     return bar
@@ -92,6 +92,7 @@ class Player extends Phaser.Group{
 
   initializePlayerSprite () {
     this.character = this.game.add.sprite(this.sectionStartWidth, this.sectionTotalHeight*0.5, 'player')
+    this.character.scale.setTo(3, 3)
     this.renderLevelText()
 
     this.walk = this.character.animations.add('walk', [1, 0], 4, true)
