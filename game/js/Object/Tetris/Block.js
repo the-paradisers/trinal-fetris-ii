@@ -1,6 +1,6 @@
 /* eslint-disable no-labels, class-methods-use-this, id-length */
 const Phaser = require('phaser-ce')
-const Blocks = require('./Blocks')
+const BlockQueue = require('./BlockQueue')
 
 class Block extends Phaser.Group {
   constructor(game, board) {
@@ -10,15 +10,16 @@ class Block extends Phaser.Group {
 
     this.board = board
 
-    this.blocks = new Blocks()
+    this.queue = new BlockQueue()
+    this.queue.add()
 
-    this.matrix = this.blocks.getRandomBlock()
-    this.pos = {x: 3, y: 0}
     this.group = game.add.group()
-
+    this.matrix = []
+    this.new()
   }
 
   draw(scale, offset) {
+    this.drawNext()
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
@@ -29,6 +30,19 @@ class Block extends Phaser.Group {
         }
       })
     })
+  }
+
+  drawNext() {
+    this.queue.next().forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value !== 0) {
+          this.group.create(
+            32 * x + 900,
+            32 * y + 64,
+            'blocks', value)
+          }
+        })
+      })
   }
 
   collide() {
@@ -61,7 +75,7 @@ class Block extends Phaser.Group {
   }
 
   new() {
-    this.matrix = this.blocks.getRandomBlock()
+    this.matrix = this.queue.new()
     this.pos = {x: 3, y: 0}
     if (this.collide()) {
       this.gameover()
