@@ -1,19 +1,20 @@
 /* eslint-disable id-length */
+const _ = require('lodash')
 
 class BlockQueue {
   constructor() {
     this.queue = []
     this.playerBlocks = {
       T: [
-        [0, 0, 0],
-        [1, 1, 1],
         [0, 1, 0],
+        [1, 1, 1],
+        [0, 0, 0],
       ],
       I: [
-        [0, 1, 0, 0],
-        [0, 1, 0, 0],
-        [0, 1, 0, 0],
-        [0, 1, 0, 0],
+        [0, 0, 0, 0],
+        [0, 0, 0, 0],
+        [1, 1, 1, 1],
+        [0, 0, 0, 0],
       ],
       L: [
         [0, 1, 0],
@@ -45,7 +46,7 @@ class BlockQueue {
   add() {
     const types = 'ILJOTSZI'
     const type = types[Math.floor(types.length * Math.random())]
-    this.queue.push(this.playerBlocks[type])
+    this.queue.push(_.cloneDeep(this.playerBlocks[type]))
   }
 
   initialize() {
