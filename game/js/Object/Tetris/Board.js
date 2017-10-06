@@ -37,7 +37,6 @@ class Board extends Phaser.Group {
       this.matrix.unshift(row)
       ++y
     }
-    console.log('end of sweep')
   }
 }
 
