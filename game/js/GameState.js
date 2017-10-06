@@ -1,11 +1,12 @@
 /* eslint-disable no-labels, complexity */
+const {debounce} = require('lodash')
 
 const Battle = require('./Object/Battle')
 const Player = require('./Object/Player');
 const Tetris = require('./Object/Tetris')
 const Phaser = require('phaser-ce')
 
-class GameState {
+class GameState extends Phaser.State {
 
   preload() {
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
@@ -14,6 +15,21 @@ class GameState {
   }
 
   create() {
+
+    this.keys = {
+      upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
+      downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+      leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+      rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+      qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
+      wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
+      eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
+      rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
+      spaceKey: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+      escKey: this.game.input.keyboard.addKey(Phaser.Keyboard.ESC),
+    }
+
+    this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
 
     // For adding signals to access across game
     this.game.signals = {}
@@ -56,17 +72,6 @@ class GameState {
       enemy.draw()
     })
     //////////////////////////////////////////////////////
-
-    this.keys = {
-      upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
-      downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
-      leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
-      rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
-      qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
-      wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
-      eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
-      rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
-    }
   }
 
   update() {
@@ -80,6 +85,8 @@ class GameState {
       this.tetris.move('drop')
     } else if (this.keys.upKey.isDown) {
       this.tetris.move('rotate')
+    } else if (this.keys.spaceKey.isDown){
+      this.tetris.move('fastDrop')
     } else if (this.keys.qKey.isDown) {
       this.game.signals.skillSignal.dispatch(10)
     } else if (this.keys.wKey.isDown) {

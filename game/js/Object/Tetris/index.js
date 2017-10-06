@@ -3,17 +3,21 @@ const Board = require('./Board')
 const Block = require('./Block')
 const Phaser = require('phaser-ce')
 
-
 class Tetris extends Phaser.Group {
 
   constructor (game) {
     super(game)
     this.gameTimer = 0
     this.actionTimer = 0
-    this.canMove = true
+    this.canMoveLeft = true
+    this.canMoveRight = true
+    this.canRotate = true
+    this.canDrop = true
+    this.canDropFast = true
+    this.canPause = true
 
     this.blockScale = 32
-    this.offset = {x: 480, y: 64}
+    this.offset = {x: 480, y: 128}
 
     this.board = new Board(game)
     this.block = new Block(game, this.board)
@@ -42,32 +46,57 @@ class Tetris extends Phaser.Group {
     // movement time
     this.actionTimer += elapsed
     if (this.actionTimer > 200){
-      this.canMove = true
+      this.canMoveLeft = true
+      this.canMoveRight = true
+      this.canRotate = true
+      this.canDrop = true
+      this.canDropFast = true
+      this.canPause = true
+      this.actionTimer = 0
     }
   }
 
-  move (command) {
-    if (this.canMove) {
-      this.canMove = false
-      this.actionTimer = 0
+  move (command, pauseState) {
       switch (command) {
         case 'left':
-          this.block.move(-1)
+          if (this.canMoveLeft){
+            this.actionTimer = 0
+            this.canMoveLeft = false
+            this.block.move(-1)
+          }
           break
         case 'right':
-          this.block.move(1)
+          if (this.canMoveRight){
+            this.actionTimer = 0
+            this.canMoveRight = false
+            this.block.move(1)
+          }
           break
         case 'drop':
-          this.block.drop()
+          if (this.canDrop){
+            this.actionTimer = 0
+            this.canDrop = false
+            this.block.drop()
+          }
           break
         case 'rotate':
-          this.block.rotate()
+          if (this.canRotate){
+            this.actionTimer = 0
+            this.canRotate = false
+            this.block.rotate()
+          }
+          break
+        case 'fastDrop':
+          if (this.canDropFast){
+            this.actionTimer = 0
+            this.canDropFast = false
+            this.block.fastDrop()
+          }
           break
         default:
           break
       }
       this.refresh()
-    }
   }
 
 }
