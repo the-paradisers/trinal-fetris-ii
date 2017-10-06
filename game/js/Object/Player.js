@@ -15,22 +15,28 @@ class Player extends Phaser.Group{
     this.currentExp = 50
     this.maxExp = 300
     //this.manabar, expbar
+
+    this.sectionStartWidth = this.game.world.width * 2 / 3
+    this.sectionTotalHeight = this.game.world.height
   }
 
   initialize () {
     this.renderMana()
     this.renderExp()
+    this.renderSkills()
     this.initializeSignal()
     this.initializePlayerSprite()
     this.initializeTimer()
   }
 
   renderMana () {
-    this.manabar = this.renderBar(0x00d1ff, 50, this.currentMana)
+    const yoffset = this.sectionTotalHeight*0.5 - 75
+    this.manabar = this.renderBar(0x00d1ff, yoffset-25, this.currentMana)
   }
 
   renderExp () {
-    this.expbar = this.renderBar(0xffff00, 75, this.currentExp)
+    const yoffset = this.sectionTotalHeight*0.5 - 75
+    this.expbar = this.renderBar(0xffff00, yoffset, this.currentExp)
   }
 
   renderLevelText () {
@@ -40,15 +46,31 @@ class Player extends Phaser.Group{
   }
 
   renderBar (color, yoffset, measure) {
-    const gameWidth = this.game.world.width
-    const gameHeight = this.game.world.height
-
     const bar = this.game.add.graphics(0, 0)
     bar.beginFill(color, 1)
-    bar.drawRoundedRect(gameWidth - gameWidth/3, gameHeight-yoffset, measure, 20, 10)
+    bar.drawRoundedRect(this.sectionStartWidth, this.sectionTotalHeight-yoffset, measure, 20, 10)
     bar.endFill()
 
     return bar
+  }
+
+  renderSkills () {
+    this.game.add.text(
+      this.sectionStartWidth,
+      this.sectionTotalHeight*3/4,
+      'Q - FIRE BALL', {fill: 'white'})
+    this.game.add.text(
+      this.sectionStartWidth,
+      this.sectionTotalHeight*3/4+30,
+      'W - LIGHTENING', {fill: 'white'})
+    this.game.add.text(
+      this.sectionStartWidth,
+      this.sectionTotalHeight*3/4+60,
+      'E - ICY WIND', {fill: 'white'})
+    this.game.add.text(
+      this.sectionStartWidth,
+      this.sectionTotalHeight*3/4+90,
+      'R - DRAIN LIFE', {fill: 'white'})
   }
 
   initializeSignal () {
@@ -69,10 +91,7 @@ class Player extends Phaser.Group{
   }
 
   initializePlayerSprite () {
-    const gameWidth = this.game.world.width
-    const gameHeight = this.game.world.height
-
-    this.character = this.game.add.sprite(gameWidth - gameWidth/3, gameHeight-150, 'player')
+    this.character = this.game.add.sprite(this.sectionStartWidth, this.sectionTotalHeight*0.5, 'player')
     this.renderLevelText()
 
     this.walk = this.character.animations.add('walk', [1, 0], 4, true)
