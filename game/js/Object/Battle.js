@@ -8,16 +8,22 @@ class Battle extends Phaser.Group {
 
     this.enemyGroup = enemyGroup
     this.target = {}
+    this.messageArr = []
 
     // Enemy sprite offsets
     this.coords = [
-      {x: 50, y: 90},
-      {x: 201, y: 90},
-      {x: 50, y: 216},
-      {x: 201, y: 216},
+      {x: 16, y: 128},
+      {x: 232, y: 128},
+      {x: 16, y: 344},
+      {x: 232, y: 344},
     ]
 
     this.playerAttack = 5
+  }
+
+  initialize() {
+    this.write()
+    this.setLogSignal()
   }
 
   summonEnemies() {
@@ -38,7 +44,9 @@ class Battle extends Phaser.Group {
 
   takeDamage() {
     this.target.HP -= this.playerAttack
-    console.log(`You attacked ${this.target.name}! Its HP is ${this.target.HP}!`)
+    const message = `You attacked ${this.target.name}! Its HP is ${this.target.HP}!`
+    this.game.signals.logSignal.dispatch(message)
+
     if (this.target.HP <= 0) {
       this.die(this.target)
     }
@@ -52,6 +60,32 @@ class Battle extends Phaser.Group {
     } else {
       console.log('You are victorious!')
     }
+  }
+
+  write(newMessage) {
+    const x = 10
+    const y = 600
+    const style = {
+      fill: 'white',
+      font: '16pt Arial'
+    }
+
+    if (this.battleLog) {
+      this.battleLog.forEach(message => message.destroy())
+    }
+
+    this.messageArr.push(newMessage)
+    while (this.messageArr.length > 5) this.messageArr.shift()
+
+    this.battleLog = this.messageArr.map((message, i) => {
+      return this.game.add.text(x, y + (i * 18), message, style)
+    })
+  }
+
+  setLogSignal() {
+    const logSignal = new Phaser.Signal()
+    logSignal.add(this.write, this)
+    this.game.signals.logSignal = logSignal
   }
 }
 

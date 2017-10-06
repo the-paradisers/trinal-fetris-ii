@@ -15,20 +15,9 @@ class GameState {
 
   create() {
 
-    this.keys = {
-      upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
-      downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
-      leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
-      rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
-      qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
-      wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
-      eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
-      rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
-    }
-
     // For adding signals to access across game
     this.game.signals = {}
-    this.player = new Player(this.game, this.keys);
+    this.player = new Player(this.game);
     this.player.initialize();
     this.tetris = new Tetris(this.game);
 
@@ -58,12 +47,26 @@ class GameState {
     const enemyGroup = [enemyData1, enemyData2, enemyData3]
     this.battle = new Battle(this.game, enemyGroup)
     // Populate battle with enemies in enemyGroup
+    this.battle.initialize()
     this.battle.summonEnemies()
     // Set listeners (only player clear row attack for now)
     this.battle.setListeners()
     // Draw all enemies in group
-    this.battle.children.forEach(enemy => enemy.draw())
+    this.battle.children.forEach(enemy => {
+      enemy.draw()
+    })
     //////////////////////////////////////////////////////
+
+    this.keys = {
+      upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
+      downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+      leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+      rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+      qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
+      wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
+      eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
+      rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
+    }
   }
 
   update() {
@@ -77,6 +80,14 @@ class GameState {
       this.tetris.move('drop')
     } else if (this.keys.upKey.isDown) {
       this.tetris.move('rotate')
+    } else if (this.keys.qKey.isDown) {
+      this.game.signals.skillSignal.dispatch(10)
+    } else if (this.keys.wKey.isDown) {
+      this.game.signals.skillSignal.dispatch(20)
+    } else if (this.keys.eKey.isDown) {
+      this.game.signals.skillSignal.dispatch(30)
+    } else if (this.keys.rKey.isDown) {
+      this.game.signals.skillSignal.dispatch(40)
     }
   }
 
