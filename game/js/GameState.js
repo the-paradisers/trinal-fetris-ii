@@ -28,7 +28,7 @@ class GameState {
 
     // For adding signals to access across game
     this.game.signals = {}
-    this.player = new Player(this.game, this.keys);
+    this.player = new Player(this.game);
     this.player.initialize();
     this.tetris = new Tetris(this.game);
 

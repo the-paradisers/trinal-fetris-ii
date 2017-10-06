@@ -7,7 +7,7 @@ const Phaser = require('phaser-ce')
 
 class Player extends Phaser.Group{
 
-  constructor (game, keys) {
+  constructor (game) {
     super(game)
     console.log(this)
     this.keys = keys
@@ -20,6 +20,8 @@ class Player extends Phaser.Group{
 
     this.sectionStartWidth = this.game.world.width * 2 / 3
     this.sectionTotalHeight = this.game.world.height
+
+
   }
 
   initialize () {
