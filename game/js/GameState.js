@@ -72,17 +72,6 @@ class GameState extends Phaser.State {
       enemy.draw()
     })
     //////////////////////////////////////////////////////
-
-    this.keys = {
-      upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
-      downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
-      leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
-      rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
-      qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
-      wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
-      eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
-      rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
-    }
   }
 
   update() {
