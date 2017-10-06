@@ -8,7 +8,7 @@ class Battle extends Phaser.Group {
 
     this.enemyGroup = enemyGroup
     this.target = {}
-    this.messageArr = ['First battle message', 'Second battle message']
+    this.messageArr = []
 
     // Enemy sprite offsets
     this.coords = [
@@ -67,7 +67,7 @@ class Battle extends Phaser.Group {
     const y = 600
     const style = {
       fill: 'white',
-      font: '14pt Arial'
+      font: '16pt Arial'
     }
 
     if (this.battleLog) {
@@ -78,7 +78,7 @@ class Battle extends Phaser.Group {
     while (this.messageArr.length > 5) this.messageArr.shift()
 
     this.battleLog = this.messageArr.map((message, i) => {
-      return this.game.add.text(x, y + (i * 15), message, style)
+      return this.game.add.text(x, y + (i * 18), message, style)
     })
   }
 
