@@ -82,7 +82,11 @@ class GameState extends Phaser.State {
       wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
       eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
       rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
+      spaceKey: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+      escKey: this.game.input.keyboard.addKey(Phaser.Keyboard.ESC),
     }
+
+    this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
 
     this.keys.qKey.onDown.add(() => this.game.signals.skillSignal.dispatch('q'))
     this.keys.wKey.onDown.add(() => this.game.signals.skillSignal.dispatch('w'))
@@ -102,6 +106,8 @@ class GameState extends Phaser.State {
       this.tetris.move('drop')
     } else if (this.keys.upKey.isDown) {
       this.tetris.move('rotate')
+    } else if (this.keys.spaceKey.isDown){
+      this.tetris.move('fastDrop')
     }
     // if (this.keys.qKey.isDown) {
     //   this.game.signals.skillSignal.dispatch(10)
