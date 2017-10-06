@@ -6,7 +6,7 @@ const Player = require('./Object/Player');
 const Tetris = require('./Object/Tetris')
 const Phaser = require('phaser-ce')
 
-class GameState {
+class GameState extends Phaser.State {
 
   preload() {
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
@@ -26,7 +26,10 @@ class GameState {
       eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
       rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
       spaceKey: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+      escKey: this.game.input.keyboard.addKey(Phaser.Keyboard.ESC),
     }
+
+    this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
 
     // For adding signals to access across game
     this.game.signals = {}

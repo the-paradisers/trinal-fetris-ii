@@ -14,6 +14,7 @@ class Tetris extends Phaser.Group {
     this.canRotate = true
     this.canDrop = true
     this.canDropFast = true
+    this.canPause = true
 
     this.blockScale = 32
     this.offset = {x: 480, y: 128}
@@ -50,11 +51,12 @@ class Tetris extends Phaser.Group {
       this.canRotate = true
       this.canDrop = true
       this.canDropFast = true
+      this.canPause = true
       this.actionTimer = 0
     }
   }
 
-  move (command) {
+  move (command, pauseState) {
       switch (command) {
         case 'left':
           if (this.canMoveLeft){
