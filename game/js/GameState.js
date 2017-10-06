@@ -16,21 +16,6 @@ class GameState extends Phaser.State {
 
   create() {
 
-    this.keys = {
-      upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
-      downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
-      leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
-      rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
-      qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
-      wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
-      eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
-      rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
-      spaceKey: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
-      escKey: this.game.input.keyboard.addKey(Phaser.Keyboard.ESC),
-    }
-
-    this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
-
     // For adding signals to access across game
     this.game.signals = {}
     this.player = new Player(this.game);
@@ -72,6 +57,27 @@ class GameState extends Phaser.State {
       enemy.draw()
     })
     //////////////////////////////////////////////////////
+
+    this.keys = {
+      upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
+      downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+      leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+      rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+      qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
+      wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
+      eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
+      rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
+      spaceKey: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+      escKey: this.game.input.keyboard.addKey(Phaser.Keyboard.ESC),
+    }
+
+    this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
+
+    this.keys.qKey.onDown.add(() => this.game.signals.skillSignal.dispatch('q'))
+    this.keys.wKey.onDown.add(() => this.game.signals.skillSignal.dispatch('w'))
+    this.keys.eKey.onDown.add(() => this.game.signals.skillSignal.dispatch('e'))
+    this.keys.rKey.onDown.add(() => this.game.signals.skillSignal.dispatch('r'))
+
   }
 
   update() {
@@ -86,16 +92,17 @@ class GameState extends Phaser.State {
     } else if (this.keys.upKey.isDown) {
       this.tetris.move('rotate')
     } else if (this.keys.spaceKey.isDown){
-      this.tetris.move('fastDrop')
-    } else if (this.keys.qKey.isDown) {
-      this.game.signals.skillSignal.dispatch(10)
-    } else if (this.keys.wKey.isDown) {
-      this.game.signals.skillSignal.dispatch(20)
-    } else if (this.keys.eKey.isDown) {
-      this.game.signals.skillSignal.dispatch(30)
-    } else if (this.keys.rKey.isDown) {
-      this.game.signals.skillSignal.dispatch(40)
+      this.tetris.move('fastDrop');
     }
+    // if (this.keys.qKey.isDown) {
+    //   this.game.signals.skillSignal.dispatch(10)
+    // } else if (this.keys.wKey.isDown) {
+    //   this.game.signals.skillSignal.dispatch(20)
+    // } else if (this.keys.eKey.isDown) {
+    //   this.game.signals.skillSignal.dispatch(30)
+    // } else if (this.keys.rKey.isDown) {
+    //   this.game.signals.skillSignal.dispatch(40)
+    // }
   }
 
   render() {}
