@@ -9,8 +9,6 @@ class Player extends Phaser.Group{
 
   constructor (game) {
     super(game)
-    console.log(this)
-    this.keys = keys
     this.playerlvl = 1
     this.currentMana = 50
     this.maxMana = 150
@@ -30,7 +28,7 @@ class Player extends Phaser.Group{
     this.renderSkills()
     this.initializeSignal()
     this.initializePlayerSprite()
-    this.initializeTimer()
+    // this.initializeTimer()
   }
 
   renderMana () {
@@ -87,11 +85,6 @@ class Player extends Phaser.Group{
     this.game.signals.expSignal = new Phaser.Signal()
     this.game.signals.expSignal.add(this.updateExp, this)
 
-    // this.game.playerSignal = {
-    //   skillSignal,
-    //   lineClearSignal,
-    //   expSignal,
-    // }
   }
 
   initializePlayerSprite () {
@@ -105,12 +98,6 @@ class Player extends Phaser.Group{
     this.attack.onComplete.add(() => this.walk.restart(), this)
 
     this.character.animations.play('walk')
-  }
-
-  initializeTimer () {
-    const timer = this.game.time.events
-    timer.loop(100, this.keyHandler.bind(this), this)
-    timer.start()
   }
 
   updateExp (exp) {
@@ -153,18 +140,6 @@ class Player extends Phaser.Group{
 
     this.character.play('attack')
     this.updateMana(-1 * mana)
-  }
-
-  keyHandler () {
-    if (this.keys.qKey.isDown) {
-      this.game.signals.skillSignal.dispatch(10)
-    } else if (this.keys.wKey.isDown) {
-      this.game.signals.skillSignal.dispatch(20)
-    } else if (this.keys.eKey.isDown) {
-      this.game.signals.skillSignal.dispatch(30)
-    } else if (this.keys.rKey.isDown) {
-      this.game.signals.skillSignal.dispatch(40)
-    }
   }
 }
 
