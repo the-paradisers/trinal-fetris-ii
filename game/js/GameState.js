@@ -9,6 +9,7 @@ const Phaser = require('phaser-ce')
 class GameState extends Phaser.State {
 
   preload() {
+    this.load.image('background', 'img/TF2BACKGROUND.png')
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
     this.load.spritesheet('enemy-animals', 'img/enemy-animals.png', 100, 100, 32)
     this.load.spritesheet('player', 'img/player.png', 50, 52, 7)
@@ -16,6 +17,7 @@ class GameState extends Phaser.State {
 
   create() {
 
+    this.add.image(0, 0, 'background')
     // For adding signals to access across game
     this.game.signals = {}
     this.player = new Player(this.game);
