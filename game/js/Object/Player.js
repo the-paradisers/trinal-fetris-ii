@@ -141,7 +141,7 @@ class Player extends Phaser.Group{
     }
 
     //testing exp
-    this.updateExp(150)
+    this.updateExp(10)
   }
 
   skillCasted (mana) {
