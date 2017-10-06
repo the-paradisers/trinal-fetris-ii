@@ -7,8 +7,10 @@ const Phaser = require('phaser-ce')
 
 class Player extends Phaser.Group{
 
-  constructor (game) {
+  constructor (game, keys) {
     super(game)
+    console.log(this)
+    this.keys = keys
     this.playerlvl = 1
     this.currentMana = 50
     this.maxMana = 150
@@ -74,20 +76,20 @@ class Player extends Phaser.Group{
   }
 
   initializeSignal () {
-    const skillSignal = new Phaser.Signal()
-    skillSignal.add(this.skillCasted, this)
+    this.game.signals.skillSignal = new Phaser.Signal()
+    this.game.signals.skillSignal.add(this.skillCasted, this)
 
-    const lineClearSignal = new Phaser.Signal()
-    lineClearSignal.add(this.lineClearSignal, this)
+    this.game.signals.lineClearSignal = new Phaser.Signal()
+    this.game.signals.lineClearSignal.add(this.lineClearSignal, this)
 
-    const expSignal = new Phaser.Signal()
-    expSignal.add(this.updateExp, this)
+    this.game.signals.expSignal = new Phaser.Signal()
+    this.game.signals.expSignal.add(this.updateExp, this)
 
-    this.game.playerSignal = {
-      skillSignal,
-      lineClearSignal,
-      expSignal,
-    }
+    // this.game.playerSignal = {
+    //   skillSignal,
+    //   lineClearSignal,
+    //   expSignal,
+    // }
   }
 
   initializePlayerSprite () {
@@ -152,15 +154,14 @@ class Player extends Phaser.Group{
   }
 
   keyHandler () {
-    const keys = this.game.keys
-    if (keys.qKey.isDown) {
-      this.game.playerSignal.skillSignal.dispatch(10)
-    } else if (keys.wKey.isDown) {
-      this.game.playerSignal.skillSignal.dispatch(20)
-    } else if (keys.eKey.isDown) {
-      this.game.playerSignal.skillSignal.dispatch(30)
-    } else if (keys.rKey.isDown) {
-      this.game.playerSignal.skillSignal.dispatch(40)
+    if (this.keys.qKey.isDown) {
+      this.game.signals.skillSignal.dispatch(10)
+    } else if (this.keys.wKey.isDown) {
+      this.game.signals.skillSignal.dispatch(20)
+    } else if (this.keys.eKey.isDown) {
+      this.game.signals.skillSignal.dispatch(30)
+    } else if (this.keys.rKey.isDown) {
+      this.game.signals.skillSignal.dispatch(40)
     }
   }
 }

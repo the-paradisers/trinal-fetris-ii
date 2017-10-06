@@ -1,13 +1,12 @@
 /* eslint-disable no-labels, class-methods-use-this, id-length */
 const Phaser = require('phaser-ce')
 const BlockQueue = require('./BlockQueue')
-const _ = require("lodash-transpose")
 
 class Block extends Phaser.Group {
   constructor(game, board) {
     super(game)
 
-    this.game = game
+    // this.game = game
 
     this.board = board
 
