@@ -1,5 +1,4 @@
 /* eslint-disable no-labels, complexity */
-const {debounce} = require('lodash')
 
 const Battle = require('./Object/Battle')
 const Player = require('./Object/Player');
@@ -16,8 +15,8 @@ class GameState extends Phaser.State {
   }
 
   create() {
-
     this.add.image(0, 0, 'background')
+
     // For adding signals to access across game
     this.game.signals = {}
     this.player = new Player(this.game);
