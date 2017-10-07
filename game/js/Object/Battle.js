@@ -18,12 +18,13 @@ class Battle extends Phaser.Group {
       {x: 232, y: 344},
     ]
 
-    this.playerAttack = 5
+    this.playerAttack = 1
   }
 
   initialize() {
     this.write()
     this.initializeSignals()
+    this.summonEnemies()
   }
 
   summonEnemies() {
@@ -34,12 +35,6 @@ class Battle extends Phaser.Group {
 
     // Set target to 1st child by default
     this.target = this.children[0]
-  }
-
-  setListeners() {
-    const rowClearSignal = new Phaser.Signal()
-    rowClearSignal.add(this.takeDamage, this)
-    this.game.signals.rowClearSignal = rowClearSignal
   }
 
   takeDamage() {
@@ -59,6 +54,7 @@ class Battle extends Phaser.Group {
       this.target = this.children[0]
     } else {
       this.game.signals.logSignal.dispatch('You are victorious!')
+      this.game.signals.endBattle.dispatch()
     }
   }
 

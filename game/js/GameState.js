@@ -30,37 +30,11 @@ class GameState extends Phaser.State {
     this.tetris.draw()
 
     // Battle
-    ///////////////////////////////////////////////////
-    const enemyData1 = {
-      frame: 0,
-      name: 'Werewolf',
-      level: 1,
-      HP: 10,
-    }
-    const enemyData2 = {
-      frame: 1,
-      name: 'Devil Wolf',
-      level: 1,
-      HP: 12,
-    }
-    const enemyData3 = {
-      frame: 2,
-      name: 'Werepanther',
-      level: 1,
-      HP: 14,
-    }
-    const enemyGroup = [enemyData1, enemyData2, enemyData3]
-    this.battle = new Battle(this.game, enemyGroup)
-    // Populate battle with enemies in enemyGroup
-    this.battle.initialize()
-    this.battle.summonEnemies()
-    // Set listeners (only player clear row attack for now)
-    this.battle.setListeners()
-    // Draw all enemies in group
-    this.battle.children.forEach(enemy => {
-      enemy.draw()
-    })
-    //////////////////////////////////////////////////////
+    console.log('game', this.game)
+    this.battleTimer = new Phaser.Timer(this.game)
+    this.battleTimer.loop(30000, this.startBattle, this)
+    this.battleTimer.start()
+    console.log(this)
 
     this.keys = {
       upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
@@ -83,7 +57,55 @@ class GameState extends Phaser.State {
     this.keys.rKey.onDown.add(() => this.game.signals.skillSignal.dispatch('r'))
   }
 
+  startBattle() {
+    console.log('Battle started')
+    // Pause battle timer during battle
+    this.battleTimer.pause()
+
+    // Temporary data
+    const enemyData1 = {
+      frame: 0,
+      name: 'Werewolf',
+      level: 1,
+      HP: 10,
+    }
+    const enemyData2 = {
+      frame: 1,
+      name: 'Devil Wolf',
+      level: 1,
+      HP: 12,
+    }
+    const enemyData3 = {
+      frame: 2,
+      name: 'Werepanther',
+      level: 1,
+      HP: 14,
+    }
+    const enemyGroup = [enemyData1, enemyData2, enemyData3]
+
+    this.battle = new Battle(this.game, enemyGroup)
+    // Populate battle with enemies in enemyGroup
+    this.battle.initialize()
+    // this.battle.summonEnemies()
+    // Set listeners (only player clear row attack for now)
+    // this.battle.setListeners()
+    // Draw all enemies in group
+    this.battle.children.forEach(enemy => {
+      enemy.draw()
+    })
+
+    // Create signal to listen for end
+    this.game.signals.endBattle = new Phaser.Signal()
+    this.game.signals.endBattle.add(this.endBattle, this)
+  }
+
+  endBattle() {
+    this.battle.destroy()
+    this.battleTimer.resume()
+  }
+
   update() {
+    console.log(this.battleTimer.seconds)
     this.tetris.clock(this.time.elapsed, 1)
 
     if (this.keys.leftKey.isDown) {

@@ -40,12 +40,12 @@ class Board extends Phaser.Group {
       this.matrix.unshift(row)
       ++y
 
-      // Dispatch signal to damage target
-      this.game.signals.rowClearSignal.dispatch()
       linesCleared++
     }
     this.game.signals.increaseMana.dispatch(linesCleared)
-    this.game.signals.basicDMGtoMonster.dispatch()
+    if (this.game.signals.basicDMGtoMonster) {
+      this.game.signals.basicDMGtoMonster.dispatch()
+    }
   }
 }
 
