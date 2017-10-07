@@ -1,24 +1,24 @@
+const Phaser = require('phaser-ce')
 
-class TitleState {
+class TitleState extends Phaser.State {
 
-    preload() { }
+    preload() {
+      this.game.load.spritesheet('title', 'img/TITLESCREEN.png', 1280, 720)
+    }
 
     create() {
-      let logo = this.add.text(
-        this.world.centerX,
-        this.world.centerY,
-        'Trinal Fetris II',
-        {fill: 'white', fontSize: 72}
-      )
+      let title = this.add.sprite(0, 0, 'title')
+      title.animations.add('go', [0, 1, 2, 3, 4, 5], 6, true)
+      title.animations.play('go')
+
 
       let press = this.add.text(
         this.world.centerX,
-        this.world.centerY + 150,
-        'Any Key to Continue',
+        this.world.centerY,
+        'Click to Continue',
         {fill: 'white', fontSize: 36}
       )
 
-      logo.anchor.set(0.5)
       press.anchor.set(0.5)
 
       this.input.onTap.addOnce((pointer) => {
