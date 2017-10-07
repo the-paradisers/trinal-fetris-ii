@@ -16,6 +16,13 @@ class Player extends Phaser.Group{
     this.maxExp = 150
     //this.manabar, expbar
 
+    this.skills  = {
+      q: { name: 'fire ball', lvl: 0, cost: 10, damage: 5 * this.playerlvl },
+      w: { name: 'lightening', lvl: 0, cost: 20, damage: 5 * this.playerlvl },
+      e: { name: 'icy wind', lvl: 0, cost: 30, damage: 5 * this.playerlvl },
+      r: { name: 'drain life', lvl: 0, cost: 40, damage: 5 * this.playerlvl },
+    }
+
     this.sectionStartWidth = this.game.world.width * 2 / 3
     this.sectionTotalHeight = this.game.world.height
 
@@ -57,22 +64,13 @@ class Player extends Phaser.Group{
   }
 
   renderSkills () {
-    this.game.add.text(
-      this.sectionStartWidth,
-      this.sectionTotalHeight*3/4,
-      'Q - FIRE BALL', {fill: 'white'})
-    this.game.add.text(
-      this.sectionStartWidth,
-      this.sectionTotalHeight*3/4+30,
-      'W - LIGHTENING', {fill: 'white'})
-    this.game.add.text(
-      this.sectionStartWidth,
-      this.sectionTotalHeight*3/4+60,
-      'E - ICY WIND', {fill: 'white'})
-    this.game.add.text(
-      this.sectionStartWidth,
-      this.sectionTotalHeight*3/4+90,
-      'R - DRAIN LIFE', {fill: 'white'})
+    ['q', 'w', 'e', 'r'].forEach( (key, i) => {
+      const skill = this.skills[key]
+      this.game.add.text(
+        this.sectionStartWidth,
+        this.sectionTotalHeight*3/4 + 30*i,
+        `${key}(${skill.lvl}) - ${skill.name}`, {fill: 'white'})
+    })
   }
 
   initializeSignal () {
