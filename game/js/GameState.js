@@ -13,11 +13,14 @@ class GameState extends Phaser.State {
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
     this.load.spritesheet('enemy-animals', 'img/enemy-animals.png', 100, 100, 32)
     this.load.spritesheet('player', 'img/player.png', 50, 52, 7)
+    this.load.spritesheet('plains', 'img/background/Plains.gif', 512, 64)
   }
 
   create() {
 
     this.add.image(0, 0, 'background')
+    const plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
+    plains.scale.setTo(2, 2)
     // For adding signals to access across game
     this.game.signals = {}
     this.player = new Player(this.game);

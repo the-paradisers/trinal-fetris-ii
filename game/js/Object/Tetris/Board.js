@@ -18,10 +18,12 @@ class Board extends Phaser.Group {
   draw(scale, offset) {
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
+        if (value !== 0){
           this.group.create(
             scale * x + offset.x,
             scale * y + offset.y,
             'blocks', value)
+        }
       })
     })
   }

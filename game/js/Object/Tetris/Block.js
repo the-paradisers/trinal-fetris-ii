@@ -37,8 +37,8 @@ class Block extends Phaser.Group {
       row.forEach((value, x) => {
         if (value !== 0) {
           this.group.create(
-            32 * x + 900,
-            32 * y + 64,
+            32 * x + 860,
+            32 * y + 144,
             'blocks', value)
           }
         })
