@@ -35,7 +35,6 @@ class Player extends Phaser.Group{
     this.renderSkills()
     this.initializeSignal()
     this.initializePlayerSprite()
-    // this.initializeTimer()
   }
 
   renderMana () {
@@ -67,9 +66,16 @@ class Player extends Phaser.Group{
     ['q', 'w', 'e', 'r'].forEach( (key, i) => {
       const skill = this.skills[key]
       this.game.add.text(
-        this.sectionStartWidth,
+        this.sectionStartWidth + 50,
         this.sectionTotalHeight*3/4 + 30*i,
         `${key}(${skill.lvl}) - ${skill.name}`, {fill: 'white'})
+      const skillButton = this.game.add.button(
+        this.sectionStartWidth,
+        this.sectionTotalHeight*3/4 + 30*i, `${key}Button`)
+      // skillButton.onInputDown.add(() => console.log('down'))
+      skillButton.onInputUp.add(() => {
+        skill.lvl++
+        console.log('skilllvl', skill.lvl)})
     })
   }
 
