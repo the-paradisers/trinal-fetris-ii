@@ -78,7 +78,6 @@ class GameState extends Phaser.State {
     this.keys.wKey.onDown.add(() => this.game.signals.skillSignal.dispatch('w'))
     this.keys.eKey.onDown.add(() => this.game.signals.skillSignal.dispatch('e'))
     this.keys.rKey.onDown.add(() => this.game.signals.skillSignal.dispatch('r'))
-
   }
 
   update() {
@@ -95,15 +94,6 @@ class GameState extends Phaser.State {
     } else if (this.keys.spaceKey.isDown){
       this.tetris.move('fastDrop');
     }
-    // if (this.keys.qKey.isDown) {
-    //   this.game.signals.skillSignal.dispatch(10)
-    // } else if (this.keys.wKey.isDown) {
-    //   this.game.signals.skillSignal.dispatch(20)
-    // } else if (this.keys.eKey.isDown) {
-    //   this.game.signals.skillSignal.dispatch(30)
-    // } else if (this.keys.rKey.isDown) {
-    //   this.game.signals.skillSignal.dispatch(40)
-    // }
   }
 
   render() {}
