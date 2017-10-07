@@ -78,7 +78,8 @@ class Battle extends Phaser.Group {
     while (this.messageArr.length > 5) this.messageArr.shift()
 
     this.battleLog = this.messageArr.map((message, i) => {
-      return this.game.add.text(x, y + (i * 18), message, style)
+      return this.game.add.bitmapText(
+        x, y + (i * 18), 'fantasy', message, 16)
     })
   }
 

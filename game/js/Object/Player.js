@@ -48,15 +48,16 @@ class Player extends Phaser.Group{
   }
 
   renderLevelText () {
-    this.lvlText = this.game.add.text(0, 0, `LVL ${this.playerlvl}`, {fill: 'white'})
-    this.lvlText.x = Math.floor(this.sectionStartWidth + 200)
-    this.lvlText.y = Math.floor(this.character.y)
+    const currentlvl = 'LVL ' + this.playerlvl.toString()
+    this.lvlText = this.game.add.bitmapText(0, 0, 'fantasy', currentlvl, 32)
+    this.lvlText.x = Math.floor(this.sectionStartWidth + 210)
+    this.lvlText.y = Math.floor(this.sectionTotalHeight*5/8)
   }
 
   renderBar (color, yoffset, measure) {
     const bar = this.game.add.graphics(0, 0)
     bar.beginFill(color, 1)
-    bar.drawRoundedRect(this.sectionStartWidth+200, this.sectionTotalHeight-yoffset, measure, 20, 10)
+    bar.drawRoundedRect(this.sectionStartWidth+210, 800 - yoffset, measure, 20, 10)
     bar.endFill()
 
     return bar
@@ -65,17 +66,17 @@ class Player extends Phaser.Group{
   renderSkills () {
     ['q', 'w', 'e', 'r'].forEach( (key, i) => {
       const skill = this.skills[key]
-      this.game.add.text(
+      this.game.add.bitmapText(
         this.sectionStartWidth + 50,
-        this.sectionTotalHeight*3/4 + 30*i,
-        `${key}(${skill.lvl}) - ${skill.name}`, {fill: 'white'})
-      const skillButton = this.game.add.button(
-        this.sectionStartWidth,
-        this.sectionTotalHeight*3/4 + 30*i, `${key}Button`)
+        600 + 25*i, 'fantasy',
+        `${key} - ${skill.name}`, 16)
+      // const skillButton = this.game.add.button(
+      //   this.sectionStartWidth,
+      //   600 + 25*i, `${key}Button`)
       // skillButton.onInputDown.add(() => console.log('down'))
-      skillButton.onInputUp.add(() => {
-        skill.lvl++
-        console.log('skilllvl', skill.lvl)})
+      // skillButton.onInputUp.add(() => {
+      //   skill.lvl++
+      //   console.log('skilllvl', skill.lvl)})
     })
   }
 
