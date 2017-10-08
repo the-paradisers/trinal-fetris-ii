@@ -36,15 +36,9 @@ class Battle extends Phaser.Group {
     this.target = this.children[0]
   }
 
-  setListeners() {
-    const rowClearSignal = new Phaser.Signal()
-    rowClearSignal.add(this.takeDamage, this)
-    this.game.signals.rowClearSignal = rowClearSignal
-  }
-
-  takeDamage() {
-    this.target.HP -= this.playerAttack
-    const message = `You attacked ${this.target.name}! Its HP is ${this.target.HP}!`
+  takeDamage(damage) {
+    this.target.HP -= damage
+    const message = `${this.target.name} HP: ${this.target.HP}!`
     this.game.signals.logSignal.dispatch(message)
 
     if (this.target.HP <= 0) {
@@ -54,7 +48,7 @@ class Battle extends Phaser.Group {
 
   die(target) {
     this.remove(target, true)
-    this.game.signals.logSignal.dispatch(`You killed a ${target.name}!`)
+    this.game.signals.logSignal.dispatch(`${target.name} dead!`)
     if (this.children.length) {
       this.target = this.children[0]
     } else {
@@ -78,8 +72,9 @@ class Battle extends Phaser.Group {
     while (this.messageArr.length > 5) this.messageArr.shift()
 
     this.battleLog = this.messageArr.map((message, i) => {
-      return this.game.add.bitmapText(
-        x, y + (i * 18), 'fantasy', message, 16)
+      // return this.game.add.bitmapText(
+      //   x, y + (i * 18), 'fantasy', message, 16)
+      return this.game.add.text(x, y + (i * 18), message, style)
     })
   }
 
@@ -88,8 +83,8 @@ class Battle extends Phaser.Group {
     logSignal.add(this.write, this)
     this.game.signals.logSignal = logSignal
 
-    this.game.signals.basicDMGtoMonster = new Phaser.Signal()
-    this.game.signals.basicDMGtoMonster.add(this.takeDamage, this)
+    this.game.signals.DMGtoMonster = new Phaser.Signal()
+    this.game.signals.DMGtoMonster.add(this.takeDamage, this)
   }
 }
 

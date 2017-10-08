@@ -41,11 +41,11 @@ class Board extends Phaser.Group {
       ++y
 
       // Dispatch signal to damage target
-      this.game.signals.rowClearSignal.dispatch()
       linesCleared++
     }
-    this.game.signals.increaseMana.dispatch(linesCleared)
-    this.game.signals.basicDMGtoMonster.dispatch()
+    this.game.signals.manaSignal.dispatch(linesCleared)
+    //playerlvl = player basic damage
+    this.game.signals.DMGtoMonster.dispatch(this.game.player.playerlvl)
   }
 }
 

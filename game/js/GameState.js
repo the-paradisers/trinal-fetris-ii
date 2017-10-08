@@ -11,6 +11,7 @@ class GameState extends Phaser.State {
   preload() {
     this.load.image('background', 'img/TF2BACKGROUND.png')
     this.load.bitmapFont('fantasy', 'img/font/font.png', 'img/font/font.fnt')
+    this.load.image('addSkillPoint', 'img/addskillpoint.png')
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
     this.load.spritesheet('enemy-animals', 'img/enemy-animals.png', 100, 100, 32)
     this.load.spritesheet('player', 'img/player.png', 50, 52, 7)
@@ -37,27 +38,25 @@ class GameState extends Phaser.State {
       frame: 0,
       name: 'Werewolf',
       level: 1,
-      HP: 10,
+      HP: 20,
     }
     const enemyData2 = {
       frame: 1,
       name: 'Devil Wolf',
       level: 1,
-      HP: 12,
+      HP: 15,
     }
     const enemyData3 = {
       frame: 2,
       name: 'Werepanther',
       level: 1,
-      HP: 14,
+      HP: 30,
     }
     const enemyGroup = [enemyData1, enemyData2, enemyData3]
     this.battle = new Battle(this.game, enemyGroup)
     // Populate battle with enemies in enemyGroup
     this.battle.initialize()
     this.battle.summonEnemies()
-    // Set listeners (only player clear row attack for now)
-    this.battle.setListeners()
     // Draw all enemies in group
     this.battle.children.forEach(enemy => {
       enemy.draw()
@@ -100,15 +99,6 @@ class GameState extends Phaser.State {
     } else if (this.keys.spaceKey.isDown){
       this.tetris.move('fastDrop');
     }
-    // if (this.keys.qKey.isDown) {
-    //   this.game.signals.skillSignal.dispatch(10)
-    // } else if (this.keys.wKey.isDown) {
-    //   this.game.signals.skillSignal.dispatch(20)
-    // } else if (this.keys.eKey.isDown) {
-    //   this.game.signals.skillSignal.dispatch(30)
-    // } else if (this.keys.rKey.isDown) {
-    //   this.game.signals.skillSignal.dispatch(40)
-    // }
   }
 
   render() {}
