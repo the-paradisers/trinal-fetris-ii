@@ -35,9 +35,9 @@ class Battle extends Phaser.Group {
     this.target = this.children[0]
   }
 
-  takeDamage() {
-    this.target.HP -= this.playerAttack
-    const message = `You attacked ${this.target.name}! Its HP is ${this.target.HP}!`
+  takeDamage(damage) {
+    this.target.HP -= damage
+    const message = `${this.target.name} HP: ${this.target.HP}!`
     this.game.signals.logSignal.dispatch(message)
 
     if (this.target.HP <= 0) {
@@ -47,7 +47,7 @@ class Battle extends Phaser.Group {
 
   die(target) {
     this.remove(target, true)
-    this.game.signals.logSignal.dispatch(`You killed a ${target.name}!`)
+    this.game.signals.logSignal.dispatch(`${target.name} dead!`)
     if (this.children.length) {
       this.target = this.children[0]
     } else {
@@ -56,8 +56,8 @@ class Battle extends Phaser.Group {
   }
 
   initializeSignals() {
-    this.game.signals.basicDMGtoMonster = new Phaser.Signal()
-    this.game.signals.basicDMGtoMonster.add(this.takeDamage, this)
+    this.game.signals.DMGtoMonster = new Phaser.Signal()
+    this.game.signals.DMGtoMonster.add(this.takeDamage, this)
   }
 }
 

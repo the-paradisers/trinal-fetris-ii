@@ -9,6 +9,8 @@ class GameState extends Phaser.State {
 
   preload() {
     this.load.image('background', 'img/TF2BACKGROUND.png')
+    this.load.bitmapFont('fantasy', 'img/font/font.png', 'img/font/font.fnt')
+    this.load.image('addSkillPoint', 'img/addskillpoint.png')
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
     this.load.spritesheet('enemy-animals', 'img/enemy-animals.png', 100, 100, 32)
     this.load.spritesheet('player', 'img/player.png', 50, 52, 7)
@@ -95,19 +97,19 @@ class GameState extends Phaser.State {
       frame: 0,
       name: 'Werewolf',
       level: 1,
-      HP: 10,
+      HP: 20,
     }
     const enemyData2 = {
       frame: 1,
       name: 'Devil Wolf',
       level: 1,
-      HP: 12,
+      HP: 15,
     }
     const enemyData3 = {
       frame: 2,
       name: 'Werepanther',
       level: 1,
-      HP: 14,
+      HP: 30,
     }
     const enemyGroup = [enemyData1, enemyData2, enemyData3]
 
@@ -125,8 +127,9 @@ class GameState extends Phaser.State {
 
   endBattle() {
     this.game.signals.logSignal.dispatch('You won the battle!')
+    this.game.signals.expSignal.dispatch(50)
     this.battle.destroy()
-    this.game.signals.basicDMGtoMonster.dispose()
+    this.game.signals.DMGtoMonster.dispose()
     this.timer.resume()
   }
 
