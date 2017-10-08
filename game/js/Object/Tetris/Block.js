@@ -78,6 +78,7 @@ class Block extends Phaser.Group {
     this.matrix = this.queue.new()
     this.pos = {x: 3, y: 0}
     if (this.collide()) {
+      this.game.isRunning = false
       this.gameover()
     }
   }

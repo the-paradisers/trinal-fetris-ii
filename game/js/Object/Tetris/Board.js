@@ -3,7 +3,7 @@
 class Board extends Phaser.Group {
   constructor(game) {
     super(game)
-
+    this.game.addBottomRow = this.addBottomRow.bind(this)
     this.createMatrix(10, 18)
     this.group = game.add.spriteBatch()
   }
@@ -48,6 +48,15 @@ class Board extends Phaser.Group {
     if (this.game.signals.DMGtoMonster) {
       this.game.signals.DMGtoMonster.dispatch(this.game.player.playerlvl)
     }
+  }
+
+  addBottomRow () {
+    const w = this.matrix[0].length
+    const randomIdx = Math.floor(w * Math.random())
+    const newRow = new Array(w).fill(1)
+    newRow[randomIdx] = 0
+    this.matrix.push(newRow)
+    this.matrix.shift()
   }
 }
 

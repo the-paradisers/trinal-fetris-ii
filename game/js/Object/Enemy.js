@@ -7,8 +7,6 @@ class Enemy extends Phaser.Group {
     this.level = data.level
     this.HP = data.HP
     this.coords = coords
-
-    console.log(this.name, 'HP:', this.HP)
   }
 
   draw() {
