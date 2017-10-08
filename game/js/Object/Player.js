@@ -18,10 +18,10 @@ class Player extends Phaser.Group{
     //this.manabar, expbar
 
     this.skills  = {
-      q: { name: 'fire ball', lvl: 0, cost: 5, damage: 1, scale: 1 },
-      w: { name: 'lightening', lvl: 0, cost: 5, damage: 2, scale: 2 },
-      e: { name: 'icy wind', lvl: 0, cost: 5, damage: 3, scale: 3 },
-      r: { name: 'drain life', lvl: 0, cost: 5, damage: 4, scale: 4 },
+      Q: { name: 'Fire Ball', lvl: 0, cost: 5, damage: 1, scale: 1 },
+      W: { name: 'Lightning', lvl: 0, cost: 5, damage: 2, scale: 2 },
+      E: { name: 'Icy Wind', lvl: 0, cost: 5, damage: 3, scale: 3 },
+      R: { name: 'Drain Life', lvl: 0, cost: 5, damage: 4, scale: 4 },
     }
 
     this.sectionStartWidth = this.game.world.width * 2 / 3
@@ -32,7 +32,6 @@ class Player extends Phaser.Group{
 
   initialize () {
     this.game.player = this
-    this.game.skillCastable = false
     this.renderMana()
     this.renderExp()
     this.renderSkills()
@@ -68,7 +67,7 @@ class Player extends Phaser.Group{
   }
 
   renderSkills () {
-    ['q', 'w', 'e', 'r'].forEach( (key, i) => {
+    ['Q', 'W', 'E', 'R'].forEach( (key, i) => {
       const skill = this.skills[key]
       // this.game.add.bitmapText(
         // this.sectionStartWidth + 50,
@@ -104,19 +103,19 @@ class Player extends Phaser.Group{
     this.game.character.scale.setTo(3, 3)
     this.renderLevelText()
 
-    this.walk = this.game.character.animations.add('walk', [1, 0], 4, true)
+    this.walk = this.game.character.animations.add('walk', [0, 1], 4, true)
 
     this.victory = this.game.character.animations.add('victory', [0, 4, 0, 4, 0, 4], 3)
     this.victory.onComplete.add(() => this.walk.play(), this)
 
-    this.attack = this.game.character.animations.add('attack', [1, 2, 3 ,1], 4)
+    this.attack = this.game.character.animations.add('attack', [1, 2, 3, 1], 4)
     // this.attack.onComplete.add(() => this.walk.restart(), this)
 
     this.game.character.animations.play('walk')
   }
 
   updateExp (exp) {
-    this.game.signals.logSignal.dispatch(`${exp} exp gained`)
+    this.game.signals.logSignal.dispatch(`You gained ${exp} EXP!`)
     this.currentExp += exp
     if (this.currentExp >= this.maxExp) {
       this.currentExp = 0
@@ -141,7 +140,7 @@ class Player extends Phaser.Group{
       this.currentMana += mana
       if (this.currentMana > this.maxMana) this.currentMana = this.maxMana
     } else {
-      this.game.signals.logSignal.dispatch('out of mana')
+      this.game.signals.logSignal.dispatch("You're out of mana.")
     }
     this.manabar.destroy()
     this.renderMana()
@@ -155,21 +154,21 @@ class Player extends Phaser.Group{
 
   skillCasted (key) {
     //Damage to an enemy
-    this.game.signals.logSignal.dispatch(`${this.skills[key].name} casted`)
+    this.game.signals.logSignal.dispatch(`You cast ${this.skills[key].name}!`)
 
     let mana
     switch(key) {
-      case 'q':
-        mana = this.skills.q.cost
+      case 'Q':
+        mana = this.skills.R.cost
         break;
-      case 'w':
-        mana = this.skills.w.cost
+      case 'W':
+        mana = this.skills.W.cost
         break;
-      case 'e':
-        mana = this.skills.e.cost
+      case 'E':
+        mana = this.skills.E.cost
         break;
-      case 'r':
-        mana = this.skills.r.cost
+      case 'R':
+        mana = this.skills.R.cost
         break;
     }
 
