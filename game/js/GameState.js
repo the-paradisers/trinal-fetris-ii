@@ -15,6 +15,10 @@ class GameState extends Phaser.State {
     this.load.spritesheet('enemy-animals', 'img/enemy-animals.png', 100, 100, 32)
     this.load.spritesheet('player', 'img/player.png', 50, 52, 7)
     this.load.spritesheet('plains', 'img/background/Plains.gif', 512, 64)
+
+    this.load.audio('battleMusic', 'audio/Battle_Scene.mp3')
+    this.load.audio('walkMusic', 'audio/Main_Theme.mp3')
+    this.load.audio('victoryMusic', 'audio/Victory_Fanfare.mp3')
   }
 
   create() {
@@ -24,6 +28,9 @@ class GameState extends Phaser.State {
 
     this.game.inBattle = false
     this.game.moveCount = 0
+
+    this.song = this.sound.add('walkMusic', 1, true, true)
+    this.song.play()
 
     this.setSignals()
 
