@@ -8,7 +8,6 @@ class Battle extends Phaser.Group {
 
     this.enemyGroup = enemyGroup
     this.target = {}
-    this.messageArr = []
 
     // Enemy sprite offsets
     this.coords = [
@@ -22,8 +21,8 @@ class Battle extends Phaser.Group {
   }
 
   initialize() {
-    this.write()
     this.initializeSignals()
+    this.summonEnemies()
   }
 
   summonEnemies() {
@@ -34,12 +33,6 @@ class Battle extends Phaser.Group {
 
     // Set target to 1st child by default
     this.target = this.children[0]
-  }
-
-  setListeners() {
-    const rowClearSignal = new Phaser.Signal()
-    rowClearSignal.add(this.takeDamage, this)
-    this.game.signals.rowClearSignal = rowClearSignal
   }
 
   takeDamage() {
@@ -58,35 +51,11 @@ class Battle extends Phaser.Group {
     if (this.children.length) {
       this.target = this.children[0]
     } else {
-      this.game.signals.logSignal.dispatch('You are victorious!')
+      this.game.signals.endBattle.dispatch()
     }
-  }
-
-  write(newMessage) {
-    const x = 10
-    const y = 600
-    const style = {
-      fill: 'white',
-      font: '16pt Arial'
-    }
-
-    if (this.battleLog) {
-      this.battleLog.forEach(message => message.destroy())
-    }
-
-    this.messageArr.push(newMessage)
-    while (this.messageArr.length > 5) this.messageArr.shift()
-
-    this.battleLog = this.messageArr.map((message, i) => {
-      return this.game.add.text(x, y + (i * 18), message, style)
-    })
   }
 
   initializeSignals() {
-    const logSignal = new Phaser.Signal()
-    logSignal.add(this.write, this)
-    this.game.signals.logSignal = logSignal
-
     this.game.signals.basicDMGtoMonster = new Phaser.Signal()
     this.game.signals.basicDMGtoMonster.add(this.takeDamage, this)
   }
