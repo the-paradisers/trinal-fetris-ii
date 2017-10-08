@@ -15,12 +15,19 @@ class GameState extends Phaser.State {
     this.load.spritesheet('enemy-animals', 'img/enemy-animals.png', 100, 100, 32)
     this.load.spritesheet('player', 'img/player.png', 50, 52, 7)
     this.load.spritesheet('plains', 'img/background/Plains.gif', 512, 64)
+
+    this.load.audio('battleMusic', 'audio/Battle_Scene.mp3')
+    this.load.audio('walkMusic', 'audio/Main_Theme.mp3')
+    this.load.audio('victoryMusic', 'audio/Victory_Fanfare.mp3')
   }
 
   create() {
     this.add.image(0, 0, 'background')
     const plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
     plains.scale.setTo(2, 2)
+
+    this.song = this.sound.add('walkMusic', 1, true, true)
+    this.song.play()
 
     // For adding signals to access across game
     this.setSignals()
