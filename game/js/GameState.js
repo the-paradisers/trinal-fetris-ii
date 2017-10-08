@@ -51,10 +51,14 @@ class GameState extends Phaser.State {
 
     this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
 
-    this.keys.qKey.onDown.add(() => this.game.signals.skillSignal.dispatch('q'))
-    this.keys.wKey.onDown.add(() => this.game.signals.skillSignal.dispatch('w'))
-    this.keys.eKey.onDown.add(() => this.game.signals.skillSignal.dispatch('e'))
-    this.keys.rKey.onDown.add(() => this.game.signals.skillSignal.dispatch('r'))
+    this.keys.qKey.onDown.add(() => {
+      if (this.game.skillCastable) this.game.signals.skillSignal.dispatch('q')})
+    this.keys.wKey.onDown.add(() => {
+      if (this.game.skillCastable) this.game.signals.skillSignal.dispatch('w')})
+    this.keys.eKey.onDown.add(() => {
+      if (this.game.skillCastable) this.game.signals.skillSignal.dispatch('e')})
+    this.keys.rKey.onDown.add(() => {
+      if (this.game.skillCastable) this.game.signals.skillSignal.dispatch('r')})
   }
 
   setSignals() {
@@ -88,6 +92,8 @@ class GameState extends Phaser.State {
 
   startBattle() {
     this.game.signals.logSignal.dispatch("You've been attacked!")
+    this.game.character.animations.stop()
+    this.game.skillCastable = true
 
     // Pause battle timer during battle
     this.timer.pause()
@@ -128,6 +134,9 @@ class GameState extends Phaser.State {
   endBattle() {
     this.game.signals.logSignal.dispatch('You won the battle!')
     this.game.signals.expSignal.dispatch(50)
+    this.game.character.animations.play('victory')
+    this.game.skillCastable = false
+
     this.battle.destroy()
     this.game.signals.DMGtoMonster.dispose()
     this.timer.resume()

@@ -32,6 +32,7 @@ class Player extends Phaser.Group{
 
   initialize () {
     this.game.player = this
+    this.game.skillCastable = false
     this.renderMana()
     this.renderExp()
     this.renderSkills()
@@ -105,8 +106,11 @@ class Player extends Phaser.Group{
 
     this.walk = this.game.character.animations.add('walk', [1, 0], 4, true)
 
-    this.attack = this.game.character.animations.add('attack', [1, 2, 3 ,1], 5)
-    this.attack.onComplete.add(() => this.walk.restart(), this)
+    this.victory = this.game.character.animations.add('victory', [0, 4, 0, 4, 0, 4], 3)
+    this.victory.onComplete.add(() => this.walk.play(), this)
+
+    this.attack = this.game.character.animations.add('attack', [1, 2, 3 ,1], 4)
+    // this.attack.onComplete.add(() => this.walk.restart(), this)
 
     this.game.character.animations.play('walk')
   }
