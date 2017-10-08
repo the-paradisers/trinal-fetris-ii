@@ -21,7 +21,8 @@ class GameState extends Phaser.State {
     plains.scale.setTo(2, 2)
 
     // For adding signals to access across game
-    this.game.signals = {}
+    this.setSignals()
+
     this.player = new Player(this.game);
     this.player.initialize();
     this.tetris = new Tetris(this.game);
@@ -29,7 +30,7 @@ class GameState extends Phaser.State {
     // values needed to handle updates
     this.tetris.draw()
 
-    // Battle
+    // Battle loop
     this.timer = this.game.time.events
     this.battleTimerLoop = this.timer.loop(Phaser.Timer.SECOND * 20, this.startBattle, this)
 
@@ -54,8 +55,38 @@ class GameState extends Phaser.State {
     this.keys.rKey.onDown.add(() => this.game.signals.skillSignal.dispatch('r'))
   }
 
+  setSignals() {
+    this.game.signals = {}
+    this.messageArr = []
+
+    const logSignal = new Phaser.Signal()
+    logSignal.add(this.write, this)
+    this.game.signals.logSignal = logSignal
+  }
+
+  write(newMessage) {
+    const x = 10
+    const y = 600
+    const style = {
+      fill: 'white',
+      font: '16pt Arial'
+    }
+
+    if (this.battleLog) {
+      this.battleLog.forEach(message => message.destroy())
+    }
+
+    this.messageArr.push(newMessage)
+    while (this.messageArr.length > 5) this.messageArr.shift()
+
+    this.battleLog = this.messageArr.map((message, i) => {
+      return this.game.add.text(x, y + (i * 18), message, style)
+    })
+  }
+
   startBattle() {
-    console.log('Battle started')
+    this.game.signals.logSignal.dispatch("You've been attacked!")
+
     // Pause battle timer during battle
     this.timer.pause()
 
@@ -93,7 +124,7 @@ class GameState extends Phaser.State {
   }
 
   endBattle() {
-    console.log('Battle over')
+    this.game.signals.logSignal.dispatch('You won the battle!')
     this.battle.destroy()
     this.game.signals.basicDMGtoMonster.dispose()
     this.timer.resume()
