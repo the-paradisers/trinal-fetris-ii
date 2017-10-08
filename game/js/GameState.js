@@ -23,6 +23,7 @@ class GameState extends Phaser.State {
     plains.scale.setTo(2, 2)
 
     this.game.inBattle = false
+    this.game.moveCount = 0
 
     this.setSignals()
 
@@ -32,10 +33,9 @@ class GameState extends Phaser.State {
     this.player = new Player(this.game);
     this.player.initialize();
 
-
     // Battle loop
-    this.timer = this.game.time.events
-    this.timer.loop(Phaser.Timer.SECOND * 5, this.startBattle, this)
+    // this.timer = this.game.time.events
+    // this.timer.loop(Phaser.Timer.SECOND * 5, this.startBattle, this)
 
     this.keys = {
       upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
@@ -93,11 +93,12 @@ class GameState extends Phaser.State {
 
   startBattle() {
     this.game.inBattle = true
+    this.game.moveCount = 0
     //instead of timer.puase, remove enemy appearance timer
-    this.timer.removeAll()
+    // this.timer.removeAll()
 
     this.game.signals.logSignal.dispatch("You've been attacked!")
-    this.game.character.animations.stop()
+    this.game.character.animations.stop(true)
 
     // Temporary data
     const enemyData1 = {
@@ -134,9 +135,10 @@ class GameState extends Phaser.State {
 
   endBattle() {
     this.game.inBattle = false
+    this.game.moveCount = 0
     //remove enemy attacks, restart enemy appearance timer
-    this.timer.removeAll()
-    this.timer.loop(Phaser.Timer.SECOND * 15, this.startBattle, this)
+    // this.timer.removeAll()
+    // this.timer.loop(Phaser.Timer.SECOND * 15, this.startBattle, this)
 
     this.game.signals.logSignal.dispatch('You won the battle!')
     this.game.signals.expSignal.dispatch(50)
@@ -144,23 +146,27 @@ class GameState extends Phaser.State {
 
     this.battle.destroy()
     this.game.signals.DMGtoMonster.dispose()
-    this.timer.resume()
+    // this.timer.resume()
   }
 
   update() {
-      this.tetris.clock(this.time.elapsed, 1)
+    if (!this.game.inBattle && this.game.moveCount > 7) {
+      this.startBattle()
+    }
 
-      if (this.keys.leftKey.isDown) {
-        this.tetris.move('left')
-      } else if (this.keys.rightKey.isDown) {
-        this.tetris.move('right')
-      } else if (this.keys.downKey.isDown) {
-        this.tetris.move('drop')
-      } else if (this.keys.upKey.isDown) {
-        this.tetris.move('rotate')
-      } else if (this.keys.spaceKey.isDown){
-        this.tetris.move('fastDrop');
-      }
+    this.tetris.clock(this.time.elapsed, 1)
+
+    if (this.keys.leftKey.isDown) {
+      this.tetris.move('left')
+    } else if (this.keys.rightKey.isDown) {
+      this.tetris.move('right')
+    } else if (this.keys.downKey.isDown) {
+      this.tetris.move('drop')
+    } else if (this.keys.upKey.isDown) {
+      this.tetris.move('rotate')
+    } else if (this.keys.spaceKey.isDown){
+      this.tetris.move('fastDrop');
+    }
   }
 
   render() {}

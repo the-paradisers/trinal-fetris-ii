@@ -85,6 +85,8 @@ class Block extends Phaser.Group {
   }
 
   merge() {
+    this.game.moveCount++
+
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {

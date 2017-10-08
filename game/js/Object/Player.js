@@ -103,19 +103,19 @@ class Player extends Phaser.Group{
     this.game.character.scale.setTo(3, 3)
     this.renderLevelText()
 
-    this.walk = this.game.character.animations.add('walk', [1, 0], 4, true)
+    this.walk = this.game.character.animations.add('walk', [0, 1], 4, true)
 
     this.victory = this.game.character.animations.add('victory', [0, 4, 0, 4, 0, 4], 3)
     this.victory.onComplete.add(() => this.walk.play(), this)
 
-    this.attack = this.game.character.animations.add('attack', [1, 2, 3 ,1], 4)
+    this.attack = this.game.character.animations.add('attack', [1, 2, 3, 1], 4)
     // this.attack.onComplete.add(() => this.walk.restart(), this)
 
     this.game.character.animations.play('walk')
   }
 
   updateExp (exp) {
-    this.game.signals.logSignal.dispatch(`${exp} exp gained`)
+    this.game.signals.logSignal.dispatch(`You gained ${exp} EXP!`)
     this.currentExp += exp
     if (this.currentExp >= this.maxExp) {
       this.currentExp = 0
@@ -140,7 +140,7 @@ class Player extends Phaser.Group{
       this.currentMana += mana
       if (this.currentMana > this.maxMana) this.currentMana = this.maxMana
     } else {
-      this.game.signals.logSignal.dispatch('out of mana')
+      this.game.signals.logSignal.dispatch("You're out of mana.")
     }
     this.manabar.destroy()
     this.renderMana()
@@ -154,21 +154,21 @@ class Player extends Phaser.Group{
 
   skillCasted (key) {
     //Damage to an enemy
-    this.game.signals.logSignal.dispatch(`${this.skills[key].name} casted`)
+    this.game.signals.logSignal.dispatch(`You cast ${this.skills[key].name}!`)
 
     let mana
     switch(key) {
-      case 'q':
-        mana = this.skills.q.cost
+      case 'Q':
+        mana = this.skills.R.cost
         break;
-      case 'w':
-        mana = this.skills.w.cost
+      case 'W':
+        mana = this.skills.W.cost
         break;
-      case 'e':
-        mana = this.skills.e.cost
+      case 'E':
+        mana = this.skills.E.cost
         break;
-      case 'r':
-        mana = this.skills.r.cost
+      case 'R':
+        mana = this.skills.R.cost
         break;
     }
 

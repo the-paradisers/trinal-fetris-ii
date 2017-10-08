@@ -27,10 +27,10 @@ class Battle extends Phaser.Group {
     this.summonEnemies()
   }
 
-  initializeEnemyAttacks () {
-    this.timer = this.game.time.events
-    this.timer.loop(Phaser.Timer.SECOND*5, this.game.addBottomRow, this)
-  }
+  // initializeEnemyAttacks () {
+  //   this.timer = this.game.time.events
+  //   this.timer.loop(Phaser.Timer.SECOND*5, this.game.addBottomRow, this)
+  // }
 
   initializeSignals() {
     this.game.signals.DMGtoMonster = new Phaser.Signal()
