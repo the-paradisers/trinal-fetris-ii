@@ -1,6 +1,7 @@
 // Dimensions vert: 65-720   hori: 1-400
 
 const Enemy = require('./Enemy')
+const Phaser = require('phaser-ce')
 
 class Battle extends Phaser.Group {
   constructor(game, enemyGroup) {
@@ -22,7 +23,18 @@ class Battle extends Phaser.Group {
 
   initialize() {
     this.initializeSignals()
+    this.initializeEnemyAttacks()
     this.summonEnemies()
+  }
+
+  initializeEnemyAttacks () {
+    this.timer = this.game.time.events
+    this.timer.loop(Phaser.Timer.SECOND*5, this.game.addBottomRow, this)
+  }
+
+  initializeSignals() {
+    this.game.signals.DMGtoMonster = new Phaser.Signal()
+    this.game.signals.DMGtoMonster.add(this.takeDamage, this)
   }
 
   summonEnemies() {
@@ -53,11 +65,6 @@ class Battle extends Phaser.Group {
     } else {
       this.game.signals.endBattle.dispatch()
     }
-  }
-
-  initializeSignals() {
-    this.game.signals.DMGtoMonster = new Phaser.Signal()
-    this.game.signals.DMGtoMonster.add(this.takeDamage, this)
   }
 }
 

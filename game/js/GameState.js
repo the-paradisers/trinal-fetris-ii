@@ -24,17 +24,18 @@ class GameState extends Phaser.State {
 
     // For adding signals to access across game
     this.setSignals()
+    this.game.isRunning = true
 
+    this.tetris = new Tetris(this.game);
     this.player = new Player(this.game);
     this.player.initialize();
-    this.tetris = new Tetris(this.game);
 
     // values needed to handle updates
     this.tetris.draw()
 
     // Battle loop
     this.timer = this.game.time.events
-    this.battleTimerLoop = this.timer.loop(Phaser.Timer.SECOND * 20, this.startBattle, this)
+    this.timer.loop(Phaser.Timer.SECOND * 5, this.startBattle, this)
 
     this.keys = {
       upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
@@ -91,12 +92,12 @@ class GameState extends Phaser.State {
   }
 
   startBattle() {
+    //instead of timer.puase, remove enemy appearance timer
+    this.timer.removeAll()
+
     this.game.signals.logSignal.dispatch("You've been attacked!")
     this.game.character.animations.stop()
     this.game.skillCastable = true
-
-    // Pause battle timer during battle
-    this.timer.pause()
 
     // Temporary data
     const enemyData1 = {
@@ -132,6 +133,10 @@ class GameState extends Phaser.State {
   }
 
   endBattle() {
+    //remove enemy attacks, restart enemy appearance timer
+    this.timer.removeAll()
+    this.timer.loop(Phaser.Timer.SECOND * 15, this.startBattle, this)
+
     this.game.signals.logSignal.dispatch('You won the battle!')
     this.game.signals.expSignal.dispatch(50)
     this.game.character.animations.play('victory')
@@ -143,18 +148,21 @@ class GameState extends Phaser.State {
   }
 
   update() {
-    this.tetris.clock(this.time.elapsed, 1)
+    //prevents block drops after game is over
+    if (this.game.isRunning) {
+      this.tetris.clock(this.time.elapsed, 1)
 
-    if (this.keys.leftKey.isDown) {
-      this.tetris.move('left')
-    } else if (this.keys.rightKey.isDown) {
-      this.tetris.move('right')
-    } else if (this.keys.downKey.isDown) {
-      this.tetris.move('drop')
-    } else if (this.keys.upKey.isDown) {
-      this.tetris.move('rotate')
-    } else if (this.keys.spaceKey.isDown){
-      this.tetris.move('fastDrop');
+      if (this.keys.leftKey.isDown) {
+        this.tetris.move('left')
+      } else if (this.keys.rightKey.isDown) {
+        this.tetris.move('right')
+      } else if (this.keys.downKey.isDown) {
+        this.tetris.move('drop')
+      } else if (this.keys.upKey.isDown) {
+        this.tetris.move('rotate')
+      } else if (this.keys.spaceKey.isDown && this.game.isRunning){
+        this.tetris.move('fastDrop');
+      }
     }
   }
 
