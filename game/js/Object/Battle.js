@@ -18,7 +18,7 @@ class Battle extends Phaser.Group {
       {x: 232, y: 344},
     ]
 
-    this.playerAttack = 1
+    this.playerAttack = 5
   }
 
   initialize() {

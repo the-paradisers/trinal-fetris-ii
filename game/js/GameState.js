@@ -30,11 +30,8 @@ class GameState extends Phaser.State {
     this.tetris.draw()
 
     // Battle
-    console.log('game', this.game)
-    this.battleTimer = new Phaser.Timer(this.game)
-    this.battleTimer.loop(30000, this.startBattle, this)
-    this.battleTimer.start()
-    console.log(this)
+    this.timer = this.game.time.events
+    this.battleTimerLoop = this.timer.loop(Phaser.Timer.SECOND * 20, this.startBattle, this)
 
     this.keys = {
       upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
@@ -60,7 +57,7 @@ class GameState extends Phaser.State {
   startBattle() {
     console.log('Battle started')
     // Pause battle timer during battle
-    this.battleTimer.pause()
+    this.timer.pause()
 
     // Temporary data
     const enemyData1 = {
@@ -83,13 +80,9 @@ class GameState extends Phaser.State {
     }
     const enemyGroup = [enemyData1, enemyData2, enemyData3]
 
+    // Initialize battle and draw enemies
     this.battle = new Battle(this.game, enemyGroup)
-    // Populate battle with enemies in enemyGroup
     this.battle.initialize()
-    // this.battle.summonEnemies()
-    // Set listeners (only player clear row attack for now)
-    // this.battle.setListeners()
-    // Draw all enemies in group
     this.battle.children.forEach(enemy => {
       enemy.draw()
     })
@@ -100,12 +93,13 @@ class GameState extends Phaser.State {
   }
 
   endBattle() {
+    console.log('Battle over')
     this.battle.destroy()
-    this.battleTimer.resume()
+    this.game.signals.basicDMGtoMonster.dispose()
+    this.timer.resume()
   }
 
   update() {
-    console.log(this.battleTimer.seconds)
     this.tetris.clock(this.time.elapsed, 1)
 
     if (this.keys.leftKey.isDown) {
