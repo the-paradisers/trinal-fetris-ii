@@ -127,8 +127,9 @@ class GameState extends Phaser.State {
 
   endBattle() {
     this.game.signals.logSignal.dispatch('You won the battle!')
+    this.game.signals.expSignal.dispatch(50)
     this.battle.destroy()
-    this.game.signals.basicDMGtoMonster.dispose()
+    this.game.signals.DMGtoMonster.dispose()
     this.timer.resume()
   }
 
