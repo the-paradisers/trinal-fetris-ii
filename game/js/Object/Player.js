@@ -18,10 +18,10 @@ class Player extends Phaser.Group{
     //this.manabar, expbar
 
     this.skills  = {
-      q: { name: 'fire ball', lvl: 0, cost: 5, damage: 1, scale: 1 },
-      w: { name: 'lightening', lvl: 0, cost: 5, damage: 2, scale: 2 },
-      e: { name: 'icy wind', lvl: 0, cost: 5, damage: 3, scale: 3 },
-      r: { name: 'drain life', lvl: 0, cost: 5, damage: 4, scale: 4 },
+      Q: { name: 'Fire Ball', lvl: 0, cost: 5, damage: 1, scale: 1 },
+      W: { name: 'Lightning', lvl: 0, cost: 5, damage: 2, scale: 2 },
+      E: { name: 'Icy Wind', lvl: 0, cost: 5, damage: 3, scale: 3 },
+      R: { name: 'Drain Life', lvl: 0, cost: 5, damage: 4, scale: 4 },
     }
 
     this.sectionStartWidth = this.game.world.width * 2 / 3
@@ -32,7 +32,6 @@ class Player extends Phaser.Group{
 
   initialize () {
     this.game.player = this
-    this.game.skillCastable = false
     this.renderMana()
     this.renderExp()
     this.renderSkills()
@@ -68,7 +67,7 @@ class Player extends Phaser.Group{
   }
 
   renderSkills () {
-    ['q', 'w', 'e', 'r'].forEach( (key, i) => {
+    ['Q', 'W', 'E', 'R'].forEach( (key, i) => {
       const skill = this.skills[key]
       // this.game.add.bitmapText(
         // this.sectionStartWidth + 50,

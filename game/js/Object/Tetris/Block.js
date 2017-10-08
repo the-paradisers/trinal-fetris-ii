@@ -69,6 +69,7 @@ class Block extends Phaser.Group {
     gameover.anchor.set(0.5)
 
     this.game.input.onTap.addOnce(() => {
+      this.game.paused = false
       this.game.world.removeAll()
       this.game.state.start('TitleMenu')
     })
@@ -78,7 +79,7 @@ class Block extends Phaser.Group {
     this.matrix = this.queue.new()
     this.pos = {x: 3, y: 0}
     if (this.collide()) {
-      this.game.isRunning = false
+      this.game.paused = true
       this.gameover()
     }
   }

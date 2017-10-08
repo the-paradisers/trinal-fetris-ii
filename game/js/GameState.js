@@ -22,16 +22,16 @@ class GameState extends Phaser.State {
     const plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
     plains.scale.setTo(2, 2)
 
-    // For adding signals to access across game
+    this.game.inBattle = false
+
     this.setSignals()
-    this.game.isRunning = true
 
     this.tetris = new Tetris(this.game);
+    this.tetris.draw()
+
     this.player = new Player(this.game);
     this.player.initialize();
 
-    // values needed to handle updates
-    this.tetris.draw()
 
     // Battle loop
     this.timer = this.game.time.events
@@ -53,13 +53,13 @@ class GameState extends Phaser.State {
     this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
 
     this.keys.qKey.onDown.add(() => {
-      if (this.game.skillCastable) this.game.signals.skillSignal.dispatch('q')})
+      if (this.game.inBattle) this.game.signals.skillSignal.dispatch('Q')})
     this.keys.wKey.onDown.add(() => {
-      if (this.game.skillCastable) this.game.signals.skillSignal.dispatch('w')})
+      if (this.game.inBattle) this.game.signals.skillSignal.dispatch('W')})
     this.keys.eKey.onDown.add(() => {
-      if (this.game.skillCastable) this.game.signals.skillSignal.dispatch('e')})
+      if (this.game.inBattle) this.game.signals.skillSignal.dispatch('E')})
     this.keys.rKey.onDown.add(() => {
-      if (this.game.skillCastable) this.game.signals.skillSignal.dispatch('r')})
+      if (this.game.inBattle) this.game.signals.skillSignal.dispatch('R')})
   }
 
   setSignals() {
@@ -92,12 +92,12 @@ class GameState extends Phaser.State {
   }
 
   startBattle() {
+    this.game.inBattle = true
     //instead of timer.puase, remove enemy appearance timer
     this.timer.removeAll()
 
     this.game.signals.logSignal.dispatch("You've been attacked!")
     this.game.character.animations.stop()
-    this.game.skillCastable = true
 
     // Temporary data
     const enemyData1 = {
@@ -133,6 +133,7 @@ class GameState extends Phaser.State {
   }
 
   endBattle() {
+    this.game.inBattle = false
     //remove enemy attacks, restart enemy appearance timer
     this.timer.removeAll()
     this.timer.loop(Phaser.Timer.SECOND * 15, this.startBattle, this)
@@ -140,7 +141,6 @@ class GameState extends Phaser.State {
     this.game.signals.logSignal.dispatch('You won the battle!')
     this.game.signals.expSignal.dispatch(50)
     this.game.character.animations.play('victory')
-    this.game.skillCastable = false
 
     this.battle.destroy()
     this.game.signals.DMGtoMonster.dispose()
@@ -148,8 +148,6 @@ class GameState extends Phaser.State {
   }
 
   update() {
-    //prevents block drops after game is over
-    if (this.game.isRunning) {
       this.tetris.clock(this.time.elapsed, 1)
 
       if (this.keys.leftKey.isDown) {
@@ -160,10 +158,9 @@ class GameState extends Phaser.State {
         this.tetris.move('drop')
       } else if (this.keys.upKey.isDown) {
         this.tetris.move('rotate')
-      } else if (this.keys.spaceKey.isDown && this.game.isRunning){
+      } else if (this.keys.spaceKey.isDown){
         this.tetris.move('fastDrop');
       }
-    }
   }
 
   render() {}
