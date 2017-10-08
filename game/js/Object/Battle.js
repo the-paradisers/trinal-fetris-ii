@@ -23,7 +23,7 @@ class Battle extends Phaser.Group {
 
   initialize() {
     this.initializeSignals()
-    this.initializeEnemyAttacks()
+    // this.initializeEnemyAttacks()
     this.summonEnemies()
   }
 
