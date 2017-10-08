@@ -41,22 +41,47 @@ class BlockQueue {
         [1, 1],
       ],
     }
+    this.enemyBlocks = {
+      A: [
+        [2],
+        [2],
+      ],
+      B: [
+        [2, 2],
+      ],
+      C: [
+        [2, 0],
+        [2, 2],
+      ],
+      D: [
+        [2, 2],
+        [0, 2],
+      ],
+    }
   }
 
-  add() {
+  addPlayerBlock() {
     const types = 'ILJOTSZI'
     const type = types[Math.floor(types.length * Math.random())]
-    this.queue.push(_.cloneDeep(this.playerBlocks[type]))
+    this.queue.push({ block: _.cloneDeep(this.playerBlocks[type]), friendly: true})
+  }
+
+  addEnemyBlock() {
+    const types = 'AAAABBCD'
+    const type = types[Math.floor(types.length * Math.random())]
+    this.queue.push({ block: _.cloneDeep(this.enemyBlocks[type]), friendly: false})
   }
 
   initialize() {
-    this.add()
-    this.add()
-    this.add()
+    this.addPlayerBlock()
+    this.addPlayerBlock()
+    this.addPlayerBlock()
+    this.addPlayerBlock()
   }
 
-  new() {
-    this.add()
+  getBlock() {
+    console.log('inside BlockQueue.getBlock()')
+    console.log(this.queue)
     return this.queue.shift()
   }
 

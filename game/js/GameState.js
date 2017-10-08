@@ -34,11 +34,13 @@ class GameState extends Phaser.State {
 
     this.setSignals()
 
-    this.tetris = new Tetris(this.game);
-    this.tetris.draw()
 
     this.player = new Player(this.game);
     this.player.initialize();
+
+    this.tetris = new Tetris(this.game);
+    this.tetris.draw()
+
 
     // Battle loop
     // this.timer = this.game.time.events

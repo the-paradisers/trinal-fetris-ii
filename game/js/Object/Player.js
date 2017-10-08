@@ -99,7 +99,7 @@ class Player extends Phaser.Group{
   }
 
   initializePlayerSprite () {
-    this.game.character = this.game.add.sprite(this.sectionStartWidth, this.sectionTotalHeight*0.5, 'player')
+    this.game.character = this.game.add.sprite(this.sectionStartWidth, this.sectionTotalHeight * 0.5, 'player')
     this.game.character.scale.setTo(3, 3)
     this.renderLevelText()
 

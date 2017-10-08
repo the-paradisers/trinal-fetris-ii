@@ -6,15 +6,14 @@ class Block extends Phaser.Group {
   constructor(game, board) {
     super(game)
 
-    // this.game = game
-
     this.board = board
 
     this.queue = new BlockQueue()
-    this.queue.add()
+    this.queue.initialize()
 
     this.group = game.add.group()
     this.matrix = []
+    this.isFriendly = false
     this.new()
   }
 
@@ -33,7 +32,7 @@ class Block extends Phaser.Group {
   }
 
   drawNext() {
-    this.queue.next().forEach((row, y) => {
+    this.queue.next().block.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
           this.group.create(
@@ -76,8 +75,23 @@ class Block extends Phaser.Group {
   }
 
   new() {
-    this.matrix = this.queue.new()
-    this.pos = {x: 3, y: 0}
+    if (this.game.moveCount % 5 === 0){
+      this.queue.addEnemyBlock()
+    } else {
+      this.queue.addPlayerBlock()
+    }
+
+    let {block, friendly} = this.queue.getBlock()
+    this.matrix = block
+    this.isFriendly = friendly
+    if (!this.isFriendly){
+      let xPos = Math.floor(8 * Math.random())
+      this.pos.x = xPos
+      this.pos.y = 0
+      this.fastDrop()
+    } else {
+      this.pos = {x: 3, y: 0}
+    }
     if (this.collide()) {
       this.game.paused = true
       this.gameover()
@@ -86,7 +100,8 @@ class Block extends Phaser.Group {
 
   merge() {
     this.game.moveCount++
-
+    console.log('inside merge - moveCount')
+    console.log(this.game.moveCount)
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
