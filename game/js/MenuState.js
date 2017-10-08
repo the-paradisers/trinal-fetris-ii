@@ -4,14 +4,15 @@ class MenuState {
   preload() { }
 
   create() {
-    let tutorial = this.add.text(
+
+    this.add.text(
       128,
       64,
       `How to Play`,
       {fill: 'white', fontSize: 36}
     )
 
-    let tetris = this.add.text(
+    this.add.text(
       128,
       96,
       `
@@ -25,7 +26,7 @@ class MenuState {
       {fill: 'white', fontSize: 24}
     )
 
-    let battle = this.add.text(
+    this.add.text(
       this.world.centerX,
       96,
       `
@@ -44,7 +45,7 @@ class MenuState {
     let play = this.add.text(
       this.world.centerX,
       this.world.centerY + 200,
-      `Press Any Button to Start`,
+      `Click Screen to Begin the Game`,
       {fill: 'white', fontSize: 36}
     )
 
