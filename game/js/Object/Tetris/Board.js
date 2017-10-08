@@ -45,7 +45,9 @@ class Board extends Phaser.Group {
     }
     this.game.signals.manaSignal.dispatch(linesCleared)
     //playerlvl = player basic damage
-    this.game.signals.DMGtoMonster.dispatch(this.game.player.playerlvl)
+    if (this.game.signals.DMGtoMonster) {
+      this.game.signals.DMGtoMonster.dispatch(this.game.player.playerlvl)
+    }
   }
 }
 
