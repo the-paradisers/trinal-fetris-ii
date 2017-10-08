@@ -23,7 +23,7 @@ class Enemy extends Phaser.Group {
     enemySprite.scale.setTo(2, 2)
 
     // Draw name
-    const nameplate = new Phaser.Text(this.game, x, y + enemyHeight, this.name.toUpperCase(), style)
+    // const nameplate = new Phaser.Text(this.game, x, y + enemyHeight, this.name.toUpperCase(), style)
     // this.addChild(nameplate)
   }
 }
