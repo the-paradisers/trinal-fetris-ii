@@ -36,7 +36,8 @@ class Tetris extends Phaser.Group {
   }
 
   clock(elapsed, isInControl, rate = 1) {
-    this.gameTimer += elapsed * Math.pow(1.15, rate - 1)
+    const fixedElapse = elapsed * Math.pow(1.15, rate - 1)
+    this.gameTimer += fixedElapse
     if (isInControl && this.gameTimer > 1000){
       this.gameTimer = 0
       this.block.drop()
@@ -47,7 +48,7 @@ class Tetris extends Phaser.Group {
       this.refresh()
     }
     // movement time
-    this.actionTimer += elapsed
+    this.actionTimer += fixedElapse
     if (this.actionTimer > 200){
       this.canMoveLeft = true
       this.canMoveRight = true
