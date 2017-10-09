@@ -31,6 +31,7 @@ class Tetris extends Phaser.Group {
 
   refresh() {
     this.board.group.removeAll()
+    this.block.shadowGroup.removeAll()
     this.block.group.removeAll()
     this.draw()
   }

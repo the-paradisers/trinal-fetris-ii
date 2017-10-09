@@ -1,6 +1,7 @@
 /* eslint-disable no-labels, class-methods-use-this, id-length */
 const Phaser = require('phaser-ce')
 const BlockQueue = require('./BlockQueue')
+const _ = require('lodash')
 
 class Block extends Phaser.Group {
   constructor(game, board) {
@@ -13,13 +14,13 @@ class Block extends Phaser.Group {
     this.numberOfEnemies = 0
     this.enemyAttacksSoFar = 0
 
-    this.group = game.add.group()
-    this.matrix = []
-    this.pos = {x: 3, y: 0}
-
     this.shadowGroup = game.add.group()
     this.shadowMatrix = []
     this.shadowPosition = {x: 0, y: 0}
+
+    this.group = game.add.group()
+    this.matrix = []
+    this.pos = {x: 3, y: 0}
 
     this.beingAttacked = false
 
@@ -40,6 +41,8 @@ class Block extends Phaser.Group {
 
   draw(scale, offset) {
     this.drawNext()
+    this.drawShadow(scale, offset)
+
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
@@ -50,12 +53,11 @@ class Block extends Phaser.Group {
         }
       })
     })
-    this.drawShadow(scale, offset)
   }
 
   drawShadow(scale, offset) {
-    this.shadowMatrix = this.matrix
-    this.shadowPosition = this.pos
+    this.shadowMatrix = _.cloneDeep(this.matrix)
+    this.shadowPosition = {x: this.pos.x, y: 0}
     while (!this.shadowCollide()){
       this.shadowPosition.y++
     }
@@ -134,15 +136,9 @@ class Block extends Phaser.Group {
     this.beingAttacked = true
     this.game.signals.inControl.dispatch(false)
     console.log('number of enemies attacking', this.enemies.length)
-    // for (let i = 0; i < this.enemies.length; i++){
       this.pos.x = Math.floor(8 * Math.random())
       this.pos.y = 0
       this.matrix = this.queue.getEnemyBlock()
-    // }
-    // this.enemies.forEach(() => {
-    //   this.matrix = this.queue.getEnemyBlock()
-    //   this.fastDrop()
-    // })
     this.beingAttacked = false
   }
 
@@ -156,31 +152,22 @@ class Block extends Phaser.Group {
   }
 
   getNextBlock() {
-    // console.log(`inside getNextBlock - queue length`)
-    // console.log(this.queue.length())
     if (((this.game.moveCount + 1) % 5) === 0) {
-      console.log(`checking to do an enemy attack`)
-      console.log('Number of Enemies:', this.numberOfEnemies)
-      console.log('Enemy Attacks')
       if (this.enemyAttacksSoFar < this.numberOfEnemies) {
-        console.log(`enemy attack`)
         this.enemyAttacksSoFar++
         this.enemyAttack()
       } else {
-        console.log(`no enemy attack`)
         this.game.moveCount++
         this.enemyAttacksSoFar = 0
       }
     } else {
-      console.log(`player turn`)
       this.playerTurn()
       this.game.moveCount++
+      this.game.signals.inControl.dispatch(true)
     }
   }
 
   merge() {
-    // console.log('inside merge - moveCount')
-    // console.log(this.game.moveCount)
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
@@ -188,7 +175,6 @@ class Block extends Phaser.Group {
         }
       })
     })
-    this.game.signals.inControl.dispatch(true)
   }
 
   drop() {
