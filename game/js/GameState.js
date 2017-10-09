@@ -84,7 +84,7 @@ class GameState extends Phaser.State {
       this.battleManager.startBattle()
     }
 
-    this.tetris.clock(this.time.elapsed, 1)
+    this.tetris.clock(this.time.elapsed, this.player.playerlvl)
 
     if (this.keys.leftKey.isDown) {
       this.tetris.move('left')
