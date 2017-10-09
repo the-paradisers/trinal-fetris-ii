@@ -43,29 +43,8 @@ class GameState extends Phaser.State {
     this.battleManager = new BattleManager(this.game)
     this.battleManager.initialize()
 
-    this.keys = {
-      upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
-      downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
-      leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
-      rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
-      qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
-      wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
-      eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
-      rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
-      spaceKey: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
-      escKey: this.game.input.keyboard.addKey(Phaser.Keyboard.ESC),
-    }
-
-    this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
-
-    this.keys.qKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.castSpell.dispatch('Q')})
-    this.keys.wKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.castSpell.dispatch('W')})
-    this.keys.eKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.castSpell.dispatch('E')})
-    this.keys.rKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.castSpell.dispatch('R')})
+    this.setKeyMaps()
+    this.setKeyListeners()
   }
 
   createSignals() {
@@ -77,6 +56,47 @@ class GameState extends Phaser.State {
     this.game.signals.castSpell = new Phaser.Signal()
     this.game.signals.addMana = new Phaser.Signal()
     this.game.signals.addExp = new Phaser.Signal()
+    this.game.signals.selectTarget = new Phaser.Signal()
+  }
+
+  setKeyMaps() {
+    this.keys = {
+      upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
+      downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
+      leftKey: this.game.input.keyboard.addKey(Phaser.Keyboard.LEFT),
+      rightKey: this.game.input.keyboard.addKey(Phaser.Keyboard.RIGHT),
+      qKey: this.game.input.keyboard.addKey(Phaser.Keyboard.Q),
+      wKey: this.game.input.keyboard.addKey(Phaser.Keyboard.W),
+      eKey: this.game.input.keyboard.addKey(Phaser.Keyboard.E),
+      rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
+      spaceKey: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
+      escKey: this.game.input.keyboard.addKey(Phaser.Keyboard.ESC),
+      oneKey: this.game.input.keyboard.addKey(Phaser.Keyboard.ONE),
+      twoKey: this.game.input.keyboard.addKey(Phaser.Keyboard.TWO),
+      threeKey: this.game.input.keyboard.addKey(Phaser.Keyboard.THREE),
+      fourKey: this.game.input.keyboard.addKey(Phaser.Keyboard.FOUR),
+    }
+  }
+
+  setKeyListeners() {
+    this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
+
+    this.keys.qKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.castSpell.dispatch('Q')})
+    this.keys.wKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.castSpell.dispatch('W')})
+    this.keys.eKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.castSpell.dispatch('E')})
+    this.keys.rKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.castSpell.dispatch('R')})
+    this.keys.oneKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.selectTarget.dispatch(0)})
+    this.keys.twoKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.selectTarget.dispatch(1)})
+    this.keys.threeKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.selectTarget.dispatch(2)})
+    this.keys.fourKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.selectTarget.dispatch(3)})
   }
 
   update() {

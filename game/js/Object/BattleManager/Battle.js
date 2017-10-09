@@ -27,6 +27,7 @@ class Battle extends Phaser.Group {
 
   initializeSignals() {
     this.game.signals.hitEnemy.add(this.takeDamage, this)
+    this.game.signals.selectTarget.add(this.targetEnemy, this)
   }
 
   summonEnemies() {
@@ -57,6 +58,10 @@ class Battle extends Phaser.Group {
     } else {
       this.game.signals.endBattle.dispatch()
     }
+  }
+
+  targetEnemy(enemyIndex) {
+    this.target = this.children[enemyIndex]
   }
 }
 
