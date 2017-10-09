@@ -68,13 +68,6 @@ class Player extends Phaser.Group{
       this.game.add.text(
         this.sectionStartWidth + 50, 600 + 25 * i,
         `${key} - ${skill.name}`, {fill: 'white'})
-      // const skillButton = this.game.add.button(
-      //   this.sectionStartWidth,
-      //   600 + 25 * i, `addSkillPoint`)
-      // skillButton.onInputDown.add(() => console.log('down'))
-      // skillButton.onInputUp.add(() => {
-      //   skill.lvl++
-      //   console.log('skilllvl', skill.lvl)})
     })
   }
 
@@ -139,7 +132,7 @@ class Player extends Phaser.Group{
   }
 
   castSpell(key) {
-    console.log('checking for tetris', this)
+    console.log('checking for tetris', this.game.state.states.Game.tetris.refresh)
     let mana
     switch (key) {
       case 'Q':
@@ -162,6 +155,13 @@ class Player extends Phaser.Group{
       this.game.character.play('attack')
       this.game.signals.hitEnemy.dispatch(this.skills[key].damage)
       this.game.signals.writeLog.dispatch(`You cast ${this.skills[key].name}!`)
+
+      // this.game.state.states.Game.tetris.refresh()
+      this.game.state.states.Game.tetris.block.group.removeAll()
+      console.log(this.game.state.states.Game.tetris)
+      this.game.state.states.Game.tetris.block.getNextBlock()
+      this.game.state.states.Game.tetris.draw()
+
     }
     this.updateMana(-1 * mana)
   }
