@@ -41,22 +41,43 @@ class BlockQueue {
         [1, 1],
       ],
     }
+    this.enemyBlocks = {
+      A: [
+        [2],
+        [2],
+      ],
+      B: [
+        [2, 2],
+      ],
+      C: [
+        [2, 0],
+        [2, 2],
+      ],
+      D: [
+        [2, 2],
+        [0, 2],
+      ],
+    }
   }
 
-  add() {
+  addPlayerBlock() {
     const types = 'ILJOTSZI'
     const type = types[Math.floor(types.length * Math.random())]
-    this.queue.push(_.cloneDeep(this.playerBlocks[type]))
+    this.queue.push( _.cloneDeep(this.playerBlocks[type]))
+  }
+
+  getEnemyBlock() {
+    const types = 'AAAABBCD'
+    const type = types[Math.floor(types.length * Math.random())]
+    return _.cloneDeep(this.enemyBlocks[type])
   }
 
   initialize() {
-    this.add()
-    this.add()
-    this.add()
+    this.addPlayerBlock()
   }
 
-  new() {
-    this.add()
+  getBlock() {
+    this.addPlayerBlock()
     return this.queue.shift()
   }
 
@@ -66,6 +87,10 @@ class BlockQueue {
     } else {
       return []
     }
+  }
+
+  length() {
+    return this.queue.length
   }
 
 }

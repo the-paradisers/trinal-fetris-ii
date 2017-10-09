@@ -93,7 +93,7 @@ class Player extends Phaser.Group{
   }
 
   initializePlayerSprite () {
-    this.game.character = this.game.add.sprite(this.sectionStartWidth, this.sectionTotalHeight*0.5, 'player')
+    this.game.character = this.game.add.sprite(this.sectionStartWidth, this.sectionTotalHeight * 0.5, 'player')
     this.game.character.scale.setTo(3, 3)
     this.renderLevelText()
 
@@ -149,7 +149,6 @@ class Player extends Phaser.Group{
 
   skillCasted (key) {
     //Damage to an enemy
-    this.game.signals.writeLog.dispatch(`You cast ${this.skills[key].name}!`)
 
     let mana
     switch(key) {
@@ -170,6 +169,7 @@ class Player extends Phaser.Group{
     if (this.currentMana - mana > 0){
       this.game.character.play('attack')
       this.game.signals.hitEnemy.dispatch(this.skills[key].damage)
+      this.game.signals.writeLog.dispatch(`You cast ${this.skills[key].name}!`)
     }
     this.updateMana(-1 * mana)
   }

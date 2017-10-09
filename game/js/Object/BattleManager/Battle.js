@@ -21,6 +21,7 @@ class Battle extends Phaser.Group {
   initialize() {
     this.initializeSignals()
     this.summonEnemies()
+    this.game.signals.currentEnemies.dispatch(this.children)
   }
 
   initializeSignals() {
@@ -51,14 +52,21 @@ class Battle extends Phaser.Group {
 
   die(target) {
     this.cursor.destroy()
-    target.visible = false
+    // target.visible = false
     this.game.signals.writeLog.dispatch(`You killed ${target.name}!`)
-    for (let i = 0; i < this.children.length; i++) {
-      if (this.children[i].visible) {
-        this.target = this.children[i]
-        this.drawCursor(i)
-        return
-      }
+    // for (let i = 0; i < this.children.length; i++) {
+    //   if (this.children[i].visible) {
+    //     this.target = this.children[i]
+    //     this.drawCursor(i)
+    //     return
+    //   }
+    this.remove(target, true)
+    this.game.signals.currentEnemies.dispatch(this.children)
+    // this.game.signals.writeLog.dispatch(`${target.name} dead!`)
+    if (this.children.length) {
+      this.target = this.children[0]
+    } else {
+      this.game.signals.endBattle.dispatch()
     }
     this.game.signals.endBattle.dispatch()
   }

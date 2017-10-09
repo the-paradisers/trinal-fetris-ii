@@ -6,16 +6,32 @@ class Block extends Phaser.Group {
   constructor(game, board) {
     super(game)
 
-    // this.game = game
-
     this.board = board
 
     this.queue = new BlockQueue()
-    this.queue.add()
+    this.enemies = []
+    this.numberOfEnemies = 0
+    this.enemyAttacksSoFar = 0
 
     this.group = game.add.group()
     this.matrix = []
-    this.new()
+    this.pos = {x: 3, y: 0}
+
+    this.beingAttacked = false
+
+    this.initialize()
+  }
+
+  initialize() {
+    this.game.signals.currentEnemies.add(this.enemyTetris, this)
+    this.queue.initialize()
+    this.getNextBlock()
+  }
+
+  enemyTetris(enemiezzz){
+    this.enemies = enemiezzz
+    console.log(`tetris enemies: ${this.enemies.length}`)
+    this.numberOfEnemies = this.enemies.length
   }
 
   draw(scale, offset) {
@@ -75,18 +91,57 @@ class Block extends Phaser.Group {
     })
   }
 
-  new() {
-    this.matrix = this.queue.new()
+  enemyAttack() {
+    this.beingAttacked = true
+    this.game.signals.inControl.dispatch(false)
+    console.log('number of enemies attacking', this.enemies.length)
+    // for (let i = 0; i < this.enemies.length; i++){
+      this.pos.x = Math.floor(8 * Math.random())
+      this.pos.y = 0
+      this.matrix = this.queue.getEnemyBlock()
+    // }
+    // this.enemies.forEach(() => {
+    //   this.matrix = this.queue.getEnemyBlock()
+    //   this.fastDrop()
+    // })
+    this.beingAttacked = false
+  }
+
+  playerTurn () {
     this.pos = {x: 3, y: 0}
+    this.matrix = this.queue.getBlock()
     if (this.collide()) {
       this.game.paused = true
       this.gameover()
     }
   }
 
-  merge() {
-    this.game.moveCount++
+  getNextBlock() {
+    // console.log(`inside getNextBlock - queue length`)
+    // console.log(this.queue.length())
+    if (((this.game.moveCount + 1) % 5) === 0) {
+      console.log(`checking to do an enemy attack`)
+      console.log('Number of Enemies:', this.numberOfEnemies)
+      console.log('Enemy Attacks')
+      if (this.enemyAttacksSoFar < this.numberOfEnemies) {
+        console.log(`enemy attack`)
+        this.enemyAttacksSoFar++
+        this.enemyAttack()
+      } else {
+        console.log(`no enemy attack`)
+        this.game.moveCount++
+        this.enemyAttacksSoFar = 0
+      }
+    } else {
+      console.log(`player turn`)
+      this.playerTurn()
+      this.game.moveCount++
+    }
+  }
 
+  merge() {
+    // console.log('inside merge - moveCount')
+    // console.log(this.game.moveCount)
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
@@ -94,6 +149,7 @@ class Block extends Phaser.Group {
         }
       })
     })
+    this.game.signals.inControl.dispatch(true)
   }
 
   drop() {
@@ -101,7 +157,7 @@ class Block extends Phaser.Group {
     if (this.collide()) {
       this.pos.y--
       this.merge()
-      this.new()
+      this.getNextBlock()
       this.board.sweep()
     }
   }
@@ -112,7 +168,7 @@ class Block extends Phaser.Group {
     }
     this.pos.y--
     this.merge()
-    this.new()
+    this.getNextBlock()
     this.board.sweep()
   }
 
