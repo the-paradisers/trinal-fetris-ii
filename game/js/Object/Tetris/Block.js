@@ -10,6 +10,8 @@ class Block extends Phaser.Group {
 
     this.queue = new BlockQueue()
     this.enemies = []
+    this.numberOfEnemies = 0
+    this.enemyAttacksSoFar = 0
 
     this.group = game.add.group()
     this.matrix = []
@@ -28,6 +30,8 @@ class Block extends Phaser.Group {
 
   enemyTetris(enemiezzz){
     this.enemies = enemiezzz
+    console.log(`tetris enemies: ${this.enemies.length}`)
+    this.numberOfEnemies = this.enemies.length
   }
 
   draw(scale, offset) {
@@ -113,21 +117,31 @@ class Block extends Phaser.Group {
   }
 
   getNextBlock() {
-    if (this.beingAttacked === false){
-      this.game.moveCount++
-    }
+    // console.log(`inside getNextBlock - queue length`)
+    // console.log(this.queue.length())
     if (((this.game.moveCount + 1) % 5) === 0) {
-      if (this.beingAttacked === false) {
+      console.log(`checking to do an enemy attack`)
+      console.log('Number of Enemies:', this.numberOfEnemies)
+      console.log('Enemy Attacks')
+      if (this.enemyAttacksSoFar < this.numberOfEnemies) {
+        console.log(`enemy attack`)
+        this.enemyAttacksSoFar++
         this.enemyAttack()
+      } else {
+        console.log(`no enemy attack`)
+        this.game.moveCount++
+        this.enemyAttacksSoFar = 0
       }
     } else {
+      console.log(`player turn`)
       this.playerTurn()
+      this.game.moveCount++
     }
   }
 
   merge() {
-    console.log('inside merge - moveCount')
-    console.log(this.game.moveCount)
+    // console.log('inside merge - moveCount')
+    // console.log(this.game.moveCount)
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {

@@ -89,6 +89,10 @@ class BlockQueue {
     }
   }
 
+  length() {
+    return this.queue.length
+  }
+
 }
 
 module.exports = BlockQueue

@@ -36,8 +36,6 @@ class Tetris extends Phaser.Group {
   }
 
   clock(elapsed, isInControl, rate = 1) {
-    // fall time
-    console.log(isInControl)
     this.gameTimer += elapsed * rate
     if (isInControl && this.gameTimer > 1000){
       this.gameTimer = 0
