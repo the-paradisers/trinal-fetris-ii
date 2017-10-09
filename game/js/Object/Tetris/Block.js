@@ -17,6 +17,10 @@ class Block extends Phaser.Group {
     this.matrix = []
     this.pos = {x: 3, y: 0}
 
+    this.shadowGroup = game.add.group()
+    this.shadowMatrix = []
+    this.shadowPosition = {x: 0, y: 0}
+
     this.beingAttacked = false
 
     this.initialize()
@@ -46,6 +50,27 @@ class Block extends Phaser.Group {
         }
       })
     })
+    this.drawShadow(scale, offset)
+  }
+
+  drawShadow(scale, offset) {
+    this.shadowMatrix = this.matrix
+    this.shadowPosition = this.pos
+    while (!this.shadowCollide()){
+      this.shadowPosition.y++
+    }
+    this.shadowPosition.y--
+
+    this.shadowMatrix.forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value !== 0) {
+          this.shadowGroup.create(
+            scale * (x + this.shadowPosition.x) + offset.x,
+            scale * (y + this.shadowPosition.y) + offset.y,
+            'blocks', 0)
+        }
+      })
+    })
   }
 
   drawNext() {
@@ -63,6 +88,20 @@ class Block extends Phaser.Group {
 
   collide() {
     const [m, o] = [this.matrix, this.pos]
+    for (let y = 0; y < m.length; ++y) {
+      for (let x = 0; x < m[y].length; ++x) {
+        if (m[y][x] !== 0 &&
+          (this.board.matrix[y + o.y] &&
+            this.board.matrix[y + o.y][x + o.x]) !== 0) {
+            return true
+          }
+      }
+    }
+    return false
+  }
+
+  shadowCollide() {
+    const [m, o] = [this.shadowMatrix, this.shadowPosition]
     for (let y = 0; y < m.length; ++y) {
       for (let x = 0; x < m[y].length; ++x) {
         if (m[y][x] !== 0 &&
