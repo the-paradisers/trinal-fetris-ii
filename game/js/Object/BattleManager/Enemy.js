@@ -21,10 +21,6 @@ class Enemy extends Phaser.Group {
     // Draw sprite
     const enemySprite = this.create(x, y, 'enemy-animals', this.frame)
     enemySprite.scale.setTo(2, 2)
-
-    // Draw name
-    // const nameplate = new Phaser.Text(this.game, x, y + enemyHeight, this.name.toUpperCase(), style)
-    // this.addChild(nameplate)
   }
 }
 
