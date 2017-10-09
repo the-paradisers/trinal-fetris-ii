@@ -7,15 +7,14 @@ const Phaser = require('phaser-ce')
 
 class Player extends Phaser.Group{
 
-  constructor (game) {
+  constructor(game) {
     super(game)
-    //playerlvl = basic dmg
+    //player basic dmg is equal to player's level
     this.playerlvl = 1
     this.currentMana = 50
     this.maxMana = 150
     this.currentExp = 100
     this.maxExp = 150
-    //this.manabar, expbar
 
     this.skills  = {
       Q: { name: 'Fire Ball', lvl: 0, cost: 5, damage: 1, scale: 1 },
@@ -26,11 +25,9 @@ class Player extends Phaser.Group{
 
     this.sectionStartWidth = this.game.world.width * 2 / 3
     this.sectionTotalHeight = this.game.world.height
-
-
   }
 
-  initialize () {
+  initialize() {
     this.game.player = this
     this.renderMana()
     this.renderExp()
@@ -39,34 +36,34 @@ class Player extends Phaser.Group{
     this.initializePlayerSprite()
   }
 
-  renderMana () {
-    const yoffset = this.sectionTotalHeight*0.5 - 75
-    this.manabar = this.renderBar(0x00d1ff, yoffset-25, this.currentMana)
+  renderMana() {
+    const yOffSet = this.sectionTotalHeight * 0.5 - 75
+    this.manabar = this.renderBar(0x00d1ff, yOffSet - 25, this.currentMana)
   }
 
-  renderExp () {
-    const yoffset = this.sectionTotalHeight*0.5 - 75
-    this.expbar = this.renderBar(0xffff00, yoffset, this.currentExp)
+  renderExp() {
+    const yOffSet = this.sectionTotalHeight * 0.5 - 75
+    this.expbar = this.renderBar(0xffff00, yOffSet, this.currentExp)
   }
 
-  renderBar (color, yoffset, measure) {
+  renderBar(color, yOffSet, measure) {
     const bar = this.game.add.graphics(0, 0)
     bar.beginFill(color, 1)
-    bar.drawRoundedRect(this.sectionStartWidth+210, 800 - yoffset, measure, 20, 10)
+    bar.drawRoundedRect(this.sectionStartWidth + 210, 800 - yOffSet, measure, 20, 10)
     bar.endFill()
 
     return bar
   }
 
-  renderLevelText () {
-    // rendering not working
+  renderLevelText() {
+    // final fantasy font (numbers & symbols) is not rendering
     // this.lvlText = this.game.add.bitmapText(0, 0, 'fantasy', `LVL ${this.playerlvl}`, 32)
     this.lvlText = this.game.add.text(0, 0, `LVL ${this.playerlvl}`, {fill: 'white'})
     this.lvlText.x = Math.floor(this.sectionStartWidth + 210)
-    this.lvlText.y = Math.floor(this.sectionTotalHeight*5/8)
+    this.lvlText.y = Math.floor(this.sectionTotalHeight * 5 / 8)
   }
 
-  renderSkills () {
+  renderSkills() {
     ['Q', 'W', 'E', 'R'].forEach( (key, i) => {
       const skill = this.skills[key]
       // this.game.add.bitmapText(
@@ -74,25 +71,25 @@ class Player extends Phaser.Group{
         // 600 + 25*i, 'fantasy',
       //   `${key} - ${skill.name}`, 16)
       this.game.add.text(
-        this.sectionStartWidth + 50, 600 + 25*i,
+        this.sectionStartWidth + 50, 600 + 25 * i,
         `${key} - ${skill.name}`, {fill: 'white'})
-      const skillButton = this.game.add.button(
-        this.sectionStartWidth,
-        600 + 25*i, `addSkillPoint`)
-      skillButton.onInputDown.add(() => console.log('down'))
-      skillButton.onInputUp.add(() => {
-        skill.lvl++
-        console.log('skilllvl', skill.lvl)})
+      // const skillButton = this.game.add.button(
+      //   this.sectionStartWidth,
+      //   600 + 25 * i, `addSkillPoint`)
+      // skillButton.onInputDown.add(() => console.log('down'))
+      // skillButton.onInputUp.add(() => {
+      //   skill.lvl++
+      //   console.log('skilllvl', skill.lvl)})
     })
   }
 
-  initializeSignal () {
-    this.game.signals.castSpell.add(this.skillCasted, this)
+  initializeSignal() {
+    this.game.signals.castSpell.add(this.castSpell, this)
     this.game.signals.addMana.add(this.calculateMana, this)
     this.game.signals.addExp.add(this.updateExp, this)
   }
 
-  initializePlayerSprite () {
+  initializePlayerSprite() {
     this.game.character = this.game.add.sprite(this.sectionStartWidth, this.sectionTotalHeight * 0.5, 'player')
     this.game.character.scale.setTo(3, 3)
     this.renderLevelText()
@@ -103,12 +100,11 @@ class Player extends Phaser.Group{
     this.victory.onComplete.add(() => this.walk.play(), this)
 
     this.attack = this.game.character.animations.add('attack', [1, 2, 3, 1], 4)
-    // this.attack.onComplete.add(() => this.walk.restart(), this)
 
     this.game.character.animations.play('walk')
   }
 
-  updateExp (exp) {
+  updateExp(exp) {
     this.game.signals.writeLog.dispatch(`You gained ${exp} EXP!`)
     this.currentExp += exp
     if (this.currentExp >= this.maxExp) {
@@ -123,13 +119,13 @@ class Player extends Phaser.Group{
     this.renderExp()
   }
 
-  updateSkillDamage () {
+  updateSkillDamage() {
     for (let key in this.skills){
       this.skills[key].damage += this.skills[key].scale
     }
   }
 
-  updateMana (mana) {
+  updateMana(mana) {
     if (this.currentMana + mana > 0){
       this.currentMana += mana
       if (this.currentMana > this.maxMana) this.currentMana = this.maxMana
@@ -140,30 +136,29 @@ class Player extends Phaser.Group{
     this.renderMana()
   }
 
-  calculateMana (numLinesCleared) {
+  calculateMana(numLinesCleared) {
     if (numLinesCleared > 0) {
       const manaToAdd = Math.pow(2, numLinesCleared - 1) * 10
       this.updateMana(manaToAdd)
     }
   }
 
-  skillCasted (key) {
-    //Damage to an enemy
-
-    let mana
-    switch(key) {
+  castSpell(key) {let mana
+    switch (key) {
       case 'Q':
         mana = this.skills.R.cost
-        break;
+        break
       case 'W':
         mana = this.skills.W.cost
-        break;
+        break
       case 'E':
         mana = this.skills.E.cost
-        break;
+        break
       case 'R':
         mana = this.skills.R.cost
-        break;
+        break
+      default:
+        throw new Error('Invalid Skill Input')
     }
 
     if (this.currentMana - mana > 0){
