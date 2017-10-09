@@ -16,8 +16,6 @@ class Battle extends Phaser.Group {
       {x: 16, y: 344},
       {x: 232, y: 344},
     ]
-
-    this.playerAttack = 5
   }
 
   initialize() {
@@ -32,12 +30,13 @@ class Battle extends Phaser.Group {
 
   summonEnemies() {
     // Add enemies in enemyGroup to Battle group
-    this.enemyGroup.forEach((enemyData, order) => {
-      this.add(new Enemy(this.game, enemyData, this.coords[order]))
+    this.enemyGroup.forEach((enemyData, enemyIndex) => {
+      this.add(new Enemy(this.game, enemyData, this.coords[enemyIndex]))
     }, this)
 
     // Set target to 1st child by default
-    this.target = this.children[0]
+    this.drawCursor(0)
+    this.targetEnemy(0)
   }
 
   takeDamage(damage) {
@@ -51,17 +50,28 @@ class Battle extends Phaser.Group {
   }
 
   die(target) {
-    this.remove(target, true)
-    this.game.signals.writeLog.dispatch(`${target.name} dead!`)
-    if (this.children.length) {
-      this.target = this.children[0]
-    } else {
-      this.game.signals.endBattle.dispatch()
+    this.cursor.destroy()
+    target.visible = false
+    this.game.signals.writeLog.dispatch(`You killed ${target.name}!`)
+    for (let i = 0; i < this.children.length; i++) {
+      if (this.children[i].visible) {
+        this.target = this.children[i]
+        this.drawCursor(i)
+        return
+      }
     }
+    this.game.signals.endBattle.dispatch()
   }
 
   targetEnemy(enemyIndex) {
+    this.cursor.destroy()
     this.target = this.children[enemyIndex]
+    this.drawCursor(enemyIndex)
+  }
+
+  drawCursor(enemyIndex) {
+    this.cursor = this.game.add.image(this.coords[enemyIndex].x, this.coords[enemyIndex].y, 'cursor')
+    this.cursor.scale.setTo(2, 2)
   }
 }
 

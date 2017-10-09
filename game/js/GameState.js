@@ -8,13 +8,14 @@ const Phaser = require('phaser-ce')
 class GameState extends Phaser.State {
 
   preload() {
-    this.load.image('background', 'img/TF2BACKGROUND.png')
+    this.load.image('background', 'img/UIFrames.png')
     this.load.bitmapFont('fantasy', 'img/font/font.png', 'img/font/font.fnt')
     this.load.image('addSkillPoint', 'img/addskillpoint.png')
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
     this.load.spritesheet('enemy-animals', 'img/enemy-animals.png', 100, 100, 32)
     this.load.spritesheet('player', 'img/player.png', 50, 52, 7)
     this.load.spritesheet('plains', 'img/background/Plains.gif', 512, 64)
+    this.load.image('cursor', 'img/cursor.gif')
 
     this.load.audio('battleMusic', 'audio/Battle_Scene.mp3')
     this.load.audio('walkMusic', 'audio/Main_Theme.mp3')
