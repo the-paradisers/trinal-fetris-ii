@@ -1,8 +1,8 @@
 /* eslint-disable no-labels, complexity */
 
-const Battle = require('./Object/Battle')
-const Player = require('./Object/Player');
 const Tetris = require('./Object/Tetris')
+const Player = require('./Object/Player')
+const BattleManager = require('./Object/BattleManager')
 const Phaser = require('phaser-ce')
 
 class GameState extends Phaser.State {
@@ -29,22 +29,21 @@ class GameState extends Phaser.State {
     this.game.inBattle = false
     this.game.moveCount = 0
 
-    this.song = this.sound.add('walkMusic', 1, true, true)
+    this.song = this.sound.add('walkMusic', 0.5, true, true)
     this.song.play()
 
-    this.setSignals()
+    this.isInControl = true
+    this.createSignals()
 
 
-    this.player = new Player(this.game);
-    this.player.initialize();
+    this.player = new Player(this.game)
+    this.player.initialize()
 
     this.tetris = new Tetris(this.game);
     this.tetris.draw()
 
-
-    // Battle loop
-    // this.timer = this.game.time.events
-    // this.timer.loop(Phaser.Timer.SECOND * 5, this.startBattle, this)
+    this.battleManager = new BattleManager(this.game)
+    this.battleManager.initialize()
 
     this.keys = {
       upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
@@ -62,119 +61,54 @@ class GameState extends Phaser.State {
     this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
 
     this.keys.qKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.skillSignal.dispatch('Q')})
+      if (this.game.inBattle) this.game.signals.castSpell.dispatch('Q')})
     this.keys.wKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.skillSignal.dispatch('W')})
+      if (this.game.inBattle) this.game.signals.castSpell.dispatch('W')})
     this.keys.eKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.skillSignal.dispatch('E')})
+      if (this.game.inBattle) this.game.signals.castSpell.dispatch('E')})
     this.keys.rKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.skillSignal.dispatch('R')})
+      if (this.game.inBattle) this.game.signals.castSpell.dispatch('R')})
   }
 
-  setSignals() {
+  createSignals() {
     this.game.signals = {}
-    this.messageArr = []
 
-    const logSignal = new Phaser.Signal()
-    logSignal.add(this.write, this)
-    this.game.signals.logSignal = logSignal
-  }
-
-  write(newMessage) {
-    const x = 10
-    const y = 600
-    const style = {
-      fill: 'white',
-      font: '16pt Arial'
-    }
-
-    if (this.battleLog) {
-      this.battleLog.forEach(message => message.destroy())
-    }
-
-    this.messageArr.push(newMessage)
-    while (this.messageArr.length > 5) this.messageArr.shift()
-
-    this.battleLog = this.messageArr.map((message, i) => {
-      return this.game.add.text(x, y + (i * 18), message, style)
-    })
-  }
-
-  startBattle() {
-    this.game.inBattle = true
-    this.game.moveCount = 0
-    //instead of timer.puase, remove enemy appearance timer
-    // this.timer.removeAll()
-
-    this.game.signals.logSignal.dispatch("You've been attacked!")
-    this.game.character.animations.stop(true)
-
-    // Temporary data
-    const enemyData1 = {
-      frame: 0,
-      name: 'Werewolf',
-      level: 1,
-      HP: 20,
-    }
-    const enemyData2 = {
-      frame: 1,
-      name: 'Devil Wolf',
-      level: 1,
-      HP: 15,
-    }
-    const enemyData3 = {
-      frame: 2,
-      name: 'Werepanther',
-      level: 1,
-      HP: 30,
-    }
-    const enemyGroup = [enemyData1, enemyData2, enemyData3]
-
-    // Initialize battle and draw enemies
-    this.battle = new Battle(this.game, enemyGroup)
-    this.battle.initialize()
-    this.battle.children.forEach(enemy => {
-      enemy.draw()
-    })
-
-    // Create signal to listen for end
+    this.game.signals.hitEnemy = new Phaser.Signal()
+    this.game.signals.writeLog = new Phaser.Signal()
     this.game.signals.endBattle = new Phaser.Signal()
-    this.game.signals.endBattle.add(this.endBattle, this)
+    this.game.signals.castSpell = new Phaser.Signal()
+    this.game.signals.addMana = new Phaser.Signal()
+    this.game.signals.addExp = new Phaser.Signal()
+
+    this.game.signals.currentEnemies = new Phaser.Signal()
+
+    this.game.signals.inControl = new Phaser.Signal()
+    this.game.signals.inControl.add(this.setControlOfTetris, this)
   }
 
-  endBattle() {
-    this.game.inBattle = false
-    this.game.moveCount = 0
-    //remove enemy attacks, restart enemy appearance timer
-    // this.timer.removeAll()
-    // this.timer.loop(Phaser.Timer.SECOND * 15, this.startBattle, this)
-
-    this.game.signals.logSignal.dispatch('You won the battle!')
-    this.game.signals.expSignal.dispatch(50)
-    this.game.character.animations.play('victory')
-
-    this.battle.destroy()
-    this.game.signals.DMGtoMonster.dispose()
-    // this.timer.resume()
+  setControlOfTetris (bool){
+    this.isInControl = bool
   }
 
   update() {
     if (!this.game.inBattle && this.game.moveCount > 7) {
-      this.startBattle()
+      this.battleManager.startBattle()
     }
 
-    this.tetris.clock(this.time.elapsed, 1)
+    this.tetris.clock(this.time.elapsed, this.isInControl, 1)
 
-    if (this.keys.leftKey.isDown) {
-      this.tetris.move('left')
-    } else if (this.keys.rightKey.isDown) {
-      this.tetris.move('right')
-    } else if (this.keys.downKey.isDown) {
-      this.tetris.move('drop')
-    } else if (this.keys.upKey.isDown) {
-      this.tetris.move('rotate')
-    } else if (this.keys.spaceKey.isDown){
-      this.tetris.move('fastDrop');
+    if (this.isInControl === true) {
+      if (this.keys.leftKey.isDown) {
+        this.tetris.move('left')
+      } else if (this.keys.rightKey.isDown) {
+        this.tetris.move('right')
+      } else if (this.keys.downKey.isDown) {
+        this.tetris.move('drop')
+      } else if (this.keys.upKey.isDown) {
+        this.tetris.move('rotate')
+      } else if (this.keys.spaceKey.isDown){
+        this.tetris.move('fastDrop')
+      }
     }
   }
 

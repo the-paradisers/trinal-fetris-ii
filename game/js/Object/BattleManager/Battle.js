@@ -1,7 +1,6 @@
 // Dimensions vert: 65-720   hori: 1-400
 
 const Enemy = require('./Enemy')
-const Phaser = require('phaser-ce')
 
 class Battle extends Phaser.Group {
   constructor(game, enemyGroup) {
@@ -23,18 +22,14 @@ class Battle extends Phaser.Group {
 
   initialize() {
     this.initializeSignals()
-    // this.initializeEnemyAttacks()
     this.summonEnemies()
+    this.game.signals.currentEnemies.dispatch(this.children)
+    console.log(`initialize battle`)
+    console.log(this.children)
   }
 
-  // initializeEnemyAttacks () {
-  //   this.timer = this.game.time.events
-  //   this.timer.loop(Phaser.Timer.SECOND*5, this.game.addBottomRow, this)
-  // }
-
   initializeSignals() {
-    this.game.signals.DMGtoMonster = new Phaser.Signal()
-    this.game.signals.DMGtoMonster.add(this.takeDamage, this)
+    this.game.signals.hitEnemy.add(this.takeDamage, this)
   }
 
   summonEnemies() {
@@ -50,7 +45,7 @@ class Battle extends Phaser.Group {
   takeDamage(damage) {
     this.target.HP -= damage
     const message = `${this.target.name} HP: ${this.target.HP}!`
-    this.game.signals.logSignal.dispatch(message)
+    this.game.signals.writeLog.dispatch(message)
 
     if (this.target.HP <= 0) {
       this.die(this.target)
@@ -59,7 +54,8 @@ class Battle extends Phaser.Group {
 
   die(target) {
     this.remove(target, true)
-    this.game.signals.logSignal.dispatch(`${target.name} dead!`)
+    this.game.signals.currentEnemies.dispatch(this.children)
+    this.game.signals.writeLog.dispatch(`${target.name} dead!`)
     if (this.children.length) {
       this.target = this.children[0]
     } else {

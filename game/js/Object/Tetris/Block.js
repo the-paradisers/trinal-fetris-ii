@@ -9,12 +9,25 @@ class Block extends Phaser.Group {
     this.board = board
 
     this.queue = new BlockQueue()
-    this.queue.initialize()
+    this.enemies = []
 
     this.group = game.add.group()
     this.matrix = []
-    this.isFriendly = false
-    this.new()
+    this.pos = {x: 3, y: 0}
+
+    this.beingAttacked = false
+
+    this.initialize()
+  }
+
+  initialize() {
+    this.game.signals.currentEnemies.add(this.enemyTetris, this)
+    this.queue.initialize()
+    this.getNextBlock()
+  }
+
+  enemyTetris(enemiezzz){
+    this.enemies = enemiezzz
   }
 
   draw(scale, offset) {
@@ -32,7 +45,7 @@ class Block extends Phaser.Group {
   }
 
   drawNext() {
-    this.queue.next().block.forEach((row, y) => {
+    this.queue.next().forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
           this.group.create(
@@ -74,32 +87,45 @@ class Block extends Phaser.Group {
     })
   }
 
-  new() {
-    if (this.game.moveCount % 5 === 0){
-      this.queue.addEnemyBlock()
-    } else {
-      this.queue.addPlayerBlock()
-    }
-
-    let {block, friendly} = this.queue.getBlock()
-    this.matrix = block
-    this.isFriendly = friendly
-    if (!this.isFriendly){
-      let xPos = Math.floor(8 * Math.random())
-      this.pos.x = xPos
+  enemyAttack() {
+    this.beingAttacked = true
+    this.game.signals.inControl.dispatch(false)
+    console.log('number of enemies attacking', this.enemies.length)
+    // for (let i = 0; i < this.enemies.length; i++){
+      this.pos.x = Math.floor(8 * Math.random())
       this.pos.y = 0
-      this.fastDrop()
-    } else {
-      this.pos = {x: 3, y: 0}
-    }
+      this.matrix = this.queue.getEnemyBlock()
+    // }
+    // this.enemies.forEach(() => {
+    //   this.matrix = this.queue.getEnemyBlock()
+    //   this.fastDrop()
+    // })
+    this.beingAttacked = false
+  }
+
+  playerTurn () {
+    this.pos = {x: 3, y: 0}
+    this.matrix = this.queue.getBlock()
     if (this.collide()) {
       this.game.paused = true
       this.gameover()
     }
   }
 
+  getNextBlock() {
+    if (this.beingAttacked === false){
+      this.game.moveCount++
+    }
+    if (((this.game.moveCount + 1) % 5) === 0) {
+      if (this.beingAttacked === false) {
+        this.enemyAttack()
+      }
+    } else {
+      this.playerTurn()
+    }
+  }
+
   merge() {
-    this.game.moveCount++
     console.log('inside merge - moveCount')
     console.log(this.game.moveCount)
     this.matrix.forEach((row, y) => {
@@ -109,6 +135,7 @@ class Block extends Phaser.Group {
         }
       })
     })
+    this.game.signals.inControl.dispatch(true)
   }
 
   drop() {
@@ -116,7 +143,7 @@ class Block extends Phaser.Group {
     if (this.collide()) {
       this.pos.y--
       this.merge()
-      this.new()
+      this.getNextBlock()
       this.board.sweep()
     }
   }
@@ -127,7 +154,7 @@ class Block extends Phaser.Group {
     }
     this.pos.y--
     this.merge()
-    this.new()
+    this.getNextBlock()
     this.board.sweep()
   }
 

@@ -59,7 +59,7 @@ class Player extends Phaser.Group{
   }
 
   renderLevelText () {
-    //rendering not wokring
+    // rendering not working
     // this.lvlText = this.game.add.bitmapText(0, 0, 'fantasy', `LVL ${this.playerlvl}`, 32)
     this.lvlText = this.game.add.text(0, 0, `LVL ${this.playerlvl}`, {fill: 'white'})
     this.lvlText.x = Math.floor(this.sectionStartWidth + 210)
@@ -87,15 +87,9 @@ class Player extends Phaser.Group{
   }
 
   initializeSignal () {
-    this.game.signals.skillSignal = new Phaser.Signal()
-    this.game.signals.skillSignal.add(this.skillCasted, this)
-
-    this.game.signals.manaSignal = new Phaser.Signal()
-    this.game.signals.manaSignal.add(this.calculateMana, this)
-
-    this.game.signals.expSignal = new Phaser.Signal()
-    this.game.signals.expSignal.add(this.updateExp, this)
-
+    this.game.signals.castSpell.add(this.skillCasted, this)
+    this.game.signals.addMana.add(this.calculateMana, this)
+    this.game.signals.addExp.add(this.updateExp, this)
   }
 
   initializePlayerSprite () {
@@ -115,7 +109,7 @@ class Player extends Phaser.Group{
   }
 
   updateExp (exp) {
-    this.game.signals.logSignal.dispatch(`You gained ${exp} EXP!`)
+    this.game.signals.writeLog.dispatch(`You gained ${exp} EXP!`)
     this.currentExp += exp
     if (this.currentExp >= this.maxExp) {
       this.currentExp = 0
@@ -140,7 +134,7 @@ class Player extends Phaser.Group{
       this.currentMana += mana
       if (this.currentMana > this.maxMana) this.currentMana = this.maxMana
     } else {
-      this.game.signals.logSignal.dispatch("You're out of mana.")
+      this.game.signals.writeLog.dispatch("You're out of mana.")
     }
     this.manabar.destroy()
     this.renderMana()
@@ -148,13 +142,14 @@ class Player extends Phaser.Group{
 
   calculateMana (numLinesCleared) {
     if (numLinesCleared > 0) {
-      this.updateMana(Math.pow(2, numLinesCleared - 1) * 10)
+      const manaToAdd = Math.pow(2, numLinesCleared - 1) * 10
+      this.updateMana(manaToAdd)
     }
   }
 
   skillCasted (key) {
     //Damage to an enemy
-    this.game.signals.logSignal.dispatch(`You cast ${this.skills[key].name}!`)
+    this.game.signals.writeLog.dispatch(`You cast ${this.skills[key].name}!`)
 
     let mana
     switch(key) {
@@ -174,7 +169,7 @@ class Player extends Phaser.Group{
 
     if (this.currentMana - mana > 0){
       this.game.character.play('attack')
-      this.game.signals.DMGtoMonster.dispatch(this.skills[key].damage)
+      this.game.signals.hitEnemy.dispatch(this.skills[key].damage)
     }
     this.updateMana(-1 * mana)
   }
