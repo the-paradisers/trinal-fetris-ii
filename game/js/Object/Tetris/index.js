@@ -50,7 +50,7 @@ class Tetris extends Phaser.Group {
     }
     // movement time
     this.actionTimer += fixedElapse
-    if (this.actionTimer > 200){
+    if (this.actionTimer > 250){
       this.canMoveLeft = true
       this.canMoveRight = true
       this.canRotate = true

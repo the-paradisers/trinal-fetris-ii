@@ -32,11 +32,11 @@ class GameState extends Phaser.State {
     this.isInControl = true
     this.createSignals()
 
-    this.player = new Player(this.game)
-    this.player.initialize()
-
     this.tetris = new Tetris(this.game);
     this.tetris.draw()
+
+    this.player = new Player(this.game)
+    this.player.initialize()
 
     this.battleManager = new BattleManager(this.game)
     this.battleManager.initialize()
@@ -60,13 +60,13 @@ class GameState extends Phaser.State {
     this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
 
     this.keys.qKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.castSpell.dispatch('Q')})
+      if (this.game.inBattle && this.isInControl) this.game.signals.castSpell.dispatch('Q')})
     this.keys.wKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.castSpell.dispatch('W')})
+      if (this.game.inBattle && this.isInControl) this.game.signals.castSpell.dispatch('W')})
     this.keys.eKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.castSpell.dispatch('E')})
+      if (this.game.inBattle && this.isInControl) this.game.signals.castSpell.dispatch('E')})
     this.keys.rKey.onDown.add(() => {
-      if (this.game.inBattle) this.game.signals.castSpell.dispatch('R')})
+      if (this.game.inBattle && this.isInControl) this.game.signals.castSpell.dispatch('R')})
   }
 
   createSignals() {
