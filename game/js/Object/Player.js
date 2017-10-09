@@ -1,8 +1,3 @@
-/**
- * h: 129-720
- * w: 881-1280
- */
-
 const Phaser = require('phaser-ce')
 
 class Player extends Phaser.Group{
@@ -143,7 +138,9 @@ class Player extends Phaser.Group{
     }
   }
 
-  castSpell(key) {let mana
+  castSpell(key) {
+    console.log('checking for tetris', this)
+    let mana
     switch (key) {
       case 'Q':
         mana = this.skills.R.cost
