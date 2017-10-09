@@ -23,9 +23,6 @@ class GameState extends Phaser.State {
 
   create() {
     this.add.image(0, 0, 'background')
-    const plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
-    plains.scale.setTo(2, 2)
-
     this.game.inBattle = false
     this.game.moveCount = 0
 
@@ -43,6 +40,9 @@ class GameState extends Phaser.State {
 
     this.battleManager = new BattleManager(this.game)
     this.battleManager.initialize()
+
+    const plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
+    plains.scale.setTo(2, 2)
 
     this.keys = {
       upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
