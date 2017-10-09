@@ -72,18 +72,27 @@ class Battle extends Phaser.Group {
     // this.game.signals.endBattle.dispatch()
   }
 
-  targetEnemy(enemyIndex) {
-    if (enemyIndex >= this.children.length) return
-    console.log('enemy in targetEnemy', this.children[enemyIndex])
+  targetEnemy(keyNum) {
+    // Ensures nothing happens when an invalid number is pressed
+    // if (enemyIndex >= this.children.length) return
+    // Converts enemy's index in enemyGroup to enemy's position on screen
+    let enemyPos = -1
+    let enemyIndex = -1
+    this.children.forEach((enemy, index) => {
+      if (keyNum === enemy.pos) {
+        enemyPos = enemy.pos
+        enemyIndex = index
+      }
+    })
+    if (enemyPos === -1) return
+
     this.cursor.destroy()
     this.target = this.children[enemyIndex]
-    this.drawCursor(enemyIndex)
+    this.drawCursor(enemyPos)
   }
 
-  drawCursor(enemyIndex) {
-    const enemy = this.children[enemyIndex]
-    console.log('enemy in drawCursor', enemy)
-    this.cursor = this.game.add.image(enemy.coords.x, enemy.coords.y, 'cursor')
+  drawCursor(enemyPos) {
+    this.cursor = this.game.add.image(this.coords[enemyPos].x, this.coords[enemyPos].y, 'cursor')
     this.cursor.scale.setTo(2, 2)
   }
 }
