@@ -32,7 +32,7 @@ class Battle extends Phaser.Group {
   summonEnemies() {
     // Add enemies in enemyGroup to Battle group
     this.enemyGroup.forEach((enemyData, enemyIndex) => {
-      this.add(new Enemy(this.game, enemyData, this.coords[enemyIndex]))
+      this.add(new Enemy(this.game, enemyData, this.coords[enemyIndex], enemyIndex))
     }, this)
 
     // Set target to 1st child by default
@@ -64,21 +64,26 @@ class Battle extends Phaser.Group {
     this.game.signals.currentEnemies.dispatch(this.children)
     // this.game.signals.writeLog.dispatch(`${target.name} dead!`)
     if (this.children.length) {
-      this.target = this.children[0]
+      // this.target = this.children[0]
+      this.targetEnemy(0)
     } else {
       this.game.signals.endBattle.dispatch()
     }
-    this.game.signals.endBattle.dispatch()
+    // this.game.signals.endBattle.dispatch()
   }
 
   targetEnemy(enemyIndex) {
+    if (enemyIndex >= this.children.length) return
+    console.log('enemy in targetEnemy', this.children[enemyIndex])
     this.cursor.destroy()
     this.target = this.children[enemyIndex]
     this.drawCursor(enemyIndex)
   }
 
   drawCursor(enemyIndex) {
-    this.cursor = this.game.add.image(this.coords[enemyIndex].x, this.coords[enemyIndex].y, 'cursor')
+    const enemy = this.children[enemyIndex]
+    console.log('enemy in drawCursor', enemy)
+    this.cursor = this.game.add.image(enemy.coords.x, enemy.coords.y, 'cursor')
     this.cursor.scale.setTo(2, 2)
   }
 }

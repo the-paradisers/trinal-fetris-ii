@@ -50,21 +50,6 @@ class GameState extends Phaser.State {
     this.setKeyListeners()
   }
 
-  createSignals() {
-    this.game.signals = {}
-
-    this.game.signals.hitEnemy = new Phaser.Signal()
-    this.game.signals.writeLog = new Phaser.Signal()
-    this.game.signals.endBattle = new Phaser.Signal()
-    this.game.signals.castSpell = new Phaser.Signal()
-    this.game.signals.addMana = new Phaser.Signal()
-    this.game.signals.addExp = new Phaser.Signal()
-    this.game.signals.currentEnemies = new Phaser.Signal()
-    this.game.signals.inControl = new Phaser.Signal()
-
-    this.game.signals.inControl.add(this.setControlOfTetris, this)
-  }
-
   setKeyMaps() {
     this.keys = {
       upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
@@ -103,6 +88,22 @@ class GameState extends Phaser.State {
       if (this.game.inBattle) this.game.signals.selectTarget.dispatch(2)})
     this.keys.fourKey.onDown.add(() => {
       if (this.game.inBattle) this.game.signals.selectTarget.dispatch(3)})
+  }
+
+  createSignals() {
+    this.game.signals = {}
+
+    this.game.signals.hitEnemy = new Phaser.Signal()
+    this.game.signals.writeLog = new Phaser.Signal()
+    this.game.signals.endBattle = new Phaser.Signal()
+    this.game.signals.castSpell = new Phaser.Signal()
+    this.game.signals.addMana = new Phaser.Signal()
+    this.game.signals.addExp = new Phaser.Signal()
+    this.game.signals.selectTarget = new Phaser.Signal()
+    this.game.signals.currentEnemies = new Phaser.Signal()
+    this.game.signals.inControl = new Phaser.Signal()
+
+    this.game.signals.inControl.add(this.setControlOfTetris, this)
   }
 
   setControlOfTetris (bool){
