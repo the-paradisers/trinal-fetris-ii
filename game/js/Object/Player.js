@@ -132,7 +132,6 @@ class Player extends Phaser.Group{
   }
 
   castSpell(key) {
-    console.log('checking for tetris', this.game.state.states.Game.tetris.refresh)
     let mana
     switch (key) {
       case 'Q':
@@ -156,9 +155,7 @@ class Player extends Phaser.Group{
       this.game.signals.hitEnemy.dispatch(this.skills[key].damage)
       this.game.signals.writeLog.dispatch(`You cast ${this.skills[key].name}!`)
 
-      // this.game.state.states.Game.tetris.refresh()
       this.game.state.states.Game.tetris.block.group.removeAll()
-      console.log(this.game.state.states.Game.tetris)
       this.game.state.states.Game.tetris.block.getNextBlock()
       this.game.state.states.Game.tetris.draw()
 
