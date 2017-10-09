@@ -23,6 +23,9 @@ class Battle extends Phaser.Group {
   initialize() {
     this.initializeSignals()
     this.summonEnemies()
+    this.game.signals.currentEnemies.dispatch(this.children)
+    console.log(`initialize battle`)
+    console.log(this.children)
   }
 
   initializeSignals() {
@@ -51,6 +54,7 @@ class Battle extends Phaser.Group {
 
   die(target) {
     this.remove(target, true)
+    this.game.signals.currentEnemies.dispatch(this.children)
     this.game.signals.writeLog.dispatch(`${target.name} dead!`)
     if (this.children.length) {
       this.target = this.children[0]

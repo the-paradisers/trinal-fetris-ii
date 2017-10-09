@@ -35,10 +35,13 @@ class Tetris extends Phaser.Group {
     this.draw()
   }
 
-  clock(elapsed, rate = 1) {
-    // fall time
+  clock(elapsed, isInControl, rate = 1) {
     this.gameTimer += elapsed * Math.pow(1.15, rate - 1)
-    if (this.gameTimer > 1000){
+    if (isInControl && this.gameTimer > 1000){
+      this.gameTimer = 0
+      this.block.drop()
+      this.refresh()
+    } else if (!isInControl && this.gameTimer > 50) {
       this.gameTimer = 0
       this.block.drop()
       this.refresh()

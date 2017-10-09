@@ -32,13 +32,15 @@ class GameState extends Phaser.State {
     this.song = this.sound.add('walkMusic', 0.5, true, true)
     this.song.play()
 
+    this.isInControl = true
     this.createSignals()
 
-    this.tetris = new Tetris(this.game)
-    this.tetris.draw()
 
     this.player = new Player(this.game)
     this.player.initialize()
+
+    this.tetris = new Tetris(this.game);
+    this.tetris.draw()
 
     this.battleManager = new BattleManager(this.game)
     this.battleManager.initialize()
@@ -77,6 +79,15 @@ class GameState extends Phaser.State {
     this.game.signals.castSpell = new Phaser.Signal()
     this.game.signals.addMana = new Phaser.Signal()
     this.game.signals.addExp = new Phaser.Signal()
+
+    this.game.signals.currentEnemies = new Phaser.Signal()
+
+    this.game.signals.inControl = new Phaser.Signal()
+    this.game.signals.inControl.add(this.setControlOfTetris, this)
+  }
+
+  setControlOfTetris (bool){
+    this.isInControl = bool
   }
 
   update() {
@@ -84,22 +95,23 @@ class GameState extends Phaser.State {
       this.battleManager.startBattle()
     }
 
-    this.tetris.clock(this.time.elapsed, this.player.playerlvl)
+    this.tetris.clock(this.time.elapsed, this.isInControl, this.player.playerlvl)
 
-    if (this.keys.leftKey.isDown) {
-      this.tetris.move('left')
-    } else if (this.keys.rightKey.isDown) {
-      this.tetris.move('right')
-    } else if (this.keys.downKey.isDown) {
-      this.tetris.move('drop')
-    } else if (this.keys.upKey.isDown) {
-      this.tetris.move('rotate')
-    } else if (this.keys.spaceKey.isDown){
-      this.tetris.move('fastDrop')
+    if (this.isInControl === true) {
+      if (this.keys.leftKey.isDown) {
+        this.tetris.move('left')
+      } else if (this.keys.rightKey.isDown) {
+        this.tetris.move('right')
+      } else if (this.keys.downKey.isDown) {
+        this.tetris.move('drop')
+      } else if (this.keys.upKey.isDown) {
+        this.tetris.move('rotate')
+      } else if (this.keys.spaceKey.isDown){
+        this.tetris.move('fastDrop')
+      }
     }
   }
 
-  render() {}
 }
 
 module.exports = GameState
