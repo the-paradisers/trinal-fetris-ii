@@ -36,7 +36,7 @@ class Tetris extends Phaser.Group {
   }
 
   clock(elapsed, isInControl, rate = 1) {
-    this.gameTimer += elapsed * rate
+    this.gameTimer += elapsed * Math.pow(1.15, rate - 1)
     if (isInControl && this.gameTimer > 1000){
       this.gameTimer = 0
       this.block.drop()

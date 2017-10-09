@@ -95,7 +95,7 @@ class GameState extends Phaser.State {
       this.battleManager.startBattle()
     }
 
-    this.tetris.clock(this.time.elapsed, this.isInControl, 1)
+    this.tetris.clock(this.time.elapsed, this.isInControl, this.player.playerlvl)
 
     if (this.isInControl === true) {
       if (this.keys.leftKey.isDown) {
@@ -112,7 +112,6 @@ class GameState extends Phaser.State {
     }
   }
 
-  render() {}
 }
 
 module.exports = GameState
