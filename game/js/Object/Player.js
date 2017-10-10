@@ -11,9 +11,9 @@ class Player extends Phaser.Group{
     this.currentExp = 100
     this.maxExp = 150
 
-    this.healSkillLevel = 3
+    this.healSkillLevel = 1
     this.skills  = {
-      Q: { name: 'Fire Ball', lvl: 0, cost: 5, damage: 1, scale: 1 },
+      Q: { name: 'Heal', lvl: 0, cost: 5, damage: this.healSkillLevel, scale: 1 },
       W: { name: 'Lightning', lvl: 0, cost: 5, damage: 2, scale: 2 },
       E: { name: 'Icy Wind', lvl: 0, cost: 5, damage: 3, scale: 3 },
       R: { name: 'Drain Life', lvl: 0, cost: 5, damage: 4, scale: 4 },
@@ -134,9 +134,11 @@ class Player extends Phaser.Group{
 
   castSpell(key) {
     let mana
+    let heal = false
     switch (key) {
       case 'Q':
-        mana = this.skills.R.cost
+        mana = this.skills.Q.cost
+        heal = true
         break
       case 'W':
         mana = this.skills.W.cost
@@ -153,8 +155,13 @@ class Player extends Phaser.Group{
 
     if (this.currentMana - mana > 0){
       this.game.character.play('attack')
-      this.game.signals.hitEnemy.dispatch(this.skills[key].damage, false)
       this.game.signals.writeLog.dispatch(`You cast ${this.skills[key].name}!`)
+      if (heal) {
+        this.game.clearBottomRows(this.skills.Q.damage)
+      } else {
+        this.game.signals.hitEnemy.dispatch(this.skills[key].damage, false)
+      }
+
 
       const tetris = this.game.state.states.Game.tetris
       tetris.block.group.removeAll()
