@@ -53,40 +53,29 @@ class Battle extends Phaser.Group {
 
   die(target) {
     this.cursor.destroy()
-    // target.visible = false
     this.game.signals.writeLog.dispatch(`You killed ${target.name}!`)
-    // for (let i = 0; i < this.children.length; i++) {
-    //   if (this.children[i].visible) {
-    //     this.target = this.children[i]
-    //     this.drawCursor(i)
-    //     return
-    //   }
     this.remove(target, true)
     this.game.signals.currentEnemies.dispatch(this.children)
-    // this.game.signals.writeLog.dispatch(`${target.name} dead!`)
     if (this.children.length) {
-      // this.target = this.children[0]
-      this.targetEnemy(0)
+      // Intentionally invoke with no arg
+      this.targetEnemy()
     } else {
       this.game.signals.endBattle.dispatch()
     }
-    // this.game.signals.endBattle.dispatch()
   }
 
-  targetEnemy(keyNum) {
-    // Ensures nothing happens when an invalid number is pressed
-    // if (enemyIndex >= this.children.length) return
-    // Converts enemy's index in enemyGroup to enemy's position on screen
-    let enemyPos = -1
+  targetEnemy(enemyPos) {
+    // enemyIndex is its position in the enemyGroup array
+    // enemyPosition is its original position on screen (so the target keys 1-4 are consistent)
     let enemyIndex = -1
     this.children.forEach((enemy, index) => {
-      console.log('enemy in targetEnemy', enemy)
-      if (keyNum === enemy.pos) {
-        enemyPos = enemy.pos
-        enemyIndex = index
-      }
+      // When trying to auto target after killing enemy, set enemyPos to first available
+      if (enemyPos === undefined) enemyPos = enemy.pos
+      // When trying to manually target, ensure enemy is there
+      if (enemyPos === enemy.pos) enemyIndex = index
     })
-    if (enemyPos === -1) return
+    // If there is no enemy at that position, exit function
+    if (enemyIndex === -1) return
 
     this.cursor.destroy()
     this.target = this.children[enemyIndex]
