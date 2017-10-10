@@ -13,10 +13,10 @@ class Player extends Phaser.Group{
 
     this.healSkillLevel = 1
     this.skills  = {
-      Q: { name: 'Heal', lvl: 0, cost: 5, damage: this.healSkillLevel, scale: 1 },
+      Q: { name: 'Fire Ball', lvl: 0, cost: 5, damage: 1, scale: 1 },
       W: { name: 'Lightning', lvl: 0, cost: 5, damage: 2, scale: 2 },
       E: { name: 'Icy Wind', lvl: 0, cost: 5, damage: 3, scale: 3 },
-      R: { name: 'Drain Life', lvl: 0, cost: 5, damage: 4, scale: 4 },
+      R: { name: 'Heal', lvl: 0, cost: 5, damage: this.healSkillLevel, scale: 4 },
     }
 
     this.sectionStartWidth = this.game.world.width * 2 / 3
@@ -132,13 +132,16 @@ class Player extends Phaser.Group{
     }
   }
 
+  // Change method name and signal listener
   castSpell(key) {
+    // const manaCost = this.skills[key].cost
+    // if (this.currentMana < manaCost) return this.game.signals.writeLog.dispatch("You don't have enough mana!")
+
     let mana
     let heal = false
     switch (key) {
       case 'Q':
         mana = this.skills.Q.cost
-        heal = true
         break
       case 'W':
         mana = this.skills.W.cost
@@ -148,7 +151,9 @@ class Player extends Phaser.Group{
         break
       case 'R':
         mana = this.skills.R.cost
+        heal = true
         break
+        // return this.castHeal()
       default:
         throw new Error('Invalid Skill Input')
     }
@@ -168,8 +173,12 @@ class Player extends Phaser.Group{
       tetris.block.getNextBlock()
       tetris.draw()
 
+      this.updateMana(-1 * mana)
     }
-    this.updateMana(-1 * mana)
+  }
+
+  castHeal() {
+
   }
 }
 
