@@ -11,6 +11,7 @@ class Player extends Phaser.Group{
     this.currentExp = 100
     this.maxExp = 150
 
+    this.healSkillLevel = 3
     this.skills  = {
       Q: { name: 'Fire Ball', lvl: 0, cost: 5, damage: 1, scale: 1 },
       W: { name: 'Lightning', lvl: 0, cost: 5, damage: 2, scale: 2 },

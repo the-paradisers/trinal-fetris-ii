@@ -60,7 +60,7 @@ class GameState extends Phaser.State {
     this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
 
     this.keys.qKey.onDown.add(() => {
-      if (this.isInControl) this.game.clearBottomRows(2)})
+      if (this.isInControl) this.game.clearBottomRows(this.player.healSkillLevel)})
     this.keys.wKey.onDown.add(() => {
       if (this.game.inBattle && this.isInControl) this.game.signals.castSpell.dispatch('W')})
     this.keys.eKey.onDown.add(() => {
