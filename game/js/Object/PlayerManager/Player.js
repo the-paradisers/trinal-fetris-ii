@@ -1,23 +1,12 @@
 const Phaser = require('phaser-ce')
+const Stats = require('./Stats')
 
 class Player extends Phaser.Group{
 
   constructor(game) {
     super(game)
-    //player basic dmg is equal to player's level
-    this.playerlvl = 1
-    this.currentMana = 50
-    this.maxMana = 150
-    this.currentExp = 100
-    this.maxExp = 150
-
-    this.cureLevel = 1
-    this.spells  = {
-      Q: { name: 'Fire', lvl: 0, cost: 5, damage: 1, scale: 1 },
-      W: { name: 'Bolt', lvl: 0, cost: 5, damage: 2, scale: 2 },
-      E: { name: 'Ice', lvl: 0, cost: 5, damage: 3, scale: 3 },
-      R: { name: 'Cure', lvl: 0, cost: 5, damage: this.cureLevel, scale: 4 },
-    }
+    this.stats = new Stats(this.game)
+    this.game.playerlvl = this.stats.playerlvl
 
     this.sectionStartWidth = this.game.world.width * 2 / 3
     this.sectionTotalHeight = this.game.world.height
@@ -34,12 +23,14 @@ class Player extends Phaser.Group{
 
   renderMana() {
     const yOffSet = this.sectionTotalHeight * 0.5 - 75
-    this.manabar = this.renderBar(0x00d1ff, yOffSet - 25, this.currentMana)
+    const barWidth = this.stats.currentMana / this.stats.maxMana * 200
+    this.manabar = this.renderBar(0x00d1ff, yOffSet - 25, barWidth)
   }
 
   renderExp() {
     const yOffSet = this.sectionTotalHeight * 0.5 - 75
-    this.expbar = this.renderBar(0xffff00, yOffSet, this.currentExp)
+    const barWidth = this.stats.currentExp / this.stats.maxExp * 200
+    this.expbar = this.renderBar(0xffff00, yOffSet, barWidth)
   }
 
   renderBar(color, yOffSet, measure) {
@@ -54,14 +45,14 @@ class Player extends Phaser.Group{
   renderLevelText() {
     // final fantasy font (numbers & symbols) is not rendering
     // this.lvlText = this.game.add.bitmapText(0, 0, 'fantasy', `LVL ${this.playerlvl}`, 32)
-    this.lvlText = this.game.add.text(0, 0, `LVL ${this.playerlvl}`, {fill: 'white'})
+    this.lvlText = this.game.add.text(0, 0, `LVL ${this.stats.playerlvl}`, {fill: 'white'})
     this.lvlText.x = Math.floor(this.sectionStartWidth + 210)
     this.lvlText.y = Math.floor(this.sectionTotalHeight * 5 / 8)
   }
 
   renderSpells() {
     ['Q', 'W', 'E', 'R'].forEach( (key, i) => {
-      const spell = this.spells[key]
+      const spell = this.stats.spells[key]
       // this.game.add.bitmapText(
         // this.sectionStartWidth + 50,
         // 600 + 25*i, 'fantasy',
@@ -95,11 +86,10 @@ class Player extends Phaser.Group{
 
   updateExp(exp) {
     this.game.signals.writeLog.dispatch(`You gained ${exp} EXP!`)
-    this.currentExp += exp
-    if (this.currentExp >= this.maxExp) {
-      this.currentExp = 0
-      this.playerlvl++
-      this.updateSpellDamage()
+    this.stats.currentExp += exp
+    if (this.stats.currentExp >= this.stats.maxExp) {
+      this.stats.currentExp = 0
+      this.stats.playerLevelUp()
       this.lvlText.destroy()
       this.renderLevelText()
     }
@@ -108,18 +98,12 @@ class Player extends Phaser.Group{
     this.renderExp()
   }
 
-  updateSpellDamage() {
-    for (let key in this.spells){
-      this.spells[key].damage += this.spells[key].scale
-    }
-  }
-
   updateMana(mana) {
-    if (this.currentMana + mana > 0){
-      this.currentMana += mana
-      if (this.currentMana > this.maxMana) this.currentMana = this.maxMana
+    if (this.stats.currentMana + mana > 0){
+      this.stats.currentMana += mana
+      if (this.stats.currentMana > this.stats.maxMana) this.stats.currentMana = this.stats.maxMana
     } else {
-      this.currentMana = 0
+      this.stats.currentMana = 0
       // this.game.signals.writeLog.dispatch("You're out of mana.")
     }
     this.manabar.destroy()
@@ -134,10 +118,10 @@ class Player extends Phaser.Group{
   }
 
   spellRouter(key) {
-    const spell = this.spells[key]
+    const spell = this.stats.spells[key]
 
     // Ensure player has enough mana to cast spell
-    if (this.currentMana < spell.cost) return this.game.signals.writeLog.dispatch("You don't have enough mana!")
+    if (this.stats.currentMana < spell.cost) return this.game.signals.writeLog.dispatch("You don't have enough mana!")
 
     // Play animation, consume mana, and log message
     this.game.character.play('attack')

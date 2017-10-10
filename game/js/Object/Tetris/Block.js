@@ -168,7 +168,7 @@ class Block extends Phaser.Group {
   }
 
   merge() {
-    this.game.signals.hitEnemy.dispatch(this.game.player.playerlvl, !this.game.isInControl)
+    this.game.signals.hitEnemy.dispatch(this.game.playerlvl, !this.game.isInControl)
 
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
