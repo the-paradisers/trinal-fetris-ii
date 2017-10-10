@@ -20,9 +20,24 @@ class GameState extends Phaser.State {
     this.load.audio('battleMusic', 'audio/Battle_Scene.mp3')
     this.load.audio('walkMusic', 'audio/Main_Theme.mp3')
     this.load.audio('victoryMusic', 'audio/Victory_Fanfare.mp3')
+
+
+    this.load.audio('heal', 'audio/heal.wav')
+    this.load.audio('slash', 'audio/slash.wav')
+    this.load.audio('enemy', 'audio/enemyAttack.wav')
+    this.load.audio('fire', 'audio/fire.wav')
+    this.load.audio('bolt', 'audio/bolt.wav')
+    this.load.audio('ice', 'audio/ice.wav')
   }
 
   create() {
+    this.game.enemySound = this.sound.add('enemy', 1, false, true)
+    this.game.slash = this.sound.add('slash', 0.5, false, true)
+    this.game.heal = this.sound.add('heal', 0.5, false, true)
+    this.game.fire = this.sound.add('fire', 0.5, false, true)
+    this.game.ice = this.sound.add('ice', 0.5, false, true)
+    this.game.bolt = this.sound.add('bolt', 0.5, false, true)
+
     this.add.image(0, 0, 'background')
     const plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
     plains.scale.setTo(2, 2)
@@ -71,14 +86,17 @@ class GameState extends Phaser.State {
   setKeyListeners() {
     this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
 
+    this.keys.rKey.onDown.add(() => {
+      if (this.game.isInControl){
+        this.game.signals.castSpell.dispatch('R')
+    }
+    })
     this.keys.qKey.onDown.add(() => {
-      if (this.game.isInControl) this.game.signals.castSpell.dispatch('Q')})
+      if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('Q')})
     this.keys.wKey.onDown.add(() => {
       if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('W')})
     this.keys.eKey.onDown.add(() => {
       if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('E')})
-    this.keys.rKey.onDown.add(() => {
-      if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('R')})
     this.keys.oneKey.onDown.add(() => {
       if (this.game.inBattle) this.game.signals.selectTarget.dispatch(0)})
     this.keys.twoKey.onDown.add(() => {

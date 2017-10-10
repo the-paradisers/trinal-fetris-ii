@@ -169,7 +169,13 @@ class Block extends Phaser.Group {
 
   merge() {
     this.game.signals.hitEnemy.dispatch(this.game.player.playerlvl, !this.game.isInControl)
+    if (this.game.isInControl){
+      this.game.slash.play()
+    } else {
+      this.game.enemySound.play()
+    }
 
+    this.game.signals.inControl.dispatch(false)
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
@@ -177,6 +183,7 @@ class Block extends Phaser.Group {
         }
       })
     })
+    this.game.signals.inControl.dispatch(true)
   }
 
   drop() {

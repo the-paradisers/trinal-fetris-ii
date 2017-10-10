@@ -13,10 +13,10 @@ class Player extends Phaser.Group{
 
     this.healSkillLevel = 1
     this.skills  = {
-      Q: { name: 'Heal', lvl: 0, cost: 5, damage: this.healSkillLevel, scale: 1 },
-      W: { name: 'Lightning', lvl: 0, cost: 5, damage: 2, scale: 2 },
-      E: { name: 'Icy Wind', lvl: 0, cost: 5, damage: 3, scale: 3 },
-      R: { name: 'Drain Life', lvl: 0, cost: 5, damage: 4, scale: 4 },
+      R: { name: 'Heal', lvl: 0, cost: 5, damage: this.healSkillLevel, scale: 1 },
+      W: { name: 'Bolt', lvl: 0, cost: 5, damage: 2, scale: 2 },
+      E: { name: 'Ice', lvl: 0, cost: 5, damage: 3, scale: 3 },
+      Q: { name: 'Fire', lvl: 0, cost: 5, damage: 4, scale: 4 },
     }
 
     this.sectionStartWidth = this.game.world.width * 2 / 3
@@ -135,19 +135,24 @@ class Player extends Phaser.Group{
   castSpell(key) {
     let mana
     let heal = false
+    let soundEffect = this.game.slash
     switch (key) {
       case 'Q':
+        soundEffect = this.game.fire
         mana = this.skills.Q.cost
-        heal = true
         break
       case 'W':
+        soundEffect = this.game.bolt
         mana = this.skills.W.cost
         break
       case 'E':
+        soundEffect = this.game.ice
         mana = this.skills.E.cost
         break
       case 'R':
+        soundEffect = this.game.heal
         mana = this.skills.R.cost
+        heal = true
         break
       default:
         throw new Error('Invalid Skill Input')
@@ -156,6 +161,7 @@ class Player extends Phaser.Group{
     if (this.currentMana - mana > 0){
       this.game.character.play('attack')
       this.game.signals.writeLog.dispatch(`You cast ${this.skills[key].name}!`)
+      soundEffect.play()
       if (heal) {
         this.game.clearBottomRows(this.skills.Q.damage)
       } else {
