@@ -29,7 +29,7 @@ class GameState extends Phaser.State {
     this.song = this.sound.add('walkMusic', 0.5, true, true)
     this.song.play()
 
-    this.isInControl = true
+    this.game.isInControl = true
     this.createSignals()
 
     this.tetris = new Tetris(this.game);
@@ -60,13 +60,13 @@ class GameState extends Phaser.State {
     this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
 
     this.keys.qKey.onDown.add(() => {
-      if (this.game.inBattle && this.isInControl) this.game.signals.castSpell.dispatch('Q')})
+      if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('Q')})
     this.keys.wKey.onDown.add(() => {
-      if (this.game.inBattle && this.isInControl) this.game.signals.castSpell.dispatch('W')})
+      if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('W')})
     this.keys.eKey.onDown.add(() => {
-      if (this.game.inBattle && this.isInControl) this.game.signals.castSpell.dispatch('E')})
+      if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('E')})
     this.keys.rKey.onDown.add(() => {
-      if (this.game.inBattle && this.isInControl) this.game.signals.castSpell.dispatch('R')})
+      if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('R')})
   }
 
   createSignals() {
@@ -86,7 +86,7 @@ class GameState extends Phaser.State {
   }
 
   setControlOfTetris (bool){
-    this.isInControl = bool
+    this.game.isInControl = bool
   }
 
   update() {
@@ -94,9 +94,9 @@ class GameState extends Phaser.State {
       this.battleManager.startBattle()
     }
 
-    this.tetris.clock(this.time.elapsed, this.isInControl, this.player.playerlvl)
+    this.tetris.clock(this.time.elapsed, this.game.isInControl, this.player.playerlvl)
 
-    if (this.isInControl === true) {
+    if (this.game.isInControl === true) {
       if (this.keys.leftKey.isDown) {
         this.tetris.move('left')
       } else if (this.keys.rightKey.isDown) {
