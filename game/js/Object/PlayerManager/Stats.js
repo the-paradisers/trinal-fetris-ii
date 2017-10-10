@@ -29,15 +29,16 @@ class Stats extends Phaser.Group {
   }
 
   updateSkillStats() {
-    const manaCost = this.playerlvl * 10
+    const manaCost = 10
+    const healLevel = 2
     const attackDamage = this.playerlvl * this.attackPowerScale
     const spellDamage = this.playerlvl * this.spellPowerScale
 
     return {
-      Q: { name: 'Fire', cost: manaCost, damage: spellDamage },
-      W: { name: 'Bolt', cost: manaCost, damage: spellDamage },
-      E: { name: 'Ice', cost: manaCost, damage: spellDamage },
-      R: { name: 'Cure', cost: manaCost, damage: this.playerlvl },
+      Q: { name: 'Fire', cost: 20, damage: spellDamage },
+      W: { name: 'Bolt', cost: 20, damage: spellDamage },
+      E: { name: 'Ice', cost: 20, damage: spellDamage },
+      R: { name: 'Cure', cost: 20, damage: healLevel },
     }
   }
 }
