@@ -4,6 +4,7 @@ class Board extends Phaser.Group {
   constructor(game) {
     super(game)
     this.game.addBottomRow = this.addBottomRow.bind(this)
+    this.game.clearBottomRows = this.clearBottomRows.bind(this)
     this.createMatrix(10, 18)
     this.group = game.add.spriteBatch()
   }
@@ -53,6 +54,14 @@ class Board extends Phaser.Group {
     newRow[randomIdx] = 0
     this.matrix.push(newRow)
     this.matrix.shift()
+  }
+
+  clearBottomRows (numLines) {
+    const w = this.matrix[0].length
+    for (let i = 0; i < numLines; i++) {
+      this.matrix.unshift(new Array(w).fill(0))
+      this.matrix.pop()
+    }
   }
 }
 
