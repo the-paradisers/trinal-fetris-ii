@@ -44,10 +44,6 @@ class Board extends Phaser.Group {
       linesCleared++
     }
     this.game.signals.addMana.dispatch(linesCleared)
-    //playerlvl = player basic damage
-    if (this.game.signals.hitEnemy) {
-      this.game.signals.hitEnemy.dispatch(this.game.player.playerlvl)
-    }
   }
 
   addBottomRow () {

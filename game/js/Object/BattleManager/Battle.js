@@ -42,14 +42,16 @@ class Battle extends Phaser.Group {
     this.target = this.children[0]
   }
 
-  takeDamage(damage) {
-    this.target.HP -= damage
-    const message = `${this.target.name} HP: ${this.target.HP}!`
-    this.game.signals.writeLog.dispatch(message)
+  takeDamage(damage, friendlyfire) {
+    if (!friendlyfire){
+      this.target.HP -= damage
+      const message = `${this.target.name} HP: ${this.target.HP}!`
+      this.game.signals.writeLog.dispatch(message)
 
-    if (this.target.HP <= 0) {
-      this.die(this.target)
+      if (this.target.HP <= 0) {
+        this.die(this.target)
     }
+  }
   }
 
   die(target) {
