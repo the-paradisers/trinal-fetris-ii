@@ -1,7 +1,7 @@
 /* eslint-disable no-labels, complexity */
 
 const Tetris = require('./Object/Tetris')
-const Player = require('./Object/Player')
+const Player = require('./Object/PlayerManager/Player')
 const BattleManager = require('./Object/BattleManager')
 const Phaser = require('phaser-ce')
 

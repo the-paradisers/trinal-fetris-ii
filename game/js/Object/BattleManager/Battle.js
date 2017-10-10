@@ -43,7 +43,7 @@ class Battle extends Phaser.Group {
   takeDamage(damage, friendlyfire) {
     // If this is an enemy block, exit function
     if (friendlyfire) return
-
+    console.log('dmg taken', damage)
     this.target.HP -= damage
 
     // Ensure HP is never negative

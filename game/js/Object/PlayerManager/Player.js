@@ -1,23 +1,16 @@
 const Phaser = require('phaser-ce')
+const Stats = require('./Stats')
 
 class Player extends Phaser.Group{
 
   constructor(game) {
     super(game)
-    //player basic dmg is equal to player's level
-    this.playerlvl = 1
-    this.currentMana = 50
-    this.maxMana = 150
-    this.currentExp = 100
-    this.maxExp = 150
+    this.stats = new Stats(this.game)
+    this.game.playerlvl = this.stats.playerlvl
 
-    this.healSkillLevel = 1
-    this.skills  = {
-      Q: { name: 'Heal', lvl: 0, cost: 5, damage: this.healSkillLevel, scale: 1 },
-      W: { name: 'Lightning', lvl: 0, cost: 5, damage: 2, scale: 2 },
-      E: { name: 'Icy Wind', lvl: 0, cost: 5, damage: 3, scale: 3 },
-      R: { name: 'Drain Life', lvl: 0, cost: 5, damage: 4, scale: 4 },
-    }
+    //player basic dmg is equal to player's level
+    this.currentMana = 50
+    this.currentExp = 100
 
     this.sectionStartWidth = this.game.world.width * 2 / 3
     this.sectionTotalHeight = this.game.world.height
@@ -54,14 +47,14 @@ class Player extends Phaser.Group{
   renderLevelText() {
     // final fantasy font (numbers & symbols) is not rendering
     // this.lvlText = this.game.add.bitmapText(0, 0, 'fantasy', `LVL ${this.playerlvl}`, 32)
-    this.lvlText = this.game.add.text(0, 0, `LVL ${this.playerlvl}`, {fill: 'white'})
+    this.lvlText = this.game.add.text(0, 0, `LVL ${this.stats.playerlvl}`, {fill: 'white'})
     this.lvlText.x = Math.floor(this.sectionStartWidth + 210)
     this.lvlText.y = Math.floor(this.sectionTotalHeight * 5 / 8)
   }
 
   renderSkills() {
     ['Q', 'W', 'E', 'R'].forEach( (key, i) => {
-      const skill = this.skills[key]
+      const skill = this.stats.skills[key]
       // this.game.add.bitmapText(
         // this.sectionStartWidth + 50,
         // 600 + 25*i, 'fantasy',
@@ -96,10 +89,9 @@ class Player extends Phaser.Group{
   updateExp(exp) {
     this.game.signals.writeLog.dispatch(`You gained ${exp} EXP!`)
     this.currentExp += exp
-    if (this.currentExp >= this.maxExp) {
+    if (this.currentExp >= this.stats.maxExp) {
       this.currentExp = 0
-      this.playerlvl++
-      this.updateSkillDamage()
+      this.stats.playerLevelUp()
       this.lvlText.destroy()
       this.renderLevelText()
     }
@@ -108,16 +100,10 @@ class Player extends Phaser.Group{
     this.renderExp()
   }
 
-  updateSkillDamage() {
-    for (let key in this.skills){
-      this.skills[key].damage += this.skills[key].scale
-    }
-  }
-
   updateMana(mana) {
     if (this.currentMana + mana > 0){
       this.currentMana += mana
-      if (this.currentMana > this.maxMana) this.currentMana = this.maxMana
+      if (this.currentMana > this.stats.maxMana) this.currentMana = this.stats.maxMana
     } else {
       this.game.signals.writeLog.dispatch("You're out of mana.")
     }
@@ -137,17 +123,17 @@ class Player extends Phaser.Group{
     let heal = false
     switch (key) {
       case 'Q':
-        mana = this.skills.Q.cost
+        mana = this.stats.skills.Q.cost
         heal = true
         break
       case 'W':
-        mana = this.skills.W.cost
+        mana = this.stats.skills.W.cost
         break
       case 'E':
-        mana = this.skills.E.cost
+        mana = this.stats.skills.E.cost
         break
       case 'R':
-        mana = this.skills.R.cost
+        mana = this.stats.skills.R.cost
         break
       default:
         throw new Error('Invalid Skill Input')
@@ -155,13 +141,12 @@ class Player extends Phaser.Group{
 
     if (this.currentMana - mana > 0){
       this.game.character.play('attack')
-      this.game.signals.writeLog.dispatch(`You cast ${this.skills[key].name}!`)
+      this.game.signals.writeLog.dispatch(`You cast ${this.stats.skills[key].name}!`)
       if (heal) {
-        this.game.clearBottomRows(this.skills.Q.damage)
+        this.game.clearBottomRows(this.stats.skills.Q.damage)
       } else {
-        this.game.signals.hitEnemy.dispatch(this.skills[key].damage, false)
+        this.game.signals.hitEnemy.dispatch(this.stats.skills[key].damage, false)
       }
-
 
       const tetris = this.game.state.states.Game.tetris
       tetris.block.group.removeAll()
