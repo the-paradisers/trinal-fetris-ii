@@ -40,9 +40,15 @@ class Battle extends Phaser.Group {
     this.targetEnemy(0)
   }
 
-  takeDamage(damage) {
+  takeDamage(damage, friendlyfire) {
+    // If this is an enemy block, exit function
+    if (friendlyfire) return
+
     this.target.HP -= damage
+
+    // Ensure HP is never negative
     if (this.target.HP < 0) this.target.HP = 0
+
     const message = `${this.target.name} HP: ${this.target.HP}!`
     this.game.signals.writeLog.dispatch(message)
 
