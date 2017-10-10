@@ -8,10 +8,6 @@ class Player extends Phaser.Group{
     this.stats = new Stats(this.game)
     this.game.playerlvl = this.stats.playerlvl
 
-    //player basic dmg is equal to player's level
-    this.currentMana = 50
-    this.currentExp = 100
-
     this.sectionStartWidth = this.game.world.width * 2 / 3
     this.sectionTotalHeight = this.game.world.height
   }
@@ -20,19 +16,21 @@ class Player extends Phaser.Group{
     this.game.player = this
     this.renderMana()
     this.renderExp()
-    this.renderSkills()
+    this.renderSpells()
     this.initializeSignal()
     this.initializePlayerSprite()
   }
 
   renderMana() {
     const yOffSet = this.sectionTotalHeight * 0.5 - 75
-    this.manabar = this.renderBar(0x00d1ff, yOffSet - 25, this.currentMana)
+    const barWidth = this.stats.currentMana / this.stats.maxMana * 200
+    this.manabar = this.renderBar(0x00d1ff, yOffSet - 25, barWidth)
   }
 
   renderExp() {
     const yOffSet = this.sectionTotalHeight * 0.5 - 75
-    this.expbar = this.renderBar(0xffff00, yOffSet, this.currentExp)
+    const barWidth = this.stats.currentExp / this.stats.maxExp * 200
+    this.expbar = this.renderBar(0xffff00, yOffSet, barWidth)
   }
 
   renderBar(color, yOffSet, measure) {
@@ -52,21 +50,21 @@ class Player extends Phaser.Group{
     this.lvlText.y = Math.floor(this.sectionTotalHeight * 5 / 8)
   }
 
-  renderSkills() {
+  renderSpells() {
     ['Q', 'W', 'E', 'R'].forEach( (key, i) => {
-      const skill = this.stats.skills[key]
+      const spell = this.stats.spells[key]
       // this.game.add.bitmapText(
         // this.sectionStartWidth + 50,
         // 600 + 25*i, 'fantasy',
-      //   `${key} - ${skill.name}`, 16)
+      //   `${key} - ${spell.name}`, 16)
       this.game.add.text(
         this.sectionStartWidth + 50, 600 + 25 * i,
-        `${key} - ${skill.name}`, {fill: 'white'})
+        `${key} - ${spell.name}`, {fill: 'white'})
     })
   }
 
   initializeSignal() {
-    this.game.signals.castSpell.add(this.castSpell, this)
+    this.game.signals.castSpell.add(this.spellRouter, this)
     this.game.signals.addMana.add(this.calculateMana, this)
     this.game.signals.addExp.add(this.updateExp, this)
   }
@@ -88,9 +86,9 @@ class Player extends Phaser.Group{
 
   updateExp(exp) {
     this.game.signals.writeLog.dispatch(`You gained ${exp} EXP!`)
-    this.currentExp += exp
-    if (this.currentExp >= this.stats.maxExp) {
-      this.currentExp = 0
+    this.stats.currentExp += exp
+    if (this.stats.currentExp >= this.stats.maxExp) {
+      this.stats.currentExp = 0
       this.stats.playerLevelUp()
       this.lvlText.destroy()
       this.renderLevelText()
@@ -101,11 +99,12 @@ class Player extends Phaser.Group{
   }
 
   updateMana(mana) {
-    if (this.currentMana + mana > 0){
-      this.currentMana += mana
-      if (this.currentMana > this.stats.maxMana) this.currentMana = this.stats.maxMana
+    if (this.stats.currentMana + mana > 0){
+      this.stats.currentMana += mana
+      if (this.stats.currentMana > this.stats.maxMana) this.stats.currentMana = this.stats.maxMana
     } else {
-      this.game.signals.writeLog.dispatch("You're out of mana.")
+      this.stats.currentMana = 0
+      // this.game.signals.writeLog.dispatch("You're out of mana.")
     }
     this.manabar.destroy()
     this.renderMana()
@@ -118,44 +117,58 @@ class Player extends Phaser.Group{
     }
   }
 
-  castSpell(key) {
-    let mana
-    let heal = false
-    switch (key) {
-      case 'Q':
-        mana = this.stats.skills.Q.cost
-        heal = true
+  spellRouter(key) {
+    const spell = this.stats.spells[key]
+
+    // Ensure player has enough mana to cast spell
+    if (this.stats.currentMana < spell.cost) return this.game.signals.writeLog.dispatch("You don't have enough mana!")
+
+    // Play animation, consume mana, and log message
+    this.game.character.play('attack')
+    this.updateMana(-spell.cost)
+    this.game.signals.writeLog.dispatch(`You cast ${spell.name}!`)
+
+    // Route to proper spell method
+    switch (spell.name) {
+      case 'Fire':
+        this.castFire(spell)
         break
-      case 'W':
-        mana = this.stats.skills.W.cost
+      case 'Bolt':
+        this.castBolt(spell)
         break
-      case 'E':
-        mana = this.stats.skills.E.cost
+      case 'Ice':
+        this.castIce(spell)
         break
-      case 'R':
-        mana = this.stats.skills.R.cost
+      case 'Cure':
+        this.castCure(spell)
         break
       default:
-        throw new Error('Invalid Skill Input')
+        throw new Error('Invalid Spell Input')
     }
 
-    if (this.currentMana - mana > 0){
-      this.game.character.play('attack')
-      this.game.signals.writeLog.dispatch(`You cast ${this.stats.skills[key].name}!`)
-      if (heal) {
-        this.game.clearBottomRows(this.stats.skills.Q.damage)
-      } else {
-        this.game.signals.hitEnemy.dispatch(this.stats.skills[key].damage, false)
-      }
-
-      const tetris = this.game.state.states.Game.tetris
-      tetris.block.group.removeAll()
-      tetris.block.getNextBlock()
-      tetris.draw()
-
-    }
-    this.updateMana(-1 * mana)
+    // Eat block
+    const tetris = this.game.state.states.Game.tetris
+    tetris.block.group.removeAll()
+    tetris.block.getNextBlock()
+    tetris.draw()
   }
+
+  castFire(fireData) {
+    this.game.signals.hitEnemy.dispatch(fireData.damage, false)
+  }
+
+  castBolt(boltData) {
+    this.game.signals.hitEnemy.dispatch(boltData.damage, false)
+  }
+
+  castIce(iceData) {
+    this.game.signals.hitEnemy.dispatch(iceData.damage, false)
+  }
+
+  castCure(cureData) {
+    this.game.clearBottomRows(cureData.damage)
+  }
+
 }
 
 module.exports = Player
