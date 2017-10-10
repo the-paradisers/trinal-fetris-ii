@@ -42,10 +42,11 @@ class Battle extends Phaser.Group {
 
   takeDamage(damage) {
     this.target.HP -= damage
+    if (this.target.HP < 0) this.target.HP = 0
     const message = `${this.target.name} HP: ${this.target.HP}!`
     this.game.signals.writeLog.dispatch(message)
 
-    if (this.target.HP <= 0) {
+    if (this.target.HP === 0) {
       this.die(this.target)
     }
   }
@@ -79,6 +80,7 @@ class Battle extends Phaser.Group {
     let enemyPos = -1
     let enemyIndex = -1
     this.children.forEach((enemy, index) => {
+      console.log('enemy in targetEnemy', enemy)
       if (keyNum === enemy.pos) {
         enemyPos = enemy.pos
         enemyIndex = index
