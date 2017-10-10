@@ -153,7 +153,7 @@ class Player extends Phaser.Group{
 
     if (this.currentMana - mana > 0){
       this.game.character.play('attack')
-      this.game.signals.hitEnemy.dispatch(this.skills[key].damage)
+      this.game.signals.hitEnemy.dispatch(this.skills[key].damage, false)
       this.game.signals.writeLog.dispatch(`You cast ${this.skills[key].name}!`)
 
       const tetris = this.game.state.states.Game.tetris

@@ -161,13 +161,15 @@ class Block extends Phaser.Group {
         this.enemyAttacksSoFar = 0
       }
     } else {
+      this.game.signals.inControl.dispatch(true)
       this.playerTurn()
       this.game.moveCount++
-      this.game.signals.inControl.dispatch(true)
     }
   }
 
   merge() {
+    this.game.signals.hitEnemy.dispatch(this.game.player.playerlvl, !this.game.isInControl)
+
     this.matrix.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
