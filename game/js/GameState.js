@@ -94,18 +94,14 @@ class GameState extends Phaser.State {
 
   setKeyListeners() {
     this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
-
-    this.keys.rKey.onDown.add(() => {
-      if (this.game.isInControl){
-        this.game.signals.castSpell.dispatch('R')
-    }
-    })
     this.keys.qKey.onDown.add(() => {
       if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('Q')})
     this.keys.wKey.onDown.add(() => {
       if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('W')})
     this.keys.eKey.onDown.add(() => {
       if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('E')})
+    this.keys.rKey.onDown.add(() => {
+      if (this.game.isInControl) this.game.signals.castSpell.dispatch('R')})
     this.keys.oneKey.onDown.add(() => {
       if (this.game.inBattle) this.game.signals.selectTarget.dispatch(0)})
     this.keys.twoKey.onDown.add(() => {
