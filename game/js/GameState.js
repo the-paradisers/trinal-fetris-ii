@@ -21,7 +21,8 @@ class GameState extends Phaser.State {
     this.load.audio('walkMusic', 'audio/Main_Theme.mp3')
     this.load.audio('victoryMusic', 'audio/Victory_Fanfare.mp3')
 
-    this.load.spritesheet('healAnimation', 'img/attacks/healSpritesheet.png', 100, 100, 21)
+    this.load.spritesheet('healAnimation', 'img/attacks/healSpritesheet.png', 100, 100)
+    this.load.spritesheet('fireball', 'img/attacks/fireSpritesheet.png', 100, 100)
 
     this.load.audio('heal', 'audio/heal.wav')
     this.load.audio('slash', 'audio/slash.wav')
@@ -126,6 +127,8 @@ class GameState extends Phaser.State {
     this.game.signals.inControl = new Phaser.Signal()
 
     this.game.signals.inControl.add(this.setControlOfTetris, this)
+
+    this.game.signals.fireAttack = new Phaser.Signal()
   }
 
   setControlOfTetris (bool){

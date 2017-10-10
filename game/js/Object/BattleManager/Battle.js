@@ -27,6 +27,7 @@ class Battle extends Phaser.Group {
   initializeSignals() {
     this.game.signals.hitEnemy.add(this.takeDamage, this)
     this.game.signals.selectTarget.add(this.targetEnemy, this)
+    this.game.signals.fireAttack.add(this.animateFireBall, this)
   }
 
   summonEnemies() {
@@ -92,6 +93,14 @@ class Battle extends Phaser.Group {
     this.cursor = this.game.add.image(this.coords[enemyPos].x, this.coords[enemyPos].y, 'cursor')
     this.cursor.scale.setTo(2, 2)
   }
+
+  animateFireBall() {
+      this.fireBall = this.game.add.sprite(this.target.coords.x, this.target.coords.y, 'fireball', 16)
+      this.fireBall.scale.setTo(2, 2)
+      this.fireAnim = this.fireBall.animations.add('fireAttack', [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 24)
+      this.fireAnim.onComplete.add(() => {this.fireBall.destroy()}, this)
+      this.fireBall.animations.play('fireAttack')
+    }
 }
 
 module.exports = Battle
