@@ -1,5 +1,5 @@
 class Enemy extends Phaser.Group {
-  constructor(game, data, coords) {
+  constructor(game, data, coords, pos) {
     super(game)
 
     this.frame = data.frame
@@ -7,24 +7,16 @@ class Enemy extends Phaser.Group {
     this.level = data.level
     this.HP = data.HP
     this.coords = coords
+    this.pos = pos
   }
 
   draw() {
     const x = this.coords.x
     const y = this.coords.y
-    const enemyHeight = 130
-    const style = {
-      fill: 'white',
-      font: '14pt Arial'
-    }
 
     // Draw sprite
     const enemySprite = this.create(x, y, 'enemy-animals', this.frame)
     enemySprite.scale.setTo(2, 2)
-
-    // Draw name
-    // const nameplate = new Phaser.Text(this.game, x, y + enemyHeight, this.name.toUpperCase(), style)
-    // this.addChild(nameplate)
   }
 }
 

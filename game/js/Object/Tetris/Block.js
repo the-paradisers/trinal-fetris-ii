@@ -35,7 +35,7 @@ class Block extends Phaser.Group {
 
   enemyTetris(enemiezzz){
     this.enemies = enemiezzz
-    console.log(`tetris enemies: ${this.enemies.length}`)
+    // console.log(`tetris enemies: ${this.enemies.length}`)
     this.numberOfEnemies = this.enemies.length
   }
 

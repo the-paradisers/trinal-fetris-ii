@@ -3,7 +3,7 @@ const Phaser = require('phaser-ce')
 class TitleState extends Phaser.State {
 
     preload() {
-      this.game.load.spritesheet('title', 'img/TITLESCREEN.png', 1280, 720)
+      this.game.load.spritesheet('title', 'img/titleScreen.png', 1280, 720)
       this.game.load.audio('titleAudio', 'audio/Prelude.mp3', true)
     }
 

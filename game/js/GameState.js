@@ -8,13 +8,14 @@ const Phaser = require('phaser-ce')
 class GameState extends Phaser.State {
 
   preload() {
-    this.load.image('background', 'img/TF2BACKGROUND.png')
+    this.load.image('background', 'img/UIFrames.png')
     this.load.bitmapFont('fantasy', 'img/font/font.png', 'img/font/font.fnt')
     this.load.image('addSkillPoint', 'img/addskillpoint.png')
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
     this.load.spritesheet('enemy-animals', 'img/enemy-animals.png', 100, 100, 32)
     this.load.spritesheet('player', 'img/player.png', 50, 52, 7)
     this.load.spritesheet('plains', 'img/background/Plains.gif', 512, 64)
+    this.load.image('cursor', 'img/cursor.png')
 
     this.load.audio('battleMusic', 'audio/Battle_Scene.mp3')
     this.load.audio('walkMusic', 'audio/Main_Theme.mp3')
@@ -23,6 +24,9 @@ class GameState extends Phaser.State {
 
   create() {
     this.add.image(0, 0, 'background')
+    const plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
+    plains.scale.setTo(2, 2)
+
     this.game.inBattle = false
     this.game.moveCount = 0
 
@@ -41,9 +45,11 @@ class GameState extends Phaser.State {
     this.battleManager = new BattleManager(this.game)
     this.battleManager.initialize()
 
-    const plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
-    plains.scale.setTo(2, 2)
+    this.setKeyMaps()
+    this.setKeyListeners()
+  }
 
+  setKeyMaps() {
     this.keys = {
       upKey: this.game.input.keyboard.addKey(Phaser.Keyboard.UP),
       downKey: this.game.input.keyboard.addKey(Phaser.Keyboard.DOWN),
@@ -55,8 +61,14 @@ class GameState extends Phaser.State {
       rKey: this.game.input.keyboard.addKey(Phaser.Keyboard.R),
       spaceKey: this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR),
       escKey: this.game.input.keyboard.addKey(Phaser.Keyboard.ESC),
+      oneKey: this.game.input.keyboard.addKey(Phaser.Keyboard.ONE),
+      twoKey: this.game.input.keyboard.addKey(Phaser.Keyboard.TWO),
+      threeKey: this.game.input.keyboard.addKey(Phaser.Keyboard.THREE),
+      fourKey: this.game.input.keyboard.addKey(Phaser.Keyboard.FOUR),
     }
+  }
 
+  setKeyListeners() {
     this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
 
     this.keys.qKey.onDown.add(() => {
@@ -67,6 +79,14 @@ class GameState extends Phaser.State {
       if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('E')})
     this.keys.rKey.onDown.add(() => {
       if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('R')})
+    this.keys.oneKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.selectTarget.dispatch(0)})
+    this.keys.twoKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.selectTarget.dispatch(1)})
+    this.keys.threeKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.selectTarget.dispatch(2)})
+    this.keys.fourKey.onDown.add(() => {
+      if (this.game.inBattle) this.game.signals.selectTarget.dispatch(3)})
   }
 
   createSignals() {
@@ -78,10 +98,10 @@ class GameState extends Phaser.State {
     this.game.signals.castSpell = new Phaser.Signal()
     this.game.signals.addMana = new Phaser.Signal()
     this.game.signals.addExp = new Phaser.Signal()
-
+    this.game.signals.selectTarget = new Phaser.Signal()
     this.game.signals.currentEnemies = new Phaser.Signal()
-
     this.game.signals.inControl = new Phaser.Signal()
+
     this.game.signals.inControl.add(this.setControlOfTetris, this)
   }
 
