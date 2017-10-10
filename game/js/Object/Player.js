@@ -163,6 +163,8 @@ class Player extends Phaser.Group{
       this.game.signals.writeLog.dispatch(`You cast ${this.skills[key].name}!`)
       soundEffect.play()
       if (heal) {
+        this.game.healAnimation.visible = true
+        this.game.healing.play()
         this.game.clearBottomRows(this.skills.Q.damage)
       } else {
         this.game.signals.hitEnemy.dispatch(this.skills[key].damage, false)

@@ -21,6 +21,7 @@ class GameState extends Phaser.State {
     this.load.audio('walkMusic', 'audio/Main_Theme.mp3')
     this.load.audio('victoryMusic', 'audio/Victory_Fanfare.mp3')
 
+    this.load.spritesheet('healAnimation', 'img/attacks/healSpritesheet.png', 100, 100, 21)
 
     this.load.audio('heal', 'audio/heal.wav')
     this.load.audio('slash', 'audio/slash.wav')
@@ -31,6 +32,8 @@ class GameState extends Phaser.State {
   }
 
   create() {
+
+
     this.game.enemySound = this.sound.add('enemy', 1, false, true)
     this.game.slash = this.sound.add('slash', 0.5, false, true)
     this.game.heal = this.sound.add('heal', 0.5, false, true)
@@ -56,6 +59,12 @@ class GameState extends Phaser.State {
 
     this.player = new Player(this.game)
     this.player.initialize()
+
+    this.game.healAnimation = this.game.add.sprite(780, 240, 'healAnimation')
+    this.game.healAnimation.scale.setTo(3, 3)
+    this.game.healing = this.game.healAnimation.animations.add('healAnimation', null, 24, false )
+    this.game.healAnimation.visible = false
+    this.game.healing.onComplete.add(() => {this.game.healAnimation.visible = false}, this)
 
     this.battleManager = new BattleManager(this.game)
     this.battleManager.initialize()
