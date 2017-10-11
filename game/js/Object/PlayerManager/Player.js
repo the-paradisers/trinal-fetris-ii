@@ -71,11 +71,15 @@ class Player extends Phaser.Group{
     this.walk = this.game.character.animations.add('walk', [0, 1], 4, true)
 
     this.victory = this.game.character.animations.add('victory', [0, 4, 0, 4, 0, 4], 3)
-    this.victory.onComplete.add(() => this.walk.play(), this)
+    this.victory.onComplete.add(() => {
+      this.walk.play()
+      }, this)
 
     this.attack = this.game.character.animations.add('attack', [1, 2, 3, 1], 4)
 
     this.game.character.animations.play('walk')
+    this.game.character.scale.x *= -1
+    this.game.character.x += 156
   }
 
   updateExp(exp) {
@@ -118,7 +122,11 @@ class Player extends Phaser.Group{
     if (this.stats.currentMana < spell.cost) return this.game.signals.writeLog.dispatch("You don't have enough mana!")
 
     // Play animation, consume mana, and log message
-    this.game.character.play('attack')
+    if (this.game.inBattle) {
+      this.game.character.play('attack')
+    } else {
+      if (!this.victory.isPlaying) this.game.character.play('walk')
+    }
     this.updateMana(-spell.cost)
     this.game.signals.writeLog.dispatch(`You cast ${spell.name}!`)
 

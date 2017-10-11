@@ -6,6 +6,7 @@ Phaser.Device.whenReady(() => {
   const titleState     = require('./TitleState')
   const menuState     = require('./MenuState')
   const gameState     = require('./GameState')
+  const gameOverState     = require('./GameOverState')
 
   const game = new Phaser.Game(1280, 720, Phaser.AUTO, 'game')
 
@@ -24,6 +25,7 @@ Phaser.Device.whenReady(() => {
   game.state.add('TitleScreen',   titleState)
   game.state.add('TitleMenu',     menuState)
   game.state.add('Game',          gameState)
+  game.state.add('GameOver',      gameOverState)
 
   game.state.start('Boot')
 })
