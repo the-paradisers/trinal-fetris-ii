@@ -31,16 +31,16 @@ class GameState extends Phaser.State {
   create() {
     this.add.image(0, 0, 'background')
 
-    this.game.levelBackground = ['plains', 'desert', 'forest', 'sea', 'snow', 'swamp'].map( bg => {
+    //set all backgrounds but not visible
+    this.game.background = ['plains', 'desert', 'forest', 'sea', 'snow', 'swamp'].map( bg => {
       const bgImg = this.add.tileSprite(0, 0, 640, 64, bg)
       bgImg.scale.setTo(2, 2)
       bgImg.visible = false
       return bgImg
     })
-    this.game.currentBackgroundIdx = 0
-    this.game.levelBackground[this.game.currentBackgroundIdx].visible = true
-    // this.plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
-    // this.plains.scale.setTo(2, 2)
+    //show first background initially
+    this.game.backgroundIdx = 0
+    this.game.background[this.game.backgroundIdx].visible = true
 
     this.game.inBattle = false
     this.game.moveCount = 0
@@ -125,8 +125,9 @@ class GameState extends Phaser.State {
   }
 
   update() {
+    //if not in battle move the background to the left
     if (!this.game.inBattle) {
-      this.game.levelBackground[this.game.currentBackgroundIdx].tilePosition.x -= 1
+      this.game.background[this.game.backgroundIdx].tilePosition.x -= 1
     }
 
     if (!this.game.inBattle && this.game.moveCount > 7) {

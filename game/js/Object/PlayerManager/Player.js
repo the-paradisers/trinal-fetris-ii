@@ -76,6 +76,7 @@ class Player extends Phaser.Group{
 
     this.walk = this.game.character.animations.add('walk', [0, 1], 4, true)
     this.walk.onStart.add(() => {
+      //flip and reposition
       this.game.character.scale.x *= -1
       this.game.character.x += 156
       }, this)

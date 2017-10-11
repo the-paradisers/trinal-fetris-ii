@@ -28,10 +28,12 @@ class Stats extends Phaser.Group {
     // this.maxExp = this.playerlvl * this.maxExpScale
     this.spells = this.updateSkillStats()
 
-    this.game.levelBackground[this.game.currentBackgroundIdx].visible = false
-    this.game.currentBackgroundIdx += 1
-    if (this.game.currentBackgroundIdx === 6) this.game.currentBackgroundIdx = 0
-    this.game.levelBackground[this.game.currentBackgroundIdx].visible = true
+    //switching to next background
+    this.game.background[this.game.backgroundIdx].visible = false
+    this.game.backgroundIdx += 1
+    //reset to first background
+    if (this.game.backgroundIdx === 6) this.game.backgroundIdx = 0
+    this.game.background[this.game.backgroundIdx].visible = true
   }
 
   updateSkillStats() {
@@ -41,10 +43,10 @@ class Stats extends Phaser.Group {
     const spellDamage = this.playerlvl * this.spellPowerScale
 
     return {
-      Q: { name: 'Fire', cost: 2, damage: spellDamage },
-      W: { name: 'Bolt', cost: 2, damage: spellDamage },
-      E: { name: 'Ice', cost: 2, damage: spellDamage },
-      R: { name: 'Cure', cost: 2, damage: healLevel },
+      Q: { name: 'Fire', cost: 20, damage: spellDamage },
+      W: { name: 'Bolt', cost: 20, damage: spellDamage },
+      E: { name: 'Ice', cost: 20, damage: spellDamage },
+      R: { name: 'Cure', cost: 20, damage: healLevel },
     }
   }
 }

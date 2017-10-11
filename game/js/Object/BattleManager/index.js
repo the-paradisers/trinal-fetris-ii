@@ -46,6 +46,8 @@ class BattleManager extends Phaser.Group {
     this.game.moveCount = 0
 
     this.game.signals.writeLog.dispatch("You've been attacked!")
+
+    //stop walking animation then flip and reposition
     this.game.character.animations.stop('walk', true)
     this.game.character.scale.x *= -1
     this.game.character.x -= 156
