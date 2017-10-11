@@ -1,0 +1,226 @@
+{
+  "Werewolf": {
+    "name": "Werewolf",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Devil Wolf": {
+    "name": "Devil Wolf",
+    "frame": 1,
+    "HP": 120,
+    "EXP": 30,
+    "attacks": ""
+  },
+  "Werepanther": {
+    "name": "Werepanther",
+    "frame": 2,
+    "HP": 140,
+    "EXP": 35,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  },
+  "Werewolfy": {
+    "name": "Werewolfy",
+    "frame": 0,
+    "HP": 100,
+    "EXP": 25,
+    "attacks": ""
+  }
+}

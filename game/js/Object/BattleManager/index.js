@@ -15,26 +15,8 @@ class BattleManager extends Phaser.Group {
       }
     }
 
-    // Temporary data
-    const enemyData1 = {
-      frame: 0,
-      name: 'Werewolf',
-      level: 1,
-      HP: 20,
-    }
-    const enemyData2 = {
-      frame: 1,
-      name: 'Devil Wolf',
-      level: 1,
-      HP: 15,
-    }
-    const enemyData3 = {
-      frame: 2,
-      name: 'Werepanther',
-      level: 1,
-      HP: 30,
-    }
-    this.enemyGroup = [enemyData1, enemyData2, enemyData3]
+    const enemyData = JSON.parse(this.game.cache.getText('enemies'))
+    this.enemyGroup1 = [enemyData['Werewolf'], enemyData['Devil Wolf'], enemyData['Werepanther']]
   }
 
   initialize() {
@@ -56,7 +38,7 @@ class BattleManager extends Phaser.Group {
     this.game.character.x -= 156
 
     // Initialize battle and draw enemies
-    this.battle = new Battle(this.game, this.enemyGroup)
+    this.battle = new Battle(this.game, this.enemyGroup1)
     this.battle.initialize()
     this.battle.children.forEach(enemy => {
       enemy.draw()
