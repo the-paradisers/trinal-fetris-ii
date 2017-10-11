@@ -38,12 +38,13 @@ class Stats extends Phaser.Group {
 
     this.spells = this.updateSkillStats()
 
-    //switching to next background
-    this.game.background[this.game.backgroundIdx].visible = false
-    this.game.backgroundIdx += 1
-    //reset to first background
-    if (this.game.backgroundIdx === 6) this.game.backgroundIdx = 0
-    this.game.background[this.game.backgroundIdx].visible = true
+    if (this.playerlvl % 10 === 0 ){
+       //switching to next background
+      this.game.background[this.game.backgroundIdx].visible = false
+      this.game.backgroundIdx += 1
+      //reset to first background
+      if (this.game.backgroundIdx === 6) this.game.backgroundIdx = 0
+      this.game.background[this.game.backgroundIdx].visible = true}
   }
 
   updateSkillStats() {
