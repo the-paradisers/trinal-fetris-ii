@@ -29,6 +29,8 @@ class GameState extends Phaser.State {
 
     this.load.spritesheet('cureSprite', 'img/attacks/cureSpritesheet.png', 100, 100)
     this.load.spritesheet('fireSprite', 'img/attacks/fireSpritesheet.png', 100, 100)
+    this.load.spritesheet('iceSprite', 'img/attacks/iceSpritesheet.png', 100, 100)
+    this.load.spritesheet('boltSprite', 'img/attacks/boltSpritesheet.png', 100, 100)
 
     this.load.audio('cureSound', 'audio/cure.wav')
     this.load.audio('slashSound', 'audio/slash.wav')
@@ -139,6 +141,8 @@ class GameState extends Phaser.State {
     this.game.signals.inControl = new Phaser.Signal()
     this.game.signals.castFire = new Phaser.Signal()
     this.game.signals.castCure = new Phaser.Signal()
+    this.game.signals.castBolt = new Phaser.Signal()
+    this.game.signals.castIce = new Phaser.Signal()
 
     this.game.signals.inControl.add(this.setControlOfTetris, this)
     this.game.signals.castCure.add(this.animateCure, this)
