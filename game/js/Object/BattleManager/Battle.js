@@ -98,7 +98,7 @@ class Battle extends Phaser.Group {
     fireSprite.scale.setTo(2, 2)
     const fireAnimation = fireSprite.animations.add('fireAnimation', [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 24)
     fireAnimation.killOnComplete = true
-    fireSprite.animations.play('fireAnimation')
+    fireAnimation.play()
     }
 }
 
