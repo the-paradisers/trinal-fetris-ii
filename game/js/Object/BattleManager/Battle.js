@@ -28,7 +28,6 @@ class Battle extends Phaser.Group {
     this.game.signals.hitEnemy.add(this.takeDamage, this)
     this.game.signals.selectTarget.add(this.targetEnemy, this)
     this.game.signals.castFire.add(this.animateFire, this)
-    // this.game.signals.castCure.add(this.animateCure, this)
   }
 
   summonEnemies() {
@@ -40,9 +39,6 @@ class Battle extends Phaser.Group {
     // Set target to 1st child by default
     this.drawCursor(0)
     this.targetEnemy(0)
-
-    // Initialize here to put spell sprites in front
-    this.initializeAttackSpellAnimations()
   }
 
   takeDamage(damage, friendlyfire) {
@@ -90,7 +86,6 @@ class Battle extends Phaser.Group {
     this.cursor.destroy()
     this.target = this.children[enemyIndex]
     this.drawCursor(enemyPos)
-    console.log('target at end of targetEnemy', this.target)
   }
 
   drawCursor(enemyPos) {
@@ -98,28 +93,12 @@ class Battle extends Phaser.Group {
     this.cursor.scale.setTo(2, 2)
   }
 
-  initializeAttackSpellAnimations() {
-    // Make fire sprites at all enemy positions
-    this.fireSprites = this.coords.map(enemyPos => {
-      const fireSprite = this.game.add.sprite(enemyPos.x, enemyPos.y, 'fireSprite', 16)
-      fireSprite.scale.setTo(2, 2)
-      fireSprite.visible = false
-      return fireSprite
-    })
-
-    // Make separate animations for each fire sprite
-    this.fireSprites.forEach(sprite => {
-      const fireAnimation = sprite.animations.add('fireAnimation', [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 24)
-      fireAnimation.killOnComplete = true
-      // fireAnimation.onComplete.add(() => {this.currSprite.visible = false}, this)
-    })
-  }
-
   animateFire() {
-    console.log('target in animateFire', this.target)
-    this.currSprite = this.fireSprites[this.target.pos]
-    this.currSprite.visible = true
-    this.currSprite.animations.play('fireAnimation')
+    const fireSprite = this.game.add.sprite(this.target.coords.x, this.target.coords.y, 'fireSprite', 16)
+    fireSprite.scale.setTo(2, 2)
+    const fireAnimation = fireSprite.animations.add('fireAnimation', [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 24)
+    fireAnimation.killOnComplete = true
+    fireSprite.animations.play('fireAnimation')
     }
 }
 
