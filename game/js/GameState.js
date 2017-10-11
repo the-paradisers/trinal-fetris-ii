@@ -8,13 +8,19 @@ const Phaser = require('phaser-ce')
 class GameState extends Phaser.State {
 
   preload() {
+    this.load.spritesheet('plains', 'img/background/Plains.gif', 512, 64)
+    this.load.spritesheet('desert', 'img/background/Desert.gif', 512, 64)
+    this.load.spritesheet('forest', 'img/background/Forest.gif', 512, 64)
+    this.load.spritesheet('sea', 'img/background/Sea.gif', 512, 64)
+    this.load.spritesheet('snow', 'img/background/Snow.gif', 512, 64)
+    this.load.spritesheet('swamp', 'img/background/Swamp.gif', 512, 64)
+
     this.load.image('background', 'img/UIFrames.png')
     this.load.bitmapFont('fantasy', 'img/font/font.png', 'img/font/font.fnt')
     this.load.image('addSkillPoint', 'img/addskillpoint.png')
     this.load.spritesheet('blocks', 'img/blocks.png', 32, 32, 7)
     this.load.spritesheet('enemy-animals', 'img/enemy-animals.png', 100, 100, 32)
     this.load.spritesheet('player', 'img/player.png', 50, 52, 7)
-    this.load.spritesheet('plains', 'img/background/Plains.gif', 512, 64)
     this.load.image('cursor', 'img/cursor.png')
 
     this.load.audio('battleMusic', 'audio/Battle_Scene.mp3')
@@ -26,6 +32,7 @@ class GameState extends Phaser.State {
     this.add.image(0, 0, 'background')
     const plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
     plains.scale.setTo(2, 2)
+    plains.visible = false
 
     this.game.inBattle = false
     this.game.moveCount = 0
