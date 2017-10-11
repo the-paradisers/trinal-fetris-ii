@@ -43,8 +43,6 @@ class Player extends Phaser.Group{
   }
 
   renderLevelText() {
-    // final fantasy font (numbers & symbols) is not rendering
-    // this.lvlText = this.game.add.bitmapText(0, 0, 'fantasy', `LVL ${this.playerlvl}`, 32)
     this.lvlText = this.game.add.text(0, 0, `LVL ${this.stats.playerlvl}`, {fill: 'white'})
     this.lvlText.x = Math.floor(this.sectionStartWidth + 210)
     this.lvlText.y = Math.floor(this.sectionTotalHeight * 5 / 8)
@@ -53,13 +51,9 @@ class Player extends Phaser.Group{
   renderSpells() {
     ['Q', 'W', 'E', 'R'].forEach( (key, i) => {
       const spell = this.stats.spells[key]
-      // this.game.add.bitmapText(
-        // this.sectionStartWidth + 50,
-        // 600 + 25*i, 'fantasy',
-      //   `${key} - ${spell.name}`, 16)
       this.game.add.text(
         this.sectionStartWidth + 50, 600 + 25 * i,
-        `${key} - ${spell.name}`, {fill: 'white'})
+        `${key}: ${spell.name}`, {fill: 'white'})
     })
   }
 
