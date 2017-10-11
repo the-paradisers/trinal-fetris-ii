@@ -84,8 +84,6 @@ class GameState extends Phaser.State {
 
     this.setKeyMaps()
     this.setKeyListeners()
-
-    this.setupCureAnimation()
   }
 
   setKeyMaps() {
@@ -143,6 +141,7 @@ class GameState extends Phaser.State {
     this.game.signals.castCure = new Phaser.Signal()
 
     this.game.signals.inControl.add(this.setControlOfTetris, this)
+    this.game.signals.castCure.add(this.animateCure, this)
 
     this.game.signals.gameOver = new Phaser.Signal()
     this.game.signals.gameOver.add(this.gameOver, this)
@@ -179,20 +178,13 @@ class GameState extends Phaser.State {
     }
   }
 
-  setupCureAnimation() {
-    this.game.cureSprite = this.game.add.sprite(780, 240, 'cureSprite')
-    this.game.cureSprite.scale.setTo(3, 3)
-    this.game.cureSprite.visible = false
-
-    this.game.cureAnimation = this.game.cureSprite.animations.add('cureAnimation', null, 24, false )
-    this.game.cureAnimation.onComplete.add(() => {this.game.cureSprite.visible = false}, this)
-
-    this.game.signals.castCure.add(this.animateCure, this)
-  }
-
   animateCure() {
-    this.game.cureSprite.visible = true
-    this.game.cureAnimation.play()
+    const cureSprite = this.game.add.sprite(780, 240, 'cureSprite')
+    cureSprite.scale.setTo(3, 3)
+    const cureAnimation = cureSprite.animations.add('cureAnimation', null, 24, false)
+    cureAnimation.killOnComplete = true
+
+    cureAnimation.play()
     this.game.sounds.cure.play()
   }
 

@@ -156,6 +156,7 @@ class Player extends Phaser.Group{
   }
 
   castFire(fireData) {
+    this.game.sounds.fire.play()
     this.game.signals.castFire.dispatch()
     this.game.signals.hitEnemy.dispatch(fireData.damage, false)
   }
