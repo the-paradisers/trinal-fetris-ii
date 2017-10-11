@@ -113,22 +113,6 @@ class Block extends Phaser.Group {
     return false
   }
 
-  gameover() {
-    let gameover = this.game.add.text(
-      640,
-      360,
-      'Game Over',
-      {fill: 'red', fontSize: 72}
-    )
-    gameover.anchor.set(0.5)
-
-    this.game.input.onTap.addOnce(() => {
-      this.game.paused = false
-      this.game.world.removeAll()
-      this.game.state.start('TitleMenu')
-    })
-  }
-
   enemyAttack() {
     console.log('number of enemies attacking', this.enemies.length)
       this.pos.x = Math.floor(8 * Math.random())
@@ -140,8 +124,7 @@ class Block extends Phaser.Group {
     this.pos = {x: 3, y: 0}
     this.matrix = this.queue.getBlock()
     if (this.collide()) {
-      this.game.paused = true
-      this.gameover()
+      this.game.signals.gameOver.dispatch()
     }
   }
 

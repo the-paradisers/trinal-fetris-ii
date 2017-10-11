@@ -49,8 +49,11 @@ class GameState extends Phaser.State {
     this.game.inBattle = false
     this.game.moveCount = 0
 
-    this.song = this.sound.add('walkMusic', 0.5, true, true)
-    this.song.play()
+    this.game.victorySong = this.sound.add('victoryMusic', 1, false, true)
+    this.game.battleSong = this.sound.add('battleMusic', 0.5, true, true)
+    this.game.walkingSong = this.sound.add('walkMusic', 0.5, true, true)
+    this.game.walkingSong.play()
+    this.game.victorySong.onStop.add(() => { this.game.walkingSong.play()})
 
     this.game.isInControl = true
     this.createSignals()
@@ -126,6 +129,8 @@ class GameState extends Phaser.State {
 
     this.game.signals.inControl.add(this.setControlOfTetris, this)
 
+    this.game.signals.gameOver = new Phaser.Signal()
+    this.game.signals.gameOver.add(this.gameOver, this)
   }
 
   setControlOfTetris (bool){
@@ -169,6 +174,11 @@ class GameState extends Phaser.State {
     this.game.cureSprite.visible = true
     this.game.cureAnimation.play()
     this.game.sounds.cure.play()
+  }
+
+  gameOver() {
+    this.sound.stopAll()
+    this.state.start('GameOver')
   }
 
 }
