@@ -159,7 +159,7 @@ class Block extends Phaser.Group {
   }
 
   merge() {
-    this.game.signals.hitEnemy.dispatch(this.game.playerlvl, !this.game.isInControl)
+    this.game.signals.hitEnemy.dispatch(this.game.playerStats.attackPower, !this.game.isInControl)
     if (this.game.isInControl){
       this.game.sounds.slash.play()
     } else {

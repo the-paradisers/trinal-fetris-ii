@@ -51,7 +51,7 @@ class Battle extends Phaser.Group {
     // Ensure HP is never negative
     if (this.target.HP < 0) this.target.HP = 0
 
-    const message = `${this.target.name} HP: ${this.target.HP}!`
+    const message = `You hit ${this.target.name} for ${damage} damage!`
     this.game.signals.writeLog.dispatch(message)
 
     if (this.target.HP === 0) {
