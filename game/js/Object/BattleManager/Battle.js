@@ -20,7 +20,6 @@ class Battle extends Phaser.Group {
 
   initialize() {
     this.initializeSignals()
-    this.initializeAttackSpellAnimations()
     this.summonEnemies()
     this.game.signals.currentEnemies.dispatch(this.children)
   }
@@ -41,6 +40,9 @@ class Battle extends Phaser.Group {
     // Set target to 1st child by default
     this.drawCursor(0)
     this.targetEnemy(0)
+
+    // Initialize here to put spell sprites in front
+    this.initializeAttackSpellAnimations()
   }
 
   takeDamage(damage, friendlyfire) {
@@ -88,6 +90,7 @@ class Battle extends Phaser.Group {
     this.cursor.destroy()
     this.target = this.children[enemyIndex]
     this.drawCursor(enemyPos)
+    console.log('target at end of targetEnemy', this.target)
   }
 
   drawCursor(enemyPos) {
@@ -107,16 +110,17 @@ class Battle extends Phaser.Group {
     // Make separate animations for each fire sprite
     this.fireSprites.forEach(sprite => {
       const fireAnimation = sprite.animations.add('fireAnimation', [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 24)
-      fireAnimation.onComplete.add(() => {sprite.visible = false}, this)
+      fireAnimation.killOnComplete = true
+      // fireAnimation.onComplete.add(() => {this.currSprite.visible = false}, this)
     })
   }
 
   animateFire() {
-    const currSprite = this.fireSprites[this.target.pos]
-    currSprite.visible = true
-    currSprite.animations.play('fireAnimation')
-    this.game.sounds.fire.play()
-  }
+    console.log('target in animateFire', this.target)
+    this.currSprite = this.fireSprites[this.target.pos]
+    this.currSprite.visible = true
+    this.currSprite.animations.play('fireAnimation')
+    }
 }
 
 module.exports = Battle
