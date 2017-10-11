@@ -20,9 +20,28 @@ class GameState extends Phaser.State {
     this.load.audio('battleMusic', 'audio/Battle_Scene.mp3')
     this.load.audio('walkMusic', 'audio/Main_Theme.mp3')
     this.load.audio('victoryMusic', 'audio/Victory_Fanfare.mp3')
+
+    this.load.spritesheet('cureSprite', 'img/attacks/cureSpritesheet.png', 100, 100)
+    this.load.spritesheet('fireSprite', 'img/attacks/fireSpritesheet.png', 100, 100)
+
+    this.load.audio('cureSound', 'audio/cure.wav')
+    this.load.audio('slashSound', 'audio/slash.wav')
+    this.load.audio('enemySound', 'audio/enemyAttack.wav')
+    this.load.audio('fireSound', 'audio/fire.wav')
+    this.load.audio('boltSound', 'audio/bolt.wav')
+    this.load.audio('iceSound', 'audio/ice.wav')
   }
 
   create() {
+
+    this.game.sounds = {}
+    this.game.sounds.enemy = this.sound.add('enemySound', 1, false, true)
+    this.game.sounds.slash = this.sound.add('slashSound', 0.5, false, true)
+    this.game.sounds.cure = this.sound.add('cureSound', 0.5, false, true)
+    this.game.sounds.fire = this.sound.add('fireSound', 0.5, false, true)
+    this.game.sounds.ice = this.sound.add('iceSound', 0.5, false, true)
+    this.game.sounds.bolt = this.sound.add('boltSound', 0.5, false, true)
+
     this.add.image(0, 0, 'background')
     const plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
     plains.scale.setTo(2, 2)
@@ -30,8 +49,11 @@ class GameState extends Phaser.State {
     this.game.inBattle = false
     this.game.moveCount = 0
 
-    this.song = this.sound.add('walkMusic', 0.5, true, true)
-    this.song.play()
+    this.game.victorySong = this.sound.add('victoryMusic', 1, false, true)
+    this.game.battleSong = this.sound.add('battleMusic', 0.5, true, true)
+    this.game.walkingSong = this.sound.add('walkMusic', 0.5, true, true)
+    this.game.walkingSong.play()
+    this.game.victorySong.onStop.add(() => { this.game.walkingSong.play()})
 
     this.game.isInControl = true
     this.createSignals()
@@ -47,6 +69,8 @@ class GameState extends Phaser.State {
 
     this.setKeyMaps()
     this.setKeyListeners()
+
+    this.setupCureAnimation()
   }
 
   setKeyMaps() {
@@ -70,7 +94,6 @@ class GameState extends Phaser.State {
 
   setKeyListeners() {
     this.keys.escKey.onUp.add(() => {this.game.paused = !this.game.paused})
-
     this.keys.qKey.onDown.add(() => {
       if (this.game.inBattle && this.game.isInControl) this.game.signals.castSpell.dispatch('Q')})
     this.keys.wKey.onDown.add(() => {
@@ -101,8 +124,13 @@ class GameState extends Phaser.State {
     this.game.signals.selectTarget = new Phaser.Signal()
     this.game.signals.currentEnemies = new Phaser.Signal()
     this.game.signals.inControl = new Phaser.Signal()
+    this.game.signals.castFire = new Phaser.Signal()
+    this.game.signals.castCure = new Phaser.Signal()
 
     this.game.signals.inControl.add(this.setControlOfTetris, this)
+
+    this.game.signals.gameOver = new Phaser.Signal()
+    this.game.signals.gameOver.add(this.gameOver, this)
   }
 
   setControlOfTetris (bool){
@@ -129,6 +157,28 @@ class GameState extends Phaser.State {
         this.tetris.move('fastDrop')
       }
     }
+  }
+
+  setupCureAnimation() {
+    this.game.cureSprite = this.game.add.sprite(780, 240, 'cureSprite')
+    this.game.cureSprite.scale.setTo(3, 3)
+    this.game.cureSprite.visible = false
+
+    this.game.cureAnimation = this.game.cureSprite.animations.add('cureAnimation', null, 24, false )
+    this.game.cureAnimation.onComplete.add(() => {this.game.cureSprite.visible = false}, this)
+
+    this.game.signals.castCure.add(this.animateCure, this)
+  }
+
+  animateCure() {
+    this.game.cureSprite.visible = true
+    this.game.cureAnimation.play()
+    this.game.sounds.cure.play()
+  }
+
+  gameOver() {
+    this.sound.stopAll()
+    this.state.start('GameOver')
   }
 
 }
