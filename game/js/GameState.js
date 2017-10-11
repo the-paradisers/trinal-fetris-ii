@@ -101,6 +101,7 @@ class GameState extends Phaser.State {
     this.game.signals.selectTarget = new Phaser.Signal()
     this.game.signals.currentEnemies = new Phaser.Signal()
     this.game.signals.inControl = new Phaser.Signal()
+    this.game.signals.attackAll = new Phaser.Signal()
 
     this.game.signals.inControl.add(this.setControlOfTetris, this)
   }
