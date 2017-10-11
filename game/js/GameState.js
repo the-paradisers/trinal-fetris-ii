@@ -21,10 +21,10 @@ class GameState extends Phaser.State {
     this.load.audio('walkMusic', 'audio/Main_Theme.mp3')
     this.load.audio('victoryMusic', 'audio/Victory_Fanfare.mp3')
 
-    this.load.spritesheet('healAnimation', 'img/attacks/healSpritesheet.png', 100, 100)
-    this.load.spritesheet('fireball', 'img/attacks/fireSpritesheet.png', 100, 100)
+    this.load.spritesheet('cureAnimation', 'img/attacks/cureSpritesheet.png', 100, 100)
+    this.load.spritesheet('fireAnimation', 'img/attacks/fireSpritesheet.png', 100, 100)
 
-    this.load.audio('heal', 'audio/heal.wav')
+    this.load.audio('cure', 'audio/cure.wav')
     this.load.audio('slash', 'audio/slash.wav')
     this.load.audio('enemy', 'audio/enemyAttack.wav')
     this.load.audio('fire', 'audio/fire.wav')
@@ -37,7 +37,7 @@ class GameState extends Phaser.State {
 
     this.game.enemySound = this.sound.add('enemy', 1, false, true)
     this.game.slash = this.sound.add('slash', 0.5, false, true)
-    this.game.heal = this.sound.add('heal', 0.5, false, true)
+    this.game.cure = this.sound.add('cure', 0.5, false, true)
     this.game.fire = this.sound.add('fire', 0.5, false, true)
     this.game.ice = this.sound.add('ice', 0.5, false, true)
     this.game.bolt = this.sound.add('bolt', 0.5, false, true)
@@ -61,11 +61,11 @@ class GameState extends Phaser.State {
     this.player = new Player(this.game)
     this.player.initialize()
 
-    this.game.healAnimation = this.game.add.sprite(780, 240, 'healAnimation')
-    this.game.healAnimation.scale.setTo(3, 3)
-    this.game.healing = this.game.healAnimation.animations.add('healAnimation', null, 24, false )
-    this.game.healAnimation.visible = false
-    this.game.healing.onComplete.add(() => {this.game.healAnimation.visible = false}, this)
+    this.game.cureAnimation = this.game.add.sprite(780, 240, 'cureAnimation')
+    this.game.cureAnimation.scale.setTo(3, 3)
+    this.game.cureing = this.game.cureAnimation.animations.add('cureAnimation', null, 24, false )
+    this.game.cureAnimation.visible = false
+    this.game.cureing.onComplete.add(() => {this.game.cureAnimation.visible = false}, this)
 
     this.battleManager = new BattleManager(this.game)
     this.battleManager.initialize()

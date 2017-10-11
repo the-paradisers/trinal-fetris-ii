@@ -186,9 +186,9 @@ class Player extends Phaser.Group{
   }
 
   castCure(cureData) {
-    this.game.heal.play()
-    this.game.healAnimation.visible = true
-    this.game.healing.play()
+    this.game.cure.play()
+    this.game.cureAnimation.visible = true
+    this.game.cureing.play()
     this.game.clearBottomRows(cureData.damage)
   }
 
