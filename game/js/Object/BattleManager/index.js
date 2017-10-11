@@ -49,7 +49,11 @@ class BattleManager extends Phaser.Group {
     this.game.battleSong.play()
 
     this.game.signals.writeLog.dispatch("You've been attacked!")
-    this.game.character.animations.stop(true)
+
+    //stop walking animation then flip and reposition
+    this.game.character.animations.stop()
+    this.game.character.scale.x *= -1
+    this.game.character.x -= 156
 
     // Initialize battle and draw enemies
     this.battle = new Battle(this.game, this.enemyGroup)
@@ -72,7 +76,10 @@ class BattleManager extends Phaser.Group {
 
     this.game.signals.writeLog.dispatch('You won the battle!')
     this.game.signals.addExp.dispatch(this.battleExp)
+
     this.game.character.animations.play('victory')
+    this.game.character.scale.x *= -1
+    this.game.character.x += 156
 
     this.battle.destroy()
     this.game.signals.hitEnemy.dispose()
