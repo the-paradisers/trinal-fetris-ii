@@ -5,6 +5,7 @@ const Enemy = require('./Enemy')
 class Battle extends Phaser.Group {
   constructor(game, enemyGroup) {
     super(game)
+    console.log('game in Battle constructor', game)
 
     this.enemyGroup = enemyGroup
     this.target = {}
