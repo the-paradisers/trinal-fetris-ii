@@ -6,7 +6,7 @@ class Player extends Phaser.Group{
   constructor(game) {
     super(game)
     this.stats = new Stats(this.game)
-    this.game.playerlvl = this.stats.playerlvl
+    this.game.playerStats = this.stats
 
     this.sectionStartWidth = this.game.world.width * 2 / 3
     this.sectionTotalHeight = this.game.world.height
@@ -53,7 +53,7 @@ class Player extends Phaser.Group{
       const spell = this.stats.spells[key]
       this.game.add.text(
         this.sectionStartWidth + 50, 600 + 25 * i,
-        `${key}: ${spell.name}`, {fill: 'white'})
+        `${key}: ${spell.name}`, {fill: 'gold'})
     })
   }
 
