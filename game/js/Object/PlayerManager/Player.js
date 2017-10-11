@@ -6,6 +6,7 @@ class Player extends Phaser.Group{
   constructor(game) {
     super(game)
     this.stats = new Stats(this.game)
+    this.game.playerlvl = this.stats.playerlvl
 
     this.sectionStartWidth = this.game.world.width * 2 / 3
     this.sectionTotalHeight = this.game.world.height
@@ -76,10 +77,11 @@ class Player extends Phaser.Group{
     this.walk = this.game.character.animations.add('walk', [0, 1], 4, true)
     this.walk.onStart.add(() => {
       this.game.character.scale.x *= -1
+      this.game.character.x += 156
       }, this)
-    this.walk.onComplete.add(() => {
-      console.log('walk complete')
-      }, this)
+    // this.walk.onLoop.add(() => {
+    //   console.log('name', this.walk.name)
+    //   }, this)
 
     this.victory = this.game.character.animations.add('victory', [0, 4, 0, 4, 0, 4], 3)
     this.victory.onComplete.add(() => this.walk.play(), this)
