@@ -20,6 +20,7 @@ class Battle extends Phaser.Group {
 
   initialize() {
     this.initializeSignals()
+    this.initializeAttackSpellAnimations()
     this.summonEnemies()
     this.game.signals.currentEnemies.dispatch(this.children)
   }
@@ -27,7 +28,8 @@ class Battle extends Phaser.Group {
   initializeSignals() {
     this.game.signals.hitEnemy.add(this.takeDamage, this)
     this.game.signals.selectTarget.add(this.targetEnemy, this)
-    this.game.signals.fireAttack.add(this.animateFire, this)
+    this.game.signals.castFire.add(this.animateFire, this)
+    // this.game.signals.castCure.add(this.animateCure, this)
   }
 
   summonEnemies() {
@@ -44,7 +46,6 @@ class Battle extends Phaser.Group {
   takeDamage(damage, friendlyfire) {
     // If this is an enemy block, exit function
     if (friendlyfire) return
-
     this.target.HP -= damage
 
     // Ensure HP is never negative
@@ -94,13 +95,26 @@ class Battle extends Phaser.Group {
     this.cursor.scale.setTo(2, 2)
   }
 
+  initializeAttackSpellAnimations() {
+    this.fireSprites = this.coords.map(enemyPos => {
+      const fireSprite = this.game.add.sprite(enemyPos.x, enemyPos.y, 'fireSprite', 16)
+      fireSprite.scale.setTo(2, 2)
+      fireSprite.visible = false
+      return fireSprite
+    })
+
+    this.fireSprites.forEach(sprite => {
+      const fireAnimation = sprite.animations.add('fireAnimation', [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 24)
+      fireAnimation.onComplete.add(() => {sprite.visible = false}, this)
+    })
+  }
+
   animateFire() {
-      this.fire = this.game.add.sprite(this.target.coords.x, this.target.coords.y, 'fire', 16)
-      this.fire.scale.setTo(2, 2)
-      this.fireAnim = this.fire.animations.add('fireAttack', [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 24)
-      this.fireAnim.onComplete.add(() => {this.fire.destroy()}, this)
-      this.fire.animations.play('fireAttack')
-    }
+    this.game.sounds.fire.play()
+    const currSprite = this.fireSprites[this.target.pos]
+    currSprite.visible = true
+    currSprite.animations.play('fireAnimation')
+  }
 }
 
 module.exports = Battle

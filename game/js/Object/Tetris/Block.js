@@ -22,8 +22,6 @@ class Block extends Phaser.Group {
     this.matrix = []
     this.pos = {x: 3, y: 0}
 
-    this.beingAttacked = false
-
     this.initialize()
   }
 
@@ -35,7 +33,6 @@ class Block extends Phaser.Group {
 
   enemyTetris(enemiezzz){
     this.enemies = enemiezzz
-    // console.log(`tetris enemies: ${this.enemies.length}`)
     this.numberOfEnemies = this.enemies.length
   }
 
@@ -133,13 +130,10 @@ class Block extends Phaser.Group {
   }
 
   enemyAttack() {
-    this.beingAttacked = true
-    this.game.signals.inControl.dispatch(false)
     console.log('number of enemies attacking', this.enemies.length)
       this.pos.x = Math.floor(8 * Math.random())
       this.pos.y = 0
       this.matrix = this.queue.getEnemyBlock()
-    this.beingAttacked = false
   }
 
   playerTurn () {
@@ -152,27 +146,24 @@ class Block extends Phaser.Group {
   }
 
   getNextBlock() {
-    if (((this.game.moveCount + 1) % 5) === 0) {
-      if (this.enemyAttacksSoFar < this.numberOfEnemies) {
-        this.enemyAttacksSoFar++
-        this.enemyAttack()
-      } else {
-        this.game.moveCount++
-        this.enemyAttacksSoFar = 0
-      }
+    if (((this.game.moveCount + 1) % 5) === 0 && this.enemyAttacksSoFar < this.numberOfEnemies) {
+      this.game.signals.inControl.dispatch(false)
+      this.enemyAttacksSoFar++
+      this.enemyAttack()
     } else {
       this.game.signals.inControl.dispatch(true)
       this.playerTurn()
       this.game.moveCount++
+      this.enemyAttacksSoFar = 0
     }
   }
 
   merge() {
-    this.game.signals.hitEnemy.dispatch(this.game.player.playerlvl, !this.game.isInControl)
+    this.game.signals.hitEnemy.dispatch(this.game.playerlvl, !this.game.isInControl)
     if (this.game.isInControl){
-      this.game.slash.play()
+      this.game.sounds.slash.play()
     } else {
-      this.game.enemySound.play()
+      this.game.sounds.enemy.play()
     }
 
     this.game.signals.inControl.dispatch(false)

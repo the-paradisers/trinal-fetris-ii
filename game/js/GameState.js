@@ -1,7 +1,7 @@
 /* eslint-disable no-labels, complexity */
 
 const Tetris = require('./Object/Tetris')
-const Player = require('./Object/Player')
+const Player = require('./Object/PlayerManager/Player')
 const BattleManager = require('./Object/BattleManager')
 const Phaser = require('phaser-ce')
 
@@ -21,26 +21,26 @@ class GameState extends Phaser.State {
     this.load.audio('walkMusic', 'audio/Main_Theme.mp3')
     this.load.audio('victoryMusic', 'audio/Victory_Fanfare.mp3')
 
-    this.load.spritesheet('cureAnimation', 'img/attacks/cureSpritesheet.png', 100, 100)
-    this.load.spritesheet('fireAnimation', 'img/attacks/fireSpritesheet.png', 100, 100)
+    this.load.spritesheet('cureSprite', 'img/attacks/cureSpritesheet.png', 100, 100)
+    this.load.spritesheet('fireSprite', 'img/attacks/fireSpritesheet.png', 100, 100)
 
-    this.load.audio('cure', 'audio/cure.wav')
-    this.load.audio('slash', 'audio/slash.wav')
-    this.load.audio('enemy', 'audio/enemyAttack.wav')
-    this.load.audio('fire', 'audio/fire.wav')
-    this.load.audio('bolt', 'audio/bolt.wav')
-    this.load.audio('ice', 'audio/ice.wav')
+    this.load.audio('cureSound', 'audio/cure.wav')
+    this.load.audio('slashSound', 'audio/slash.wav')
+    this.load.audio('enemySound', 'audio/enemyAttack.wav')
+    this.load.audio('fireSound', 'audio/fire.wav')
+    this.load.audio('boltSound', 'audio/bolt.wav')
+    this.load.audio('iceSound', 'audio/ice.wav')
   }
 
   create() {
 
-
-    this.game.enemySound = this.sound.add('enemy', 1, false, true)
-    this.game.slash = this.sound.add('slash', 0.5, false, true)
-    this.game.cure = this.sound.add('cure', 0.5, false, true)
-    this.game.fire = this.sound.add('fire', 0.5, false, true)
-    this.game.ice = this.sound.add('ice', 0.5, false, true)
-    this.game.bolt = this.sound.add('bolt', 0.5, false, true)
+    this.game.sounds = {}
+    this.game.sounds.enemy = this.sound.add('enemySound', 1, false, true)
+    this.game.sounds.slash = this.sound.add('slashSound', 0.5, false, true)
+    this.game.sounds.cure = this.sound.add('cureSound', 0.5, false, true)
+    this.game.sounds.fire = this.sound.add('fireSound', 0.5, false, true)
+    this.game.sounds.ice = this.sound.add('iceSound', 0.5, false, true)
+    this.game.sounds.bolt = this.sound.add('boltSound', 0.5, false, true)
 
     this.add.image(0, 0, 'background')
     const plains = this.add.tileSprite(0, 0, 640, 64, 'plains')
@@ -61,17 +61,13 @@ class GameState extends Phaser.State {
     this.player = new Player(this.game)
     this.player.initialize()
 
-    this.game.cureAnimation = this.game.add.sprite(780, 240, 'cureAnimation')
-    this.game.cureAnimation.scale.setTo(3, 3)
-    this.game.cureing = this.game.cureAnimation.animations.add('cureAnimation', null, 24, false )
-    this.game.cureAnimation.visible = false
-    this.game.cureing.onComplete.add(() => {this.game.cureAnimation.visible = false}, this)
-
     this.battleManager = new BattleManager(this.game)
     this.battleManager.initialize()
 
     this.setKeyMaps()
     this.setKeyListeners()
+
+    this.setupCureAnimation()
   }
 
   setKeyMaps() {
@@ -125,10 +121,11 @@ class GameState extends Phaser.State {
     this.game.signals.selectTarget = new Phaser.Signal()
     this.game.signals.currentEnemies = new Phaser.Signal()
     this.game.signals.inControl = new Phaser.Signal()
+    this.game.signals.castFire = new Phaser.Signal()
+    this.game.signals.castCure = new Phaser.Signal()
 
     this.game.signals.inControl.add(this.setControlOfTetris, this)
 
-    this.game.signals.fireAttack = new Phaser.Signal()
   }
 
   setControlOfTetris (bool){
@@ -155,6 +152,36 @@ class GameState extends Phaser.State {
         this.tetris.move('fastDrop')
       }
     }
+  }
+
+  setupCureAnimation() {
+    this.game.cureSprite = this.game.add.sprite(780, 240, 'cureSprite')
+    this.game.cureSprite.scale.setTo(3, 3)
+    this.game.cureSprite.visible = false
+
+    this.game.cureAnimation = this.game.cureSprite.animations.add('cureAnimation', null, 24, false )
+    this.game.cureAnimation.onComplete.add(() => {this.game.cureSprite.visible = false}, this)
+
+    this.game.signals.castCure.add(this.animateCure, this)
+
+    // const fireSprites = enemyCoords.map(enemyPos => {
+    //   const fireSprite = this.game.add.sprite(this.target.enemyPos.x, this.target.enemyPos.y, 'fireSprite', 16)
+    //   fireSprite.scale.setTo(2, 2)
+    //   fireSprite.visible = false
+    //   return fireSprite
+    // })
+
+    // this.game.fireAnimation = fireSprites[0].animations.add('fireAnimation', [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 24)
+    // this.fireAnimation.onComplete.add(() => {this.fireSprite.destroy()}, this)
+    // this.fireSprite.visible = false
+  }
+
+  animateCure() {
+    this.game.sounds.cure.play()
+    this.game.cureSprite.visible = true
+    this.game.cureAnimation.play()
+
+    // this.game.cureAnimation.onComplete.add(() => {this.game.cureSprite.visible = false}, this)
   }
 
 }
