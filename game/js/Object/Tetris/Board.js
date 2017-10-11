@@ -3,10 +3,12 @@
 class Board extends Phaser.Group {
   constructor(game) {
     super(game)
-    this.game.addBottomRow = this.addBottomRow.bind(this)
-    this.game.clearBottomRows = this.clearBottomRows.bind(this)
     this.createMatrix(10, 18)
     this.group = game.add.spriteBatch()
+
+    this.game.addBottomRow = this.addBottomRow.bind(this)
+    this.game.clearBottomRows = this.clearBottomRows.bind(this)
+    this.game.changeBoardColor = this.changeBoardColor.bind(this)
   }
 
   createMatrix(w, h) {
@@ -62,6 +64,20 @@ class Board extends Phaser.Group {
       this.matrix.unshift(new Array(w).fill(0))
       this.matrix.pop()
     }
+  }
+
+  changeBoardColor (num) {
+    this.matrix.forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value === 1){
+          this.group.create(
+            32 * x + 480,
+            32 * y + 128,
+            'blocks', num)
+          this.matrix[y][x] = num
+        }
+      })
+    })
   }
 }
 
