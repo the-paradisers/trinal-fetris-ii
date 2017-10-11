@@ -163,25 +163,12 @@ class GameState extends Phaser.State {
     this.game.cureAnimation.onComplete.add(() => {this.game.cureSprite.visible = false}, this)
 
     this.game.signals.castCure.add(this.animateCure, this)
-
-    // const fireSprites = enemyCoords.map(enemyPos => {
-    //   const fireSprite = this.game.add.sprite(this.target.enemyPos.x, this.target.enemyPos.y, 'fireSprite', 16)
-    //   fireSprite.scale.setTo(2, 2)
-    //   fireSprite.visible = false
-    //   return fireSprite
-    // })
-
-    // this.game.fireAnimation = fireSprites[0].animations.add('fireAnimation', [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 24)
-    // this.fireAnimation.onComplete.add(() => {this.fireSprite.destroy()}, this)
-    // this.fireSprite.visible = false
   }
 
   animateCure() {
-    this.game.sounds.cure.play()
     this.game.cureSprite.visible = true
     this.game.cureAnimation.play()
-
-    // this.game.cureAnimation.onComplete.add(() => {this.game.cureSprite.visible = false}, this)
+    this.game.sounds.cure.play()
   }
 
 }

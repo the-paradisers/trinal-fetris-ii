@@ -96,6 +96,7 @@ class Battle extends Phaser.Group {
   }
 
   initializeAttackSpellAnimations() {
+    // Make fire sprites at all enemy positions
     this.fireSprites = this.coords.map(enemyPos => {
       const fireSprite = this.game.add.sprite(enemyPos.x, enemyPos.y, 'fireSprite', 16)
       fireSprite.scale.setTo(2, 2)
@@ -103,6 +104,7 @@ class Battle extends Phaser.Group {
       return fireSprite
     })
 
+    // Make separate animations for each fire sprite
     this.fireSprites.forEach(sprite => {
       const fireAnimation = sprite.animations.add('fireAnimation', [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 24)
       fireAnimation.onComplete.add(() => {sprite.visible = false}, this)
@@ -110,10 +112,10 @@ class Battle extends Phaser.Group {
   }
 
   animateFire() {
-    this.game.sounds.fire.play()
     const currSprite = this.fireSprites[this.target.pos]
     currSprite.visible = true
     currSprite.animations.play('fireAnimation')
+    this.game.sounds.fire.play()
   }
 }
 
