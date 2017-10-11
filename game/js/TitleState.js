@@ -26,7 +26,6 @@ class TitleState extends Phaser.State {
       press.anchor.set(0.5)
 
       this.input.onTap.addOnce((pointer) => {
-        this.song.stop()
         this.state.start('TitleMenu')
       })
     }

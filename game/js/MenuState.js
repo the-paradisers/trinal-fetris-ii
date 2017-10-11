@@ -9,17 +9,17 @@ class MenuState {
       128,
       64,
       `How to Play`,
-      {fill: 'white', fontSize: 36}
+      {fill: 'skyblue', fontSize: 36}
     )
 
     this.add.text(
       128,
       96,
       `
-      Up: Rotate current block
-      Down: Drop current block faster
-      Left: Move current block to the left
-      Right: Move current block to the right\n
+      Up: Rotate block
+      Down: Move block down
+      Left: Move cblock left
+      Right: Move block right\n
       Space: Drop block instantly
       ESC: Pause the game
       `,
@@ -45,13 +45,14 @@ class MenuState {
     let play = this.add.text(
       this.world.centerX,
       this.world.centerY + 200,
-      `Click Screen to Begin the Game`,
-      {fill: 'white', fontSize: 36}
+      `Click to Play`,
+      {fill: 'gold', fontSize: 36}
     )
 
     play.anchor.set(0.5)
 
     this.input.onTap.addOnce((pointer) => {
+      this.sound.stopAll()
       this.state.start('Game')
     })
   }

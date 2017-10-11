@@ -5,6 +5,7 @@ const Enemy = require('./Enemy')
 class Battle extends Phaser.Group {
   constructor(game, enemyGroup) {
     super(game)
+    console.log('game in Battle constructor', game)
 
     this.enemyGroup = enemyGroup
     this.target = {}
@@ -27,6 +28,7 @@ class Battle extends Phaser.Group {
   initializeSignals() {
     this.game.signals.hitEnemy.add(this.takeDamage, this)
     this.game.signals.selectTarget.add(this.targetEnemy, this)
+    this.game.signals.castFire.add(this.animateFire, this)
   }
 
   summonEnemies() {
@@ -91,6 +93,14 @@ class Battle extends Phaser.Group {
     this.cursor = this.game.add.image(this.coords[enemyPos].x, this.coords[enemyPos].y, 'cursor')
     this.cursor.scale.setTo(2, 2)
   }
+
+  animateFire() {
+    const fireSprite = this.game.add.sprite(this.target.coords.x, this.target.coords.y, 'fireSprite', 16)
+    fireSprite.scale.setTo(2, 2)
+    const fireAnimation = fireSprite.animations.add('fireAnimation', [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], 24)
+    fireAnimation.killOnComplete = true
+    fireAnimation.play()
+    }
 }
 
 module.exports = Battle
