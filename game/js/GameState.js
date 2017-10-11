@@ -125,7 +125,9 @@ class GameState extends Phaser.State {
   }
 
   update() {
-    this.game.levelBackground[this.game.currentBackgroundIdx].tilePosition.x -= 1
+    if (!this.game.inBattle) {
+      this.game.levelBackground[this.game.currentBackgroundIdx].tilePosition.x -= 1
+    }
 
     if (!this.game.inBattle && this.game.moveCount > 7) {
       this.battleManager.startBattle()

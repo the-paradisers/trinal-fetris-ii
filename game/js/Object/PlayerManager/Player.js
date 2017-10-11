@@ -79,12 +79,10 @@ class Player extends Phaser.Group{
       this.game.character.scale.x *= -1
       this.game.character.x += 156
       }, this)
-    // this.walk.onLoop.add(() => {
-    //   console.log('name', this.walk.name)
-    //   }, this)
 
     this.victory = this.game.character.animations.add('victory', [0, 4, 0, 4, 0, 4], 3)
-    this.victory.onComplete.add(() => this.walk.play(), this)
+    this.victory.onComplete.add(() => {
+      this.walk.play()}, this)
 
     this.attack = this.game.character.animations.add('attack', [1, 2, 3, 1], 4)
 

@@ -5,7 +5,7 @@ class BattleManager extends Phaser.Group {
     super(game)
 
     this.messages = []
-    this.battleExp = 100
+    this.battleExp = 50
     this.log = {
       x: 12,
       y: 600,
@@ -46,7 +46,9 @@ class BattleManager extends Phaser.Group {
     this.game.moveCount = 0
 
     this.game.signals.writeLog.dispatch("You've been attacked!")
-    this.game.character.animations.stop(true, true)
+    this.game.character.animations.stop('walk', true)
+    this.game.character.scale.x *= -1
+    this.game.character.x -= 156
 
     // Initialize battle and draw enemies
     this.battle = new Battle(this.game, this.enemyGroup)
