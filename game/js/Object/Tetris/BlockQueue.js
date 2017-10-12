@@ -50,12 +50,31 @@ class BlockQueue {
         [2, 2],
       ],
       C: [
-        [2, 0],
+        [2, 2],
         [2, 2],
       ],
       D: [
-        [2, 2],
-        [0, 2],
+        [0, 3, 0],
+        [3, 3, 3],
+      ],
+      E: [
+        [4],
+        [4],
+        [4],
+      ],
+      F: [
+        [5, 5, 5],
+        [0, 5, 0],
+      ],
+      G: [
+        [0, 6],
+        [6, 6],
+        [6, 0],
+      ],
+      H: [
+        [6, 0],
+        [6, 6],
+        [0, 6],
       ],
     }
   }
@@ -66,8 +85,7 @@ class BlockQueue {
     this.queue.push( _.cloneDeep(this.playerBlocks[type]))
   }
 
-  getEnemyBlock() {
-    const types = 'AAAABBCD'
+  getEnemyBlock(types) {
     const type = types[Math.floor(types.length * Math.random())]
     return _.cloneDeep(this.enemyBlocks[type])
   }

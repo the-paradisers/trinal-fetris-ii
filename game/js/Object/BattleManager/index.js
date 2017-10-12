@@ -15,26 +15,35 @@ class BattleManager extends Phaser.Group {
       }
     }
 
-    // Temporary data
-    const enemyData1 = {
-      frame: 0,
-      name: 'Werewolf',
-      level: 1,
-      HP: 20,
-    }
-    const enemyData2 = {
-      frame: 1,
-      name: 'Devil Wolf',
-      level: 1,
-      HP: 15,
-    }
-    const enemyData3 = {
-      frame: 2,
-      name: 'Werepanther',
-      level: 1,
-      HP: 20,
-    }
-    this.enemyGroup = [enemyData1, enemyData2, enemyData3]
+    const enemyData = JSON.parse(this.game.cache.getText('enemies'))
+    this.enemyGroup1 = [enemyData['Devil Wolf'], enemyData['Devil Wolf']]
+    this.enemyGroup2 = [enemyData['Wild Horn']]
+    this.enemyGroup3 = [enemyData['Queen Bee'], enemyData['Queen Bee']]
+    this.enemyGroup4 = [enemyData['Stunner'], enemyData['Stunner'], enemyData['Stunner'], enemyData['Stunner']]
+    this.enemyGroup5 = [enemyData['Ice Lizard'], enemyData['Ice Lizard'], enemyData['Poison Toad'], enemyData['Poison Toad']]
+    this.enemyGroup6 = [enemyData['Helldiver'], enemyData['Helldiver'], enemyData['Helldiver'], enemyData['Wild Horn']]
+    this.enemyGroup7 = [enemyData['Stunner'], enemyData['Helldiver'], enemyData['Ice Lizard'], enemyData['Poison Toad']]
+
+
+    this.battleGroups = [
+      this.enemyGroup1,
+      this.enemyGroup1,
+      this.enemyGroup1,
+      this.enemyGroup1,
+      this.enemyGroup2,
+      this.enemyGroup3,
+      this.enemyGroup3,
+      this.enemyGroup4,
+      this.enemyGroup5,
+      this.enemyGroup6,
+      this.enemyGroup7,
+      this.enemyGroup3,
+      this.enemyGroup4,
+      this.enemyGroup5,
+      this.enemyGroup6,
+      this.enemyGroup7,
+    ]
+
   }
 
   initialize() {
@@ -55,8 +64,13 @@ class BattleManager extends Phaser.Group {
     this.game.character.scale.x *= -1
     this.game.character.x -= 156
 
+    // randomly select enemy group
+    const numberOfGroups = this.battleGroups.length
+    const randomIndex = Math.floor(Math.random()*numberOfGroups)
+
+
     // Initialize battle and draw enemies
-    this.battle = new Battle(this.game, this.enemyGroup)
+    this.battle = new Battle(this.game, this.battleGroups[randomIndex])
     this.battle.initialize()
     this.battle.children.forEach(enemy => {
       enemy.draw()

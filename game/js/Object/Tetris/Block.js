@@ -114,10 +114,12 @@ class Block extends Phaser.Group {
   }
 
   enemyAttack() {
-    console.log('number of enemies attacking', this.enemies.length)
+    console.log(`inside enemy Attack`)
+    console.log(this.enemies)
+
       this.pos.x = Math.floor(8 * Math.random())
       this.pos.y = 0
-      this.matrix = this.queue.getEnemyBlock()
+      this.matrix = this.queue.getEnemyBlock(this.enemies[this.enemyAttacksSoFar].attacks)
   }
 
   playerTurn () {
@@ -131,8 +133,8 @@ class Block extends Phaser.Group {
   getNextBlock() {
     if (((this.game.moveCount + 1) % 5) === 0 && this.enemyAttacksSoFar < this.numberOfEnemies) {
       this.game.signals.inControl.dispatch(false)
-      this.enemyAttacksSoFar++
       this.enemyAttack()
+      this.enemyAttacksSoFar++
     } else {
       this.game.signals.inControl.dispatch(true)
       this.playerTurn()

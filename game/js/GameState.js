@@ -38,6 +38,8 @@ class GameState extends Phaser.State {
     this.load.audio('fireSound', 'audio/fire.wav')
     this.load.audio('boltSound', 'audio/bolt.wav')
     this.load.audio('iceSound', 'audio/ice.wav')
+
+    this.load.text('enemies', 'assets/enemies.json')
   }
 
   create() {
