@@ -16,7 +16,14 @@ class BattleManager extends Phaser.Group {
     }
 
     const enemyData = JSON.parse(this.game.cache.getText('enemies'))
-    this.enemyGroup1 = [enemyData['Werewolf'], enemyData['Devil Wolf'], enemyData['Werepanther']]
+    this.enemyGroup1 = [enemyData['Devil Wolf'], enemyData['Devil Wolf']]
+    this.enemyGroup2 = [enemyData['Wild Horn']]
+    this.enemyGroup3 = [enemyData['Queen Bee'], enemyData['Queen Bee']]
+    this.enemyGroup4 = [enemyData['Stunner'], enemyData['Stunner'], enemyData['Stunner'], enemyData['Stunner']]
+    this.enemyGroup5 = [enemyData['Ice Lizard'], enemyData['Ice Lizard'], enemyData['Poison Toad'], enemyData['Poison Toad']]
+    this.enemyGroup6 = [enemyData['Helldiver'], enemyData['Helldiver'], enemyData['Helldiver'], enemyData['Wild Horn']]
+    this.enemyGroup7 = [enemyData['Stunner'], enemyData['Helldiver'], enemyData['Ice Lizard'], enemyData['Poison Toad']]
+
   }
 
   initialize() {

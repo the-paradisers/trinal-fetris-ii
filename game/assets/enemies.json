@@ -11,7 +11,7 @@
     "frame": 1,
     "HP": 120,
     "EXP": 30,
-    "attacks": ""
+    "attacks": "AAAABBC"
   },
   "Werepanther": {
     "name": "Werepanther",
@@ -20,205 +20,205 @@
     "EXP": 35,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Coeurl": {
+    "name": "Coeurl",
+    "frame": 3,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Wild Horn": {
+    "name": "Wild Horn",
+    "frame": 4,
+    "HP": 210,
+    "EXP": 80,
+    "attacks": "AAAABBC"
+  },
+  "Wererat": {
+    "name": "Wererat",
+    "frame": 5,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Stunner": {
+    "name": "Stunner",
+    "frame": 6,
+    "HP": 90,
+    "EXP": 25,
+    "attacks": "AAAGGHH"
+  },
+  "Helldiver": {
+    "name": "Helldiver",
+    "frame": 7,
+    "HP": 160,
+    "EXP": 65,
+    "attacks": "AAACCFF"
+  },
+  "Cockatrice": {
+    "name": "Cockatrice",
+    "frame": 8,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Sprinter": {
+    "name": "Sprinter",
+    "frame": 9,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Phorusracos": {
+    "name": "Phorusracos",
+    "frame": 10,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Basilisk": {
+    "name": "Basilisk",
+    "frame": 11,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Salamander": {
+    "name": "Salamander",
+    "frame": 12,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Ice Lizard": {
+    "name": "Ice Lizard",
+    "frame": 13,
+    "HP": 140,
+    "EXP": 45,
+    "attacks": "AAAEEEE"
+  },
+  "Poison Toad": {
+    "name": "Poison Toad",
+    "frame": 14,
+    "HP": 190,
+    "EXP": 55,
+    "attacks": "ABBBBDD"
+  },
+  "Gigantoad": {
+    "name": "Gigantoad",
+    "frame": 15,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Hornet": {
+    "name": "Hornet",
+    "frame": 16,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Queen Bee": {
+    "name": "Queen Bee",
+    "frame": 17,
+    "HP": 110,
+    "EXP": 35,
+    "attacks": "AAAABBC"
+  },
+  "Killer Mantis": {
+    "name": "Killer Mantis",
+    "frame": 18,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Mantis King": {
+    "name": "Mantis King",
+    "frame": 19,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Mantis Devil": {
+    "name": "Mantis Devil",
+    "frame": 20,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Antlion": {
+    "name": "Antlion",
+    "frame": 21,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Scissorjaws": {
+    "name": "Scissorjaws",
+    "frame": 22,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Sand Worm": {
+    "name": "Sand Worm",
+    "frame": 23,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Abyss Worm": {
+    "name": "Abyss Worm",
+    "frame": 24,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Parasite": {
+    "name": "Parasite",
+    "frame": 25,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Mega Parasite": {
+    "name": "Mega Parasite",
+    "frame": 26,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Killer Fish": {
+    "name": "Killer Fish",
+    "frame": 27,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Bolt Fish": {
+    "name": "Bolt Fish",
+    "frame": 28,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Land Ray": {
+    "name": "Land Ray",
+    "frame": 29,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Manta Ray": {
+    "name": "Manta Ray",
+    "frame": 30,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
   },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
-    "HP": 100,
-    "EXP": 25,
-    "attacks": ""
-  },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
-    "HP": 100,
-    "EXP": 25,
-    "attacks": ""
-  },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
-    "HP": 100,
-    "EXP": 25,
-    "attacks": ""
-  },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
-    "HP": 100,
-    "EXP": 25,
-    "attacks": ""
-  },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
-    "HP": 100,
-    "EXP": 25,
-    "attacks": ""
-  },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
-    "HP": 100,
-    "EXP": 25,
-    "attacks": ""
-  },
-  "Werewolfy": {
-    "name": "Werewolfy",
-    "frame": 0,
+  "Flying Ray": {
+    "name": "Flying Ray",
+    "frame": 31,
     "HP": 100,
     "EXP": 25,
     "attacks": ""
