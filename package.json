@@ -4,16 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "pnkit sync"
   },
   "keywords": [],
   "author": "Erik Shuttlesworth <erik.shuttlesworth@gmail.com> (https://github.com/emshuttles)",
   "license": "ISC",
   "devDependencies": {
-    "phaser-node-kit": "^2.2.0"
   },
   "dependencies": {
     "lodash": "^4.17.4",
-    "lodash-transpose": "^0.2.1"
+    "lodash-transpose": "^0.2.1",
+    "phaser-node-kit": "^2.2.0"
   }
 }
