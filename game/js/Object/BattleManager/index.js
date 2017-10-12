@@ -73,6 +73,8 @@ class BattleManager extends Phaser.Group {
     this.battle.destroy()
     this.game.signals.hitEnemy.dispose()
     this.game.signals.castFire.dispose()
+    this.game.signals.castBolt.dispose()
+    this.game.signals.castIce.dispose()
   }
 
   writeLog(newMessage) {
