@@ -8,6 +8,7 @@ class TitleState extends Phaser.State {
     }
 
     create() {
+      this.timer = 0
       this.song = this.add.audio('titleAudio', 1, true)
       this.song.play()
 
@@ -16,22 +17,32 @@ class TitleState extends Phaser.State {
       title.animations.play('go')
 
 
-      let press = this.add.text(
+      this.press = this.add.text(
         this.world.centerX,
         this.world.centerY + 100,
         'Click to Continue',
         {fill: 'white', fontSize: 36}
       )
 
-      press.anchor.set(0.5)
+      this.press.anchor.set(0.5)
 
       this.input.onTap.addOnce((pointer) => {
         this.state.start('TitleMenu')
       })
     }
 
-    update() { }
-    render() { }
+    update() {
+      this.timer += this.game.time.elapsed
+
+      if (this.timer >= 1000 && this.press.visible) {
+        this.press.visible = false
+        this.timer = 500
+      } else if (this.timer >= 1000 && !this.press.visible) {
+        this.press.visible = true
+        this.timer = 0
+      }
+    }
+
   }
 
   module.exports = TitleState
