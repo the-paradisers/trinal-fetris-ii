@@ -5,7 +5,6 @@ const Enemy = require('./Enemy')
 class Battle extends Phaser.Group {
   constructor(game, enemyGroup) {
     super(game)
-    console.log('game in Battle constructor', game)
 
     this.enemyGroup = enemyGroup
     this.target = {}
@@ -62,13 +61,20 @@ class Battle extends Phaser.Group {
   }
 
   damageAllEnemies(damage) {
-    this.children.forEach(enemy => {
-      enemy.HP -= damage
-      console.log(enemy.name, enemy.HP)
-      if (enemy.HP < 0) this.die(enemy)
-    })
+    // To prevent skipping an enemy when one dies
     const message = `You hit all enemies for ${damage} damage!`
     this.game.signals.writeLog.dispatch(message)
+
+    const enemies = this.children
+    let index = 0
+    while (index < enemies.length) {
+      enemies[index].HP -= damage
+      if (enemies[index].HP <= 0) {
+        this.die(enemies[index])
+      } else {
+        index++
+      }
+    }
   }
 
   die(target) {
