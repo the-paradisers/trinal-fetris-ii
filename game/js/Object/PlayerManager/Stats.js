@@ -5,16 +5,15 @@ class Stats extends Phaser.Group {
     super(game)
     this.playerlvl = 1
 
-    this.maxManaScale = 5
     this.maxExpScale = 100
-    this.attackPowerScale = 2
-    this.spellPowerScale = 2
+    this.attackPowerScale = 10
+    this.spellPowerScale = 10
 
     this.attackPower = 20
     this.spellPower = 20
     this.healPower = 4
 
-    this.currentMana = 20
+    this.currentMana = 0
     this.currentExp = 0
     this.maxMana = 100
     this.maxExp = 100
@@ -28,7 +27,7 @@ class Stats extends Phaser.Group {
 
     this.currentMana = this.maxMana
 
-    // increase amount of mana it takes to level
+    // increase amount of exp it takes to level
     this.currentExp = 0
     this.maxExp += this.maxExpScale
 
@@ -38,7 +37,7 @@ class Stats extends Phaser.Group {
 
     this.spells = this.updateSkillStats()
 
-    if (this.playerlvl % 10 === 0 ){
+    if (this.playerlvl % 5 === 0 ){
        //switching to next background
       this.game.background[this.game.backgroundIdx].visible = false
       this.game.backgroundIdx += 1
@@ -50,10 +49,10 @@ class Stats extends Phaser.Group {
   updateSkillStats() {
 
     return {
-      Q: { name: 'Fire', cost: 45, damage: this.spellPower * 8, acc: 80 },
-      W: { name: 'Bolt', cost: 30, damage: this.spellPower * 4, acc: 100 },
-      E: { name: 'Ice', cost: 30, damage: this.spellPower * 1.2, acc: 90 },
-      R: { name: 'Cure', cost: 60, damage: this.healPower },
+      Q: { name: 'Fire', cost: 35, damage: this.spellPower * 8, acc: 80 },
+      W: { name: 'Bolt', cost: 20, damage: this.spellPower * 3, acc: 100 },
+      E: { name: 'Ice', cost: 20, damage: this.spellPower * 1.1, acc: 90 },
+      R: { name: 'Cure', cost: 40, damage: this.healPower },
     }
   }
 }

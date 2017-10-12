@@ -8,6 +8,8 @@ class Enemy extends Phaser.Group {
     this.HP = data.HP
     this.coords = coords
     this.pos = pos
+
+    this.attacks = data.attacks
   }
 
   draw() {

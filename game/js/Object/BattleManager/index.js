@@ -24,6 +24,26 @@ class BattleManager extends Phaser.Group {
     this.enemyGroup6 = [enemyData['Helldiver'], enemyData['Helldiver'], enemyData['Helldiver'], enemyData['Wild Horn']]
     this.enemyGroup7 = [enemyData['Stunner'], enemyData['Helldiver'], enemyData['Ice Lizard'], enemyData['Poison Toad']]
 
+
+    this.battleGroups = [
+      this.enemyGroup1,
+      this.enemyGroup1,
+      this.enemyGroup1,
+      this.enemyGroup1,
+      this.enemyGroup2,
+      this.enemyGroup3,
+      this.enemyGroup3,
+      this.enemyGroup4,
+      this.enemyGroup5,
+      this.enemyGroup6,
+      this.enemyGroup7,
+      this.enemyGroup3,
+      this.enemyGroup4,
+      this.enemyGroup5,
+      this.enemyGroup6,
+      this.enemyGroup7,
+    ]
+
   }
 
   initialize() {
@@ -44,8 +64,13 @@ class BattleManager extends Phaser.Group {
     this.game.character.scale.x *= -1
     this.game.character.x -= 156
 
+    // randomly select enemy group
+    const numberOfGroups = this.battleGroups.length
+    const randomIndex = Math.floor(Math.random()*numberOfGroups)
+
+
     // Initialize battle and draw enemies
-    this.battle = new Battle(this.game, this.enemyGroup1)
+    this.battle = new Battle(this.game, this.battleGroups[randomIndex])
     this.battle.initialize()
     this.battle.children.forEach(enemy => {
       enemy.draw()
