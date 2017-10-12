@@ -50,9 +50,9 @@ class Stats extends Phaser.Group {
   updateSkillStats() {
 
     return {
-      Q: { name: 'Fire', cost: 5, damage: this.spellPower * 8, acc: 80 },
+      Q: { name: 'Fire', cost: 5, damage: this.spellPower * 8, acc: 50 },
       W: { name: 'Bolt', cost: 5, damage: this.spellPower * 4, acc: 100 },
-      E: { name: 'Ice', cost: 5, damage: this.spellPower * 1.2, acc: 90 },
+      E: { name: 'Ice', cost: 5, damage: this.spellPower * 1.2, acc: 50 },
       R: { name: 'Cure', cost: 5, damage: this.healPower },
     }
   }

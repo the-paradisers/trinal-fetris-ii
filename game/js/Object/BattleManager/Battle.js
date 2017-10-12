@@ -44,9 +44,18 @@ class Battle extends Phaser.Group {
     this.targetEnemy(0)
   }
 
-  damageEnemy(damage, friendlyfire) {
+  damageEnemy(damage, friendlyfire, accuracy) {
     // If this is an enemy block, exit function
     if (friendlyfire) return
+
+    // To determine attack success
+    const random = Math.random() * 100
+    if (random > accuracy) {
+      const missMessage = `Your spell missed ${this.target.name}!`
+      this.game.signals.writeLog.dispatch(missMessage)
+      return
+    }
+
     this.target.HP -= damage
 
     // Ensure HP is never negative
@@ -60,15 +69,23 @@ class Battle extends Phaser.Group {
     }
   }
 
-  damageAllEnemies(damage) {
-    // To prevent skipping an enemy when one dies
-    const message = `You hit all enemies for ${damage} damage!`
-    this.game.signals.writeLog.dispatch(message)
-
+  damageAllEnemies(damage, accuracy) {
     const enemies = this.children
     let index = 0
     while (index < enemies.length) {
+      // To determine attack success
+      const random = Math.random() * 100
+      if (random > accuracy) {
+        const missMessage = `Your spell missed ${enemies[index].name}!`
+        this.game.signals.writeLog.dispatch(missMessage)
+        index++
+        continue
+      }
+
       enemies[index].HP -= damage
+      const hitMessage = `You hit ${enemies[index].name} for ${damage} damage!`
+      this.game.signals.writeLog.dispatch(hitMessage)
+
       if (enemies[index].HP <= 0) {
         this.die(enemies[index])
       } else {

@@ -158,7 +158,7 @@ class Player extends Phaser.Group{
   castFire(fireData) {
     this.game.sounds.fire.play()
     this.game.signals.castFire.dispatch()
-    this.game.signals.hitEnemy.dispatch(fireData.damage, false)
+    this.game.signals.hitEnemy.dispatch(fireData.damage, false, fireData.acc)
     this.game.changeBoardColor(5)
   }
 
@@ -172,7 +172,7 @@ class Player extends Phaser.Group{
   castIce(iceData) {
     this.game.sounds.ice.play()
     this.game.signals.castIce.dispatch()
-    this.game.signals.hitAllEnemies.dispatch(iceData.damage)
+    this.game.signals.hitAllEnemies.dispatch(iceData.damage, iceData.acc)
     this.game.changeBoardColor(4)
   }
 
