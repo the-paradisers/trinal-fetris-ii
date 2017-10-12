@@ -29,6 +29,8 @@ class Battle extends Phaser.Group {
     this.game.signals.hitEnemy.add(this.damageEnemy, this)
     this.game.signals.selectTarget.add(this.targetEnemy, this)
     this.game.signals.castFire.add(this.animateFire, this)
+    this.game.signals.castBolt.add(this.animateBolt, this)
+    this.game.signals.castIce.add(this.animateIce, this)
     this.game.signals.hitAllEnemies.add(this.damageAllEnemies, this)
   }
 
@@ -112,6 +114,24 @@ class Battle extends Phaser.Group {
     fireAnimation.killOnComplete = true
     fireAnimation.play()
     }
+
+  animateBolt() {
+    const boltSprite = this.game.add.sprite(this.target.coords.x, this.target.coords.y, 'boltSprite', 16)
+    boltSprite.scale.setTo(2, 2)
+    const boltAnimation = boltSprite.animations.add('boltAnimation', null, 24)
+    boltAnimation.killOnComplete = true
+    boltAnimation.play()
+  }
+
+  animateIce() {
+    this.children.forEach(enemy => {
+      const iceSprite = this.game.add.sprite(enemy.coords.x, enemy.coords.y, 'iceSprite', 16)
+      iceSprite.scale.setTo(2, 2)
+      const iceAnimation = iceSprite.animations.add('iceAnimation', null, 12)
+      iceAnimation.killOnComplete = true
+      iceAnimation.play()
+    })
+  }
 }
 
 module.exports = Battle
