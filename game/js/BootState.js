@@ -8,6 +8,8 @@ class BootState {
   create() {
     this.input.maxPointers = 1
     this.state.start('Preload')
+
+    this.game.stage.smoothed = false
   }
 
   update() { }
