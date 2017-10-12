@@ -170,7 +170,7 @@ class Player extends Phaser.Group{
 
   castIce(iceData) {
     this.game.sounds.ice.play()
-    this.game.signals.hitEnemy.dispatch(iceData.damage, false)
+    this.game.signals.hitAllEnemies.dispatch(iceData.damage)
     this.game.changeBoardColor(4)
   }
 

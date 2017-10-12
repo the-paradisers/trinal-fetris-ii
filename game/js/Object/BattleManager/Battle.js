@@ -29,7 +29,7 @@ class Battle extends Phaser.Group {
     this.game.signals.hitEnemy.add(this.damageEnemy, this)
     this.game.signals.selectTarget.add(this.targetEnemy, this)
     this.game.signals.castFire.add(this.animateFire, this)
-    this.game.signals.hitAllEnemies.add(this.damageEnemy, this)
+    this.game.signals.hitAllEnemies.add(this.damageAllEnemies, this)
   }
 
   summonEnemies() {
@@ -57,6 +57,16 @@ class Battle extends Phaser.Group {
     if (this.target.HP === 0) {
       this.die(this.target)
     }
+  }
+
+  damageAllEnemies(damage) {
+    this.children.forEach(enemy => {
+      enemy.HP -= damage
+      console.log(enemy.name, enemy.HP)
+      if (enemy.HP < 0) this.die(enemy)
+    })
+    const message = `You hit all enemies for ${damage} damage!`
+    this.game.signals.writeLog.dispatch(message)
   }
 
   die(target) {
