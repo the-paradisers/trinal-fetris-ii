@@ -56,15 +56,14 @@ class Battle extends Phaser.Group {
       return
     }
 
+    const damageModifier = Math.random() * (1.1 - 0.9) + 0.9
+    damage = Math.floor(damage * damageModifier)
     this.target.HP -= damage
-
-    // Ensure HP is never negative
-    if (this.target.HP < 0) this.target.HP = 0
 
     const message = `You hit ${this.target.name} for ${damage} damage!`
     this.game.signals.writeLog.dispatch(message)
 
-    if (this.target.HP === 0) {
+    if (this.target.HP <= 0) {
       this.die(this.target)
     }
   }
@@ -82,7 +81,10 @@ class Battle extends Phaser.Group {
         continue
       }
 
+      const damageModifier = Math.random() * (1.1 - 0.9) + 0.9
+      damage = Math.floor(damage * damageModifier)
       enemies[index].HP -= damage
+
       const hitMessage = `You hit ${enemies[index].name} for ${damage} damage!`
       this.game.signals.writeLog.dispatch(hitMessage)
 
