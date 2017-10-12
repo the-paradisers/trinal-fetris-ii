@@ -140,6 +140,7 @@ class GameState extends Phaser.State {
     this.game.signals.attackAll = new Phaser.Signal()
     this.game.signals.castFire = new Phaser.Signal()
     this.game.signals.castCure = new Phaser.Signal()
+    this.game.signals.hitAllEnemies = new Phaser.Signal()
 
     this.game.signals.inControl.add(this.setControlOfTetris, this)
     this.game.signals.castCure.add(this.animateCure, this)

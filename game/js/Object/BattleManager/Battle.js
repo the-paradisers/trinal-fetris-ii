@@ -26,9 +26,10 @@ class Battle extends Phaser.Group {
   }
 
   initializeSignals() {
-    this.game.signals.hitEnemy.add(this.takeDamage, this)
+    this.game.signals.hitEnemy.add(this.damageEnemy, this)
     this.game.signals.selectTarget.add(this.targetEnemy, this)
     this.game.signals.castFire.add(this.animateFire, this)
+    this.game.signals.hitAllEnemies.add(this.damageEnemy, this)
   }
 
   summonEnemies() {
@@ -42,7 +43,7 @@ class Battle extends Phaser.Group {
     this.targetEnemy(0)
   }
 
-  takeDamage(damage, friendlyfire) {
+  damageEnemy(damage, friendlyfire) {
     // If this is an enemy block, exit function
     if (friendlyfire) return
     this.target.HP -= damage
