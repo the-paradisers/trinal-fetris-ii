@@ -18,7 +18,7 @@ class MenuState {
       `
       Up: Rotate block
       Down: Move block down
-      Left: Move cblock left
+      Left: Move block left
       Right: Move block right\n
       Space: Drop block instantly
       ESC: Pause the game

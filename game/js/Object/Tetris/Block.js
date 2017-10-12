@@ -114,9 +114,6 @@ class Block extends Phaser.Group {
   }
 
   enemyAttack() {
-    console.log(`inside enemy Attack`)
-    console.log(this.enemies)
-
       this.pos.x = Math.floor(8 * Math.random())
       this.pos.y = 0
       this.matrix = this.queue.getEnemyBlock(this.enemies[this.enemyAttacksSoFar].attacks)
