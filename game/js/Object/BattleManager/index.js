@@ -32,7 +32,7 @@ class BattleManager extends Phaser.Group {
       frame: 2,
       name: 'Werepanther',
       level: 1,
-      HP: 30,
+      HP: 20,
     }
     this.enemyGroup = [enemyData1, enemyData2, enemyData3]
   }

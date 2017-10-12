@@ -5,7 +5,6 @@ const Enemy = require('./Enemy')
 class Battle extends Phaser.Group {
   constructor(game, enemyGroup) {
     super(game)
-    console.log('game in Battle constructor', game)
 
     this.enemyGroup = enemyGroup
     this.target = {}
@@ -26,11 +25,12 @@ class Battle extends Phaser.Group {
   }
 
   initializeSignals() {
-    this.game.signals.hitEnemy.add(this.takeDamage, this)
+    this.game.signals.hitEnemy.add(this.damageEnemy, this)
     this.game.signals.selectTarget.add(this.targetEnemy, this)
     this.game.signals.castFire.add(this.animateFire, this)
     this.game.signals.castBolt.add(this.animateBolt, this)
     this.game.signals.castIce.add(this.animateIce, this)
+    this.game.signals.hitAllEnemies.add(this.damageAllEnemies, this)
   }
 
   summonEnemies() {
@@ -44,19 +44,55 @@ class Battle extends Phaser.Group {
     this.targetEnemy(0)
   }
 
-  takeDamage(damage, friendlyfire) {
+  damageEnemy(damage, friendlyfire, accuracy) {
     // If this is an enemy block, exit function
     if (friendlyfire) return
-    this.target.HP -= damage
 
-    // Ensure HP is never negative
-    if (this.target.HP < 0) this.target.HP = 0
+    // To determine attack success
+    const random = Math.random() * 100
+    if (random > accuracy) {
+      const missMessage = `Your spell missed ${this.target.name}!`
+      this.game.signals.writeLog.dispatch(missMessage)
+      return
+    }
+
+    const damageModifier = Math.random() * (1.1 - 0.9) + 0.9
+    damage = Math.floor(damage * damageModifier)
+    this.target.HP -= damage
 
     const message = `You hit ${this.target.name} for ${damage} damage!`
     this.game.signals.writeLog.dispatch(message)
 
-    if (this.target.HP === 0) {
+    if (this.target.HP <= 0) {
       this.die(this.target)
+    }
+  }
+
+  damageAllEnemies(damage, accuracy) {
+    const enemies = this.children
+    let index = 0
+    while (index < enemies.length) {
+      // To determine attack success
+      const random = Math.random() * 100
+      if (random > accuracy) {
+        const missMessage = `Your spell missed ${enemies[index].name}!`
+        this.game.signals.writeLog.dispatch(missMessage)
+        index++
+        continue
+      }
+
+      const damageModifier = Math.random() * (1.1 - 0.9) + 0.9
+      damage = Math.floor(damage * damageModifier)
+      enemies[index].HP -= damage
+
+      const hitMessage = `You hit ${enemies[index].name} for ${damage} damage!`
+      this.game.signals.writeLog.dispatch(hitMessage)
+
+      if (enemies[index].HP <= 0) {
+        this.die(enemies[index])
+      } else {
+        index++
+      }
     }
   }
 
@@ -110,18 +146,17 @@ class Battle extends Phaser.Group {
     const boltAnimation = boltSprite.animations.add('boltAnimation', null, 24)
     boltAnimation.killOnComplete = true
     boltAnimation.play()
-    }
+  }
 
-    animateIce() {
-      this.children.forEach(enemy => {
-        const iceSprite = this.game.add.sprite(enemy.coords.x, enemy.coords.y, 'iceSprite', 16)
-        iceSprite.scale.setTo(2, 2)
-        const iceAnimation = iceSprite.animations.add('iceAnimation', null, 12)
-        iceAnimation.killOnComplete = true
-        iceAnimation.play()
-      })
-
-      }
+  animateIce() {
+    this.children.forEach(enemy => {
+      const iceSprite = this.game.add.sprite(enemy.coords.x, enemy.coords.y, 'iceSprite', 16)
+      iceSprite.scale.setTo(2, 2)
+      const iceAnimation = iceSprite.animations.add('iceAnimation', null, 12)
+      iceAnimation.killOnComplete = true
+      iceAnimation.play()
+    })
+  }
 }
 
 module.exports = Battle

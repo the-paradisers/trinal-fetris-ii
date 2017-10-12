@@ -51,8 +51,8 @@ class Stats extends Phaser.Group {
 
     return {
       Q: { name: 'Fire', cost: 5, damage: this.spellPower * 8, acc: 80 },
-      W: { name: 'Bolt', cost: 30, damage: this.spellPower * 4, acc: 100 },
-      E: { name: 'Ice', cost: 30, damage: this.spellPower * 1.2, acc: 90 },
+      W: { name: 'Bolt', cost: 5, damage: this.spellPower * 4, acc: 100 },
+      E: { name: 'Ice', cost: 5, damage: this.spellPower * 1.2, acc: 90 },
       R: { name: 'Cure', cost: 5, damage: this.healPower },
     }
   }
