@@ -58,7 +58,6 @@ class Battle extends Phaser.Group {
 
     const damageModifier = Math.random() * (1.1 - 0.9) + 0.9
     damage = Math.floor(damage * damageModifier)
-    console.log(damage)
     this.target.HP -= damage
 
     const message = `You hit ${this.target.name} for ${damage} damage!`
@@ -84,7 +83,6 @@ class Battle extends Phaser.Group {
 
       const damageModifier = Math.random() * (1.1 - 0.9) + 0.9
       damage = Math.floor(damage * damageModifier)
-      console.log(damage)
       enemies[index].HP -= damage
 
       const hitMessage = `You hit ${enemies[index].name} for ${damage} damage!`
